@@ -1,5 +1,6 @@
 package com.study.me;
 
+import com.study.me.reflect.ReflectUtil;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -27,6 +28,8 @@ public class AppTest
     @Test
     public void newStudentInstance() throws IllegalAccessException, InstantiationException {
         //builder构造
+        ReflectUtil.printClassMessage(Student.class);
+
         final Student stu1 = Student.builder()
                 .id(1)
                 .name("abs")
