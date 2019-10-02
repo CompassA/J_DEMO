@@ -17,12 +17,12 @@ public class ReflectUtil {
 
         for (final Method method : methods) {
             System.out.printf("%s %s(",
-                    method.getReturnType().getName(),
+                    method.getReturnType().getSimpleName(),
                     method.getName());
             Parameter[] parameters = method.getParameters();
             for (int i = 0; i < parameters.length; ++i) {
                 System.out.printf("%s%s",
-                        parameters[i].getType().getName(),
+                        parameters[i].getType().getSimpleName(),
                         i == parameters.length - 1 ? "" : ", ");
             }
             System.out.println(")");
