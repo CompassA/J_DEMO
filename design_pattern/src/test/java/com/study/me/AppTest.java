@@ -1,5 +1,8 @@
 package com.study.me;
 
+import com.study.me.proxy.SomeFunction;
+import com.study.me.proxy.WorkerGay;
+import com.study.me.proxy.WorkerGayProxy;
 import com.study.me.reflect.ReflectUtil;
 import com.study.me.singleton.Connection;
 import com.study.me.singleton.SingletonConnection;
@@ -111,7 +114,7 @@ public class AppTest
      */
     @Test
     public void listReflectTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        final List<String> strList = new ArrayList<>() {{
+        final List<String> strList = new ArrayList<String>() {{
             add("str");
         }};
 
@@ -127,5 +130,14 @@ public class AppTest
                 Assert.assertTrue(e instanceof ClassCastException);
             }
         }
+    }
+
+    /**
+     * 静态代理测试
+     */
+    @Test
+    public void staticProxy() {
+        final SomeFunction proxy = new WorkerGayProxy(new WorkerGay());
+        proxy.doSomething();
     }
 }
