@@ -1,5 +1,6 @@
 package com.study.me;
 
+import com.study.me.dynamicproxy.TimeHandler;
 import com.study.me.proxy.SomeFunction;
 import com.study.me.proxy.WorkerGay;
 import com.study.me.proxy.WorkerGayProxy;
@@ -139,5 +140,16 @@ public class AppTest
     public void staticProxy() {
         final SomeFunction proxy = new WorkerGayProxy(new WorkerGay());
         proxy.doSomething();
+    }
+
+    /**
+     * 动态代理测试
+     */
+    @Test
+    public void dynamicProxy() {
+        final SomeFunction someFunction =
+                (SomeFunction) new TimeHandler(new WorkerGay()).newProxyInstance();
+
+        someFunction.doSomething();
     }
 }

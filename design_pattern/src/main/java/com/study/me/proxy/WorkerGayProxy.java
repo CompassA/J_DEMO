@@ -2,6 +2,7 @@ package com.study.me.proxy;
 
 /**
  * 静态代理
+ * 同样功能的前提下，一个对象写一个代理, bad!
  * @author FanQie
  * @date 2019/10/3 23:33
  */
