@@ -1,7 +1,5 @@
 package com.study.me.dynamicproxy;
 
-import com.study.me.proxy.SomeFunction;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -15,13 +13,20 @@ import java.lang.reflect.Proxy;
  */
 public class TimeHandler implements InvocationHandler {
 
-    private final SomeFunction obj;
+    /**
+     * 被代理对象
+     */
+    private final Object obj;
 
-    public TimeHandler(final SomeFunction obj) {
+    public TimeHandler(final Object obj) {
         this.obj = obj;
     }
 
     /**
+     * 传入类构造器、需要被代理的接口、拦截器
+     * JDK构造一个代理类，该类持有拦截器引用，并实现了各个接口（反射）
+     * 每个接口方法调用拦截器的invoke方法，实现代理
+     *
      * @return 动态代理类
      */
     public Object newProxyInstance() {
@@ -33,7 +38,7 @@ public class TimeHandler implements InvocationHandler {
 
     /**
      * 动态代理
-     * @param proxy 被代理的对象
+     * @param proxy 代理对象
      * @param method 被代理的方法
      * @param args 方法的参数
      * @return method的返回类型

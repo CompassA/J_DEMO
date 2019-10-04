@@ -13,6 +13,7 @@ import org.junit.Test;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -147,9 +148,20 @@ public class AppTest
      */
     @Test
     public void dynamicProxy() {
+        final TimeHandler timeHandler = new TimeHandler(new WorkerGay());
+        //way 1
         final SomeFunction someFunction =
-                (SomeFunction) new TimeHandler(new WorkerGay()).newProxyInstance();
+                (SomeFunction) timeHandler.newProxyInstance();
 
         someFunction.doSomething();
+
+        //way 2
+        final SomeFunction someFunction2 = (SomeFunction) Proxy.newProxyInstance(
+                SomeFunction.class.getClassLoader(),
+                new Class[] {SomeFunction.class},
+                timeHandler);
+        //代理了SomeFunction接口的全部方法
+        someFunction2.doSomething();
+        someFunction2.sleep();
     }
 }

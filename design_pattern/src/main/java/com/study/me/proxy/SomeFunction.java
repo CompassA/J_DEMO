@@ -10,4 +10,11 @@ public interface SomeFunction {
      * do
      */
     void doSomething();
+
+    /**
+     * sleep
+     */
+    default void sleep() {
+        System.out.println("sleep");
+    }
 }
