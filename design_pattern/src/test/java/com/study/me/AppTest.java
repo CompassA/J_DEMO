@@ -1,5 +1,9 @@
 package com.study.me;
 
+import com.study.me.decorator.AddComponent_1;
+import com.study.me.decorator.AddComponent_2;
+import com.study.me.decorator.Component;
+import com.study.me.decorator.ConcreteComponent;
 import com.study.me.dynamicproxy.TimeHandler;
 import com.study.me.proxy.SomeFunction;
 import com.study.me.proxy.WorkerGay;
@@ -163,5 +167,36 @@ public class AppTest
         //代理了SomeFunction接口的全部方法
         someFunction2.doSomething();
         someFunction2.sleep();
+    }
+
+    /**
+     * 装饰者测试
+     */
+    @Test
+    public void decoratorTest() {
+        //base
+        final Component concreteComponent = new ConcreteComponent();
+        Assert.assertEquals(concreteComponent.printMyself(),
+                "ConcreteComponent");
+
+        //base + component1
+        final Component component1 = new AddComponent_1(concreteComponent);
+        Assert.assertEquals(component1.printMyself(),
+                "ConcreteComponent + AddComponent_1");
+
+        //base + component2
+        final Component component2 = new AddComponent_2(concreteComponent);
+        Assert.assertEquals(component2.printMyself(),
+                "ConcreteComponent + AddComponent_2");
+
+        //base + component1 + component2
+        final Component component3 = new AddComponent_2(component1);
+        Assert.assertEquals(component3.printMyself(),
+                "ConcreteComponent + AddComponent_1 + AddComponent_2");
+
+        //base + component1 + component2 + component3
+        final Component component4 = new AddComponent_1(component3);
+        Assert.assertEquals(component4.printMyself(),
+                "ConcreteComponent + AddComponent_1 + AddComponent_2 + AddComponent_1");
     }
 }
