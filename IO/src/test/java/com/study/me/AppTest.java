@@ -1,38 +1,35 @@
 package com.study.me;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.Test;
+
+import java.io.File;
+import java.util.Objects;
 
 /**
  * Unit test for simple App.
  */
-public class AppTest 
-    extends TestCase
-{
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest( String testName )
-    {
-        super( testName );
+public class AppTest {
+
+    @Test
+    public void test1() {
+        printfDictionary(new File("E:"));
     }
 
     /**
-     * @return the suite of tests being tested
+     * 打印文件夹下所有文件
+     * @param root 根目录
      */
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
-    }
-
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
+    private static void printfDictionary(final File root) {
+        if (root.isDirectory()) {
+            File[] files = root.listFiles();
+            if (Objects.isNull(files)) {
+                return;
+            }
+            for (final File file : files) {
+                printfDictionary(file);
+            }
+        } else {
+            System.out.printf("%s\n", root.getAbsolutePath());
+        }
     }
 }
