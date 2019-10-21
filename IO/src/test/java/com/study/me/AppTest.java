@@ -1,8 +1,9 @@
 package com.study.me;
 
+import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.File;
+import java.io.*;
 import java.util.Objects;
 
 /**
@@ -12,7 +13,7 @@ public class AppTest {
 
     @Test
     public void test1() {
-        printfDictionary(new File("E:"));
+        printfDictionary(new File("F:"));
     }
 
     /**
@@ -30,6 +31,59 @@ public class AppTest {
             }
         } else {
             System.out.printf("%s\n", root.getAbsolutePath());
+        }
+    }
+
+    /**
+     * 创建文件并写入内容
+     * @throws IOException IO异常
+     */
+    @Test
+    public void test2() throws IOException {
+        final File file = new File("text");
+        if (!file.exists()) {
+            Assert.assertTrue(file.createNewFile());
+        }
+        final OutputStream os = new BufferedOutputStream(new FileOutputStream(file, true));
+        String output = "hello world!\r\n";
+        os.write(output.getBytes());
+        os.close();
+    }
+
+    @Test
+    public void test3() throws IOException {
+        final File file = new File("input_record.txt");
+        if (!file.exists()) {
+            Assert.assertTrue(file.createNewFile());
+        }
+
+        final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        final BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+        String line;
+
+        while (!(line = reader.readLine()).equals("quits")) {
+            String[] words = line.split(" ");
+            for (final String word : words) {
+                writer.write(word.toCharArray());
+                writer.write('\n');
+            }
+        }
+
+        writer.close();
+        reader.close();
+    }
+
+    @Test
+    public void test4() throws IOException {
+        final File file = new File("input_record.txt");
+        if (!file.exists()) {
+            return;
+        }
+        final BufferedReader bf = new BufferedReader(new FileReader(file));
+
+        String line;
+        while ((line = bf.readLine()) != null) {
+            System.out.printf("%s\n", line);
         }
     }
 }
