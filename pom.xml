@@ -12,5 +12,6 @@
   <modules>
     <module>IO</module>
     <module>design_pattern</module>
+    <module>redis_demo</module>
   </modules>
 </project>
