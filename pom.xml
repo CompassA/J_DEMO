@@ -4,6 +4,12 @@
                       https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+  
   <groupId>com.study.me</groupId>
   <artifactId>parent</artifactId>
   <version>1.0</version>
@@ -14,4 +20,13 @@
     <module>design_pattern</module>
     <module>redis_demo</module>
   </modules>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 </project>
