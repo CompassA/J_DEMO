@@ -41,4 +41,15 @@ public class FileSplitUtilTest {
                 "test_9");
         Assert.assertTrue(new File("merged_file").exists());
     }
+
+    @Test
+    public void copyTest() throws IOException {
+        final File src = new File("src.jpg");
+        final File dest = new File("dest.jpg");
+        if (!dest.exists()) {
+            boolean b = dest.createNewFile();
+        }
+        FileCopyUtil.copy(src, dest);
+        Assert.assertEquals(src.length(),dest.length());
+    }
 }
