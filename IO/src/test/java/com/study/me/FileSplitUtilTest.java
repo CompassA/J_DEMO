@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * @author FanQie
@@ -51,5 +52,20 @@ public class FileSplitUtilTest {
         }
         FileCopyUtil.copy(src, dest);
         Assert.assertEquals(src.length(),dest.length());
+    }
+
+    @Test
+    public void splitNioTest() {
+        final File src = new File("src_nio");
+        FileSplitNioUtil.split(src, 1024 * 1024, ".mp4");
+    }
+
+    @Test
+    public void mergeNioTest() {
+        final ArrayList<File> list = new ArrayList<>(55);
+        for (int i = 0; i < 55; ++i) {
+            list.add(new File(FileSplitNioUtil.generateBlockFileName("src_nio", i, ".mp4")));
+        }
+        FileSplitNioUtil.merge(list, "merged.mp4");
     }
 }
