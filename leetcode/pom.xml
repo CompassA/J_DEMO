@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>leetcode</artifactId>
+    <name>leetcode</name>
     <packaging>jar</packaging>
 
 </project>
