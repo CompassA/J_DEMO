@@ -149,19 +149,32 @@ public class Main {
      * you must do this by modifying the input array in-place with O(1) extra memory.
      */
     public int removeDuplicates(int[] nums) {
-        int toBeReplaced = 0;
-        for (int i = 0; i < nums.length; ) {
-            //寻找重复区间[i+1, nextPos)
-            int nextPos = i + 1;
-            while (nextPos < nums.length && nums[nextPos] == nums[i]) {
-                ++nextPos;
+//        int toBeReplaced = 0;
+//        for (int i = 0; i < nums.length; ) {
+//            //寻找重复区间[i+1, nextPos)
+//            int nextPos = i + 1;
+//            while (nextPos < nums.length && nums[nextPos] == nums[i]) {
+//                ++nextPos;
+//            }
+//            //防止原地交换
+//            if (toBeReplaced != i) {
+//                nums[toBeReplaced] = nums[i];
+//            }
+//            i = nextPos;
+//            ++toBeReplaced;
+//        }
+//        return toBeReplaced;
+        if (nums.length == 0) {
+            return 0;
+        }
+        int toBeReplaced = 1;
+        for (int i = 1; i < nums.length; ++i) {
+            if (nums[i] != nums[toBeReplaced-1]) {
+                if (i != toBeReplaced) {
+                    nums[toBeReplaced] = nums[i];
+                }
+                ++toBeReplaced;
             }
-            //防止原地交换
-            if (toBeReplaced != i) {
-                nums[toBeReplaced] = nums[i];
-            }
-            i = nextPos;
-            ++toBeReplaced;
         }
         return toBeReplaced;
     }
@@ -184,9 +197,7 @@ public class Main {
         for (int i = 0; i < nums.length; ++i) {
             if (nums[i] != val) {
                 if (toBeReplaced != i) {
-                    int tmp = nums[toBeReplaced];
                     nums[toBeReplaced] = nums[i];
-                    nums[i] = tmp;
                 }
                 ++toBeReplaced;
             }
@@ -228,6 +239,72 @@ public class Main {
 //            }
 //        }
 //        return toBeReplaced;
+    }
+
+    /**
+     * 75. Sort Colors
+     *
+     * Given an array with n objects colored red, white or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white and blue.
+     *
+     * Here, we will use the integers 0, 1, and 2 to represent the color red, white, and blue respectively.
+     *
+     * Note: You are not suppose to use the library's sort function for this problem.
+     */
+    public void sortColors(int[] nums) {
+        //[0, left] [right, nums.length-1]
+        int left = -1, right = nums.length, i = 0;
+        while (i < right) {
+            switch (nums[i]) {
+            case 0:
+                ++left;
+                swap(nums, left, i);
+                ++i;
+                break;
+            case 1:
+                ++i;
+                break;
+            case 2:
+                --right;
+                swap(nums, right, i);
+                break;
+            }
+        }
+    }
+
+    /**
+     * 88. Merge Sorted Array
+     *
+     * Given two sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.
+     *
+     * Note:
+     *
+     * The number of elements initialized in nums1 and nums2 are m and n respectively.
+     * You may assume that nums1 has enough space (size that is greater or equal to m + n) to hold additional elements from nums2
+     */
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int index1 = m - 1, index2 = n - 1;
+        int toBeFilled = m + n - 1;
+        while (index1 >= 0 && index2 >= 0) {
+            if (nums1[index1] > nums2[index2]) {
+                nums1[toBeFilled--] = nums1[index1--];
+            } else {
+                nums1[toBeFilled--] = nums1[index2--];
+            }
+        }
+        while (index1 >= 0) {
+            nums1[toBeFilled--] = nums1[index1--];
+        }
+        while (index2 >= 0) {
+            nums1[toBeFilled--] = nums2[index2--];
+        }
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        if (i != j) {
+            int tmp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = tmp;
+        }
     }
 }
 
