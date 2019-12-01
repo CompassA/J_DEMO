@@ -1,5 +1,6 @@
-import java.util.HashSet;
-import java.util.Set;
+package com.study.leetcode;
+
+import java.util.*;
 
 /**
  * @author fanqie
@@ -182,30 +183,146 @@ public class ArrayProblem {
      * If there isn't one, return 0 instead.
      */
     public int minSubArrayLen(int s, int[] nums) {
-        //滑动窗口[left, right]
-        int left = 0, right = -1;
-        int sum = 0;
-        int length = nums.length + 1;
+//        //滑动窗口[left, right]
+////        int left = 0, right = -1;
+////        int sum = 0;
+////        int length = nums.length + 1;
+////
+////        //只要左边框依旧有效
+////        while (left < nums.length) {
+////            //选择右边扩张或者左边扩张
+////            if (right + 1 < nums.length && sum < s) {
+////                ++right;
+////                sum += nums[right];
+////            } else {
+////                sum -= nums[left];
+////                ++left;
+////            }
+////
+////            //扩张后更新结果状态
+////            if (sum >= s) {
+////                final int curLength = right - left + 1;
+////                if (length > curLength) {
+////                    length = curLength;
+////                }
+////            }
+////        }
+////        return length == nums.length + 1 ? 0 : length;
+        int left = 0, right = -1, sum = 0;
+        int res = nums.length + 1;
+        while (right + 1 < nums.length) {
+            //增加右边框
+            ++right;
+            sum += nums[right];
 
-        //只要左边框依旧有效
-        while (left < nums.length) {
-            //选择右边扩张或者左边扩张
-            if (right + 1 < nums.length && sum < s) {
-                ++right;
-                sum += nums[right];
-            } else {
+            //循环增加左边框
+            while (sum >= s) {
+                final int curLength = right - left + 1;
+                if (res > curLength) {
+                    res = curLength;
+                }
                 sum -= nums[left];
                 ++left;
             }
 
-            //扩张后更新结果状态
-            if (sum >= s) {
-                final int curLength = right - left + 1;
-                if (length > curLength) {
-                    length = curLength;
+        }
+        return nums.length + 1 == res ? 0 : res;
+    }
+
+    /**
+     * 438. Find All Anagrams in a String
+     *
+     * Given a string s and a non-empty string p,
+     * find all the start indices of p's anagrams in s.
+     *
+     * Strings consists of lowercase English letters only and the length of
+     * both strings s and p will not be larger than 20,100.
+     *
+     * The order of output does not matter.
+     */
+    public List<Integer> findAnagrams(String s, String p) {
+        final List<Integer> res = new ArrayList<>(0);
+        if (s.length() < p.length()) {
+            return res;
+        }
+
+        int left = 0, right = -1, charInTarget = 0;
+        final char[] target = p.toCharArray();
+        final char[] chars = s.toCharArray();
+        final int[] cnt = new int[256];
+        for (final char c : target) {
+            ++cnt[c];
+        }
+
+        while (right + 1 < chars.length) {
+            //增加右边框
+            ++right;
+            if (cnt[chars[right]] > 0) {
+                ++charInTarget;
+            }
+            --cnt[chars[right]];
+
+            //循环增加左边框
+            while (charInTarget == target.length) {
+                if (right - left + 1 == target.length) {
+                    res.add(left);
                 }
+                ++cnt[chars[left]];
+                if (cnt[chars[left]] > 0) {
+                    --charInTarget;
+                }
+                ++left;
             }
         }
-        return length == nums.length + 1 ? 0 : length;
+        return res;
+    }
+
+    /**
+     * 76. Minimum Window Substring
+     *
+     * Share
+     * Given a string S and a string T,
+     * find the minimum window in S which will contain
+     * all the characters in T in complexity O(n).
+     */
+    public String minWindow(String s, String t) {
+        String res = "";
+        if (s.length() < t.length()) {
+            return res;
+        }
+        final int[] cnt = new int[256];
+        final char[] chars = s.toCharArray();
+        final char[] target = t.toCharArray();
+        for (final char c : target) {
+            ++cnt[c];
+        }
+
+        int left = 0, right = -1;
+        int charInTarget = 0;
+        int minLength = Integer.MAX_VALUE;
+        while (right + 1 < chars.length) {
+            //扩张右边界
+            ++right;
+            //cnt[i] > 0 表示该字符在集合中
+            if (cnt[chars[right]] > 0) {
+                ++charInTarget;
+            }
+            //减少字符数量，表示字符进入窗口
+            --cnt[chars[right]];
+
+            while (charInTarget == target.length) {
+                final int curLength = right - left + 1;
+                if (curLength < minLength) {
+                    minLength = curLength;
+                    res = s.substring(left, right + 1);
+                }
+                cnt[chars[left]]++;
+                if (cnt[chars[left]] > 0) {
+                    --charInTarget;
+                }
+                ++left;
+            }
+        }
+        return res;
     }
 }
