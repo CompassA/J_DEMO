@@ -153,4 +153,92 @@ public class MapAndSet {
         }
         return true;
     }
+
+    /**
+     * 205. Isomorphic Strings
+     * Easy
+     *
+     * 985
+     *
+     * 286
+     *
+     * Favorite
+     *
+     * Share
+     * Given two strings s and t, determine if they are isomorphic.
+     *
+     * Two strings are isomorphic if the characters in s can be replaced to get t.
+     *
+     * All occurrences of a character must be replaced with another character while preserving the order of characters.
+     * No two characters may map to the same character but a character may map to itself.
+     */
+    public boolean isIsomorphic(String s, String t) {
+        if (s.length() != t.length()) {
+            return false;
+        }
+        final int[] sToT = new int[256];
+        final int[] tToS = new int[256];
+
+        final char[] sChars = s.toCharArray();
+        final char[] tChars = t.toCharArray();
+
+        //s和t每个位置的字母都有唯一的映射关系
+        //遍历每个位置
+        //检测映射关系是否被破坏
+        for (int i = 0; i < sChars.length; ++i) {
+            final char sChar = sChars[i];
+            final char tChar = tChars[i];
+            if (sToT[sChar] == 0 && tToS[tChar] == 0) {
+                sToT[sChar] = tChar;
+                tToS[tChar] = sChar;
+            } else if (sToT[sChar] != 0 && tToS[tChar] != 0) {
+                if (sToT[sChar] != tChar || tToS[tChar] != sChar) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 451. Sort Characters By Frequency
+     * Medium
+     *
+     * 920
+     *
+     * 84
+     *
+     * Favorite
+     *
+     * Share
+     * Given a string, sort it in decreasing order based on the frequency of characters.
+     */
+    public String frequencySort(String s) {
+        if (s.length() == 0) {
+            return "";
+        }
+        final Map<Character, Integer> cnt = new HashMap<>(0);
+        final char[] chars = s.toCharArray();
+        for (final char c : chars) {
+            final int occurredNums = cnt.getOrDefault(c, 0);
+            cnt.put(c, occurredNums + 1);
+        }
+        final Queue<Character> q = new PriorityQueue<>(cnt.keySet().size(),
+                Comparator.comparing(character -> -cnt.get(character)));
+        for (final char c : cnt.keySet()) {
+            q.offer(c);
+        }
+        final char[] res = new char[chars.length];
+        int index = 0;
+        while (!q.isEmpty()) {
+            final char curChar = q.poll();
+            final int occurredTimes = cnt.get(curChar);
+            for (int i = 0; i < occurredTimes; ++i) {
+                res[index++] = curChar;
+            }
+        }
+        return String.copyValueOf(res);
+    }
 }
