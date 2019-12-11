@@ -38,6 +38,101 @@ public class ArrayProblem {
     }
 
     /**
+     * 15. 3Sum
+     * Medium
+     *
+     * 5023
+     *
+     * 610
+     *
+     * Favorite
+     *
+     * Share
+     * Given an array nums of n integers, are there elements a, b, c in nums such that a + b + c = 0?
+     * Find all unique triplets in the array which gives the sum of zero.
+     *
+     * Note:
+     * The solution set must not contain duplicate triplets.
+     */
+    public List<List<Integer>> threeSum(int[] nums) {
+        final List<List<Integer>> res = new ArrayList<>(0);
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length; ) {
+            final int target = nums[i];
+            int left = i + 1;
+            int right = nums.length - 1;
+            while (left < right) {
+                final int leftNum = nums[left];
+                final int rightNum = nums[right];
+                if (target + leftNum == -rightNum) {
+                    res.add(Arrays.asList(target, leftNum, rightNum));
+                    //数组有序时去重 记录当前数  while 数组下标未越界且数字与当前数相等 递增数组
+                    while (left < nums.length && nums[left] == leftNum) {
+                        ++left;
+                    }
+                    while (right >= 0 && nums[right] == rightNum) {
+                        --right;
+                    }
+                } else if (target + leftNum < -rightNum) {
+                    ++left;
+                } else {
+                    --right;
+                }
+            }
+            while (i < nums.length && nums[i] == target) {
+                ++i;
+            }
+        }
+        return res;
+    }
+
+    /**
+     *16. 3Sum Closest
+     * Medium
+     *
+     * 1489
+     *
+     * 109
+     *
+     * Favorite
+     *
+     * Share
+     * Given an array nums of n integers and an integer target,
+     * find three integers in nums such that the sum is closest to target.
+     * Return the sum of the three integers.
+     * You may assume that each input would have exactly one solution.
+     *
+     *
+     * */
+    public int threeSumClosest(int[] nums, int target) {
+        int tolerance = Integer.MAX_VALUE;
+        int res = 0;
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length; ++i) {
+            final int curNum = nums[i];
+            int left = i + 1;
+            int right = nums.length - 1;
+            while (left < right) {
+                final int sum = curNum + nums[left] + nums[right];
+                int difference = Math.abs(target - sum);
+                if (difference == 0) {
+                    return target;
+                }
+                if (tolerance > difference) {
+                    res = sum;
+                    tolerance = difference;
+                }
+                if (sum < target) {
+                    ++left;
+                } else {
+                    --right;
+                }
+            }
+        }
+        return res;
+    }
+
+    /**
      * 125. Valid Palindrome
      *
      * Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
