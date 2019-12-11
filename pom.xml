@@ -21,6 +21,7 @@
     <module>redis_demo</module>
     <module>leetcode</module>
     <module>thread</module>
+    <module>net</module>
   </modules>
 
   <dependencies>
