@@ -133,6 +133,195 @@ public class ArrayProblem {
     }
 
     /**
+     * 18. 4Sum
+     * Medium
+     *
+     * 1395
+     *
+     * 271
+     *
+     * Favorite
+     *
+     * Share
+     * Given an array nums of n integers and an integer target,
+     * are there elements a, b, c, and d in nums such that a + b + c + d = target?
+     * Find all unique quadruplets in the array which gives the sum of target.
+     *
+     * Note:
+     *
+     * The solution set must not contain duplicate quadruplets.
+     */
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        final List<List<Integer>> sets = new ArrayList<>(0);
+        if (nums.length == 0) {
+            return sets;
+        }
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length; ) {
+            final int num1 = nums[i];
+            if (num1 > target) {
+                break;
+            }
+            for (int j = i + 1; j < nums.length; ) {
+                final int num2 = nums[j];
+                if (num1 + num2 > target) {
+                    break;
+                }
+                int left = j + 1;
+                int right = nums.length - 1;
+                while (left < right) {
+                    final int num3 = nums[left];
+                    final int num4 = nums[right];
+                    if (num1 + num2 == target - num3 - num4) {
+                        sets.add(Arrays.asList(num1, num2, num3, num4));
+                        while (left < right && nums[left] == num3) {
+                            ++left;
+                        }
+                        while (right > left && nums[right] == num4) {
+                            --right;
+                        }
+                    } else if (num1 + num2 > target - num3 - num4) {
+                        --right;
+                    } else {
+                        ++left;
+                    }
+                }
+                while (j < nums.length && num2 == nums[j]) {
+                    ++j;
+                }
+            }
+            while (i < nums.length && num1 == nums[i]) {
+                ++i;
+            }
+        }
+        return sets;
+    }
+
+    /**
+     * 454. 4Sum II
+     * Medium
+     *
+     * 861
+     *
+     * 62
+     *
+     * Favorite
+     *
+     * Share
+     * Given four lists A, B, C, D of integer values,
+     * compute how many tuples (i, j, k, l) there are such that A[i] + B[j] + C[k] + D[l] is zero.
+     *
+     * To make problem a bit easier, all A, B, C, D have same length of N where 0 ≤ N ≤ 500.
+     * All integers are in the range of -2^28 to 2^28 - 1 and the result is guaranteed to be at most 2^31 - 1.
+     */
+    public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
+        final Map<Integer, Integer> map = new HashMap<>(0);
+        for (final int numA : A) {
+            for (final int numB : B) {
+                final int sum = numA + numB;
+                final int cnt = map.getOrDefault(sum, 0);
+                map.put(sum, cnt + 1);
+            }
+        }
+        int res = 0;
+        for (final int numC : C) {
+            for (final int numD : D) {
+                final int target = -(numC + numD);
+                res += map.getOrDefault(target, 0);
+            }
+        }
+        return res;
+    }
+
+    /**
+     * 49. Group Anagrams
+     * Medium
+     *
+     * 2296
+     *
+     * 138
+     *
+     * Favorite
+     *
+     * Share
+     * Given an array of strings, group anagrams together.
+     *
+     * Example:
+     *
+     * Input: ["eat", "tea", "tan", "ate", "nat", "bat"],
+     * Output:
+     * [
+     *   ["ate","eat","tea"],
+     *   ["nat","tan"],
+     *   ["bat"]
+     * ]
+     * Note:
+     *
+     * All inputs will be in lowercase.
+     * The order of your output does not matter.
+     */
+    public List<List<String>> groupAnagrams(String[] strs) {
+        final Map<String, List<String>> map = new HashMap<>(0);
+        final List<List<String>> res = new ArrayList<>(0);
+        for (final String str : strs) {
+            final char[] freq = new char[26];
+            for (int i = 0; i < str.length(); ++i) {
+                freq[str.charAt(i) - 'a']++;
+            }
+            final String key = String.valueOf(freq);
+            if (!map.containsKey(key)) {
+                final List<String> anagrams = new ArrayList<>(0);
+                map.put(key, anagrams);
+                res.add(anagrams);
+            }
+            map.get(key).add(str);
+        }
+        return res;
+    }
+
+    /**
+     * 17. Letter Combinations of a Phone Number
+     * Medium
+     *
+     * 2854
+     *
+     * 351
+     *
+     * Favorite
+     *
+     * Share
+     * Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent.
+     *
+     * A mapping of digit to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
+     *
+     *
+     *
+     * Example:
+     *
+     * Input: "23"
+     * Output: ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
+     */
+    public List<String> letterCombinations(String digits) {
+        final String[] mapping = new String[]
+                {"0", "1", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        final LinkedList<String> queue = new LinkedList<>();
+        queue.offer("");
+        int curLength = 0;
+        for (int i = 0; i < digits.length(); ++i) {
+            final String chars = mapping[Character.getNumericValue(digits.charAt(i))];
+            while (queue.peek().length() == curLength) {
+                final String peek = queue.peek();
+                queue.poll();
+                for (int j = 0; j < chars.length(); ++j) {
+                    queue.offer(peek + chars.charAt(j));
+                }
+            }
+            ++curLength;
+        }
+        return curLength == 0 ? new LinkedList<>() : queue;
+    }
+
+    /**
      * 125. Valid Palindrome
      *
      * Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
