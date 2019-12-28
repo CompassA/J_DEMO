@@ -241,4 +241,186 @@ public class MapAndSet {
         }
         return String.copyValueOf(res);
     }
+
+    /**
+     * 447. Number of Boomerangs
+     * Easy
+     *
+     * 336
+     *
+     * 536
+     *
+     * Favorite
+     *
+     * Share
+     * Given n points in the plane that are all pairwise distinct,
+     * a "boomerang" is a tuple of points (i, j, k) such that the distance
+     * between i and j equals the distance between i and k (the order of the tuple matters).
+     *
+     * Find the number of boomerangs. You may assume that n will be at most 500 and
+     * coordinates of points are all in the range [-10000, 10000] (inclusive).
+     *
+     * Example:
+     *
+     * Input:
+     * [[0,0],[1,0],[2,0]]
+     *
+     * Output:
+     * 2
+     *
+     * Explanation:
+     * The two boomerangs are [[1,0],[0,0],[2,0]] and [[1,0],[2,0],[0,0]]
+     */
+    public int numberOfBoomerangs(int[][] points) {
+        int res = 0;
+        for (int i = 0; i < points.length; ++i) {
+            final int[] pointA = points[i];
+            final Map<Integer, Integer> map = new HashMap<>(0);
+            for (int j = 0; j < points.length; ++j) {
+                if (i != j) {
+                    final int[] pointB = points[j];
+                    final int differenceX = pointA[0] - pointB[0];
+                    final int differenceY = pointA[1] - pointB[1];
+                    final int dis = differenceX * differenceX + differenceY * differenceY;
+                    final int curCnt = map.getOrDefault(dis, 0);
+                    res += curCnt * 2;
+                    map.put(dis, curCnt + 1);
+                }
+            }
+        }
+        return res;
+    }
+
+    /**
+     * 149. Max Points on a Line
+     * Hard
+     *
+     * 638
+     *
+     * 1618
+     *
+     * Favorite
+     *
+     * Share
+     * Given n points on a 2D plane, find the maximum number of points that lie on the same straight line.
+     *
+     * Example 1:
+     *
+     * Input: [[1,1],[2,2],[3,3]]
+     * Output: 3
+     * Explanation:
+     * ^
+     * |
+     * |        o
+     * |     o
+     * |  o
+     * +------------->
+     * 0  1  2  3  4
+     * Example 2:
+     *
+     * Input: [[1,1],[3,2],[5,3],[4,1],[2,3],[1,4]]
+     * Output: 4
+     * Explanation:
+     * ^
+     * |
+     * |  o
+     * |     o        o
+     * |        o
+     * |  o        o
+     * +------------------->
+     * 0  1  2  3  4  5  6
+     */
+    public int maxPoints(int[][] points) {
+        if (points.length == 0) {
+            return 0;
+        }
+        int res = 0;
+        for (int i = 0; i < points.length; ++i) {
+            int[] pointA = points[i];
+            Map<Fraction, Integer> cnt = new HashMap<>(0);
+            int overlap = 0;
+            int max = 0;
+            for (int j = i + 1; j < points.length; ++j) {
+                int[] pointB = points[j];
+                int deltaX = pointA[0] - pointB[0];
+                int deltaY = pointA[1] - pointB[1];
+                if (deltaX == 0 && deltaY == 0) {
+                    overlap++;
+                } else {
+                    Fraction fraction = Fraction.fractionFactory(deltaX, deltaY);
+                    int theFractionCnt = cnt.getOrDefault(fraction, 0) + 1;
+                    if (theFractionCnt > max) {
+                        max = theFractionCnt;
+                    }
+                    cnt.put(fraction, theFractionCnt);
+                }
+            }
+            max += overlap + 1;
+            if (max > res) {
+                res = max;
+            }
+        }
+        return res;
+    }
+
+    private static class Fraction {
+        private int numerator;
+        private int denominator;
+
+        /** vertical */
+        private static Fraction SPECIAL_SLOPE = new Fraction(0, 0);
+
+        private int gcd(int a, int b) {
+            while (b != 0) {
+                int mod = a % b;
+                a = b;
+                b = mod;
+            }
+            return a;
+        }
+
+        private Fraction(int numerator, int denominator) {
+            if (denominator < 0) {
+                numerator = -numerator;
+                denominator = -denominator;
+            }
+            if (numerator == 0) {
+                denominator = 1;
+            } else {
+                int theGcd = this.gcd(numerator, denominator);
+                numerator /= theGcd;
+                denominator /= theGcd;
+            }
+
+            this.numerator = numerator;
+            this.denominator = denominator;
+        }
+
+        public static Fraction fractionFactory(int numerator, int denominator) {
+            if (denominator == 0) {
+                return SPECIAL_SLOPE;
+            }
+            return new Fraction(numerator, denominator);
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            if (other == this) {
+                return true;
+            }
+            if (!(other instanceof Fraction)) {
+                return false;
+            }
+            Fraction otherFraction = (Fraction) other;
+            return this.numerator == otherFraction.numerator &&
+                    this.denominator == otherFraction.denominator;
+        }
+
+        @Override
+        public int hashCode() {
+            return Integer.hashCode(this.numerator) * 31
+                    + Integer.hashCode(this.denominator);
+        }
+    }
+
 }
