@@ -1,4 +1,4 @@
-package com.study.leetcode;
+package com.study.leetcode.mapandset;
 
 import java.util.*;
 import java.util.stream.Collectors;
