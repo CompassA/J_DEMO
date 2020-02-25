@@ -46,8 +46,7 @@ public class SlidingWindowMaximum {
         final List<Integer> res = new ArrayList<>();
         for (int i = 0; i < nums.length; ++i) {
             //exclude numbers outside the left border
-            final int leftBorder = i - k + 1;
-            while (!possibleMaxNums.isEmpty() && possibleMaxNums.peekFirst() < leftBorder) {
+            if (!possibleMaxNums.isEmpty() && possibleMaxNums.peekFirst() < i - k + 1) {
                 possibleMaxNums.pollFirst();
             }
 
