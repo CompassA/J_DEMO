@@ -8,6 +8,8 @@ public class MyList<E> {
 
     private static final int DEFAULT_SIZE = 24;
 
+    private static final double RATIO = 1.5;
+
     private E[] elements;
 
     private int size;
@@ -81,16 +83,17 @@ public class MyList<E> {
     }
 
     private void shrink() {
-        final int halfLength = elements.length >> 1;
-        if (halfLength >= Math.max(size, DEFAULT_SIZE)) {
-            resize(halfLength);
+        final int newSize = (int) Math.round(elements.length / 1.5);
+        final int threshold = elements.length / 3;
+        if (size <= threshold && newSize >= DEFAULT_SIZE) {
+            resize(newSize);
         }
     }
 
     private void ensureCapacity(final int targetCapacity) {
         //grow factor = 1.5
         if (elements.length < targetCapacity) {
-            resize(elements.length + (elements.length >> 1));
+            resize((int) Math.round(elements.length * RATIO));
         }
     }
 
