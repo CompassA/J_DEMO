@@ -23,6 +23,11 @@ public class MyList<E> {
         size = 0;
     }
 
+    public E get(final int index) {
+        rangeCheck(index);
+        return elements[index];
+    }
+
     public void add(final E element) {
         ensureCapacity(size + 1);
         elements[size++] = element;
