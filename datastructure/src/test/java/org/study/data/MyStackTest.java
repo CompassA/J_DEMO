@@ -3,9 +3,6 @@ package org.study.data;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-
 /**
  * @author fanqie
  * @date 2020/3/7
