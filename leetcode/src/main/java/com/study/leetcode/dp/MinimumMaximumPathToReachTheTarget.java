@@ -1,6 +1,7 @@
 package com.study.leetcode.dp;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author fanqie
@@ -331,4 +332,71 @@ public class MinimumMaximumPathToReachTheTarget {
         }
         return Arrays.stream(A[A.length-1]).min().getAsInt();
     }
+
+    /**
+     * 120. Triangle
+     * Medium
+     *
+     * 1637
+     *
+     * 197
+     *
+     * Add to List
+     *
+     * Share
+     * Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numbers on the row below.
+     *
+     * For example, given the following triangle
+     *
+     * [
+     *      [2],
+     *     [3,4],
+     *    [6,5,7],
+     *   [4,1,8,3]
+     * ]
+     * The minimum path sum from top to bottom is 11 (i.e., 2 + 3 + 5 + 1 = 11).
+     *
+     * Note:
+     *
+     * Bonus point if you are able to do this using only O(n) extra space, where n is the total number of rows in the triangle.
+     */
+    public int minimumTotal(List<List<Integer>> triangle) {
+        int row;
+        if ((row = triangle.size()) == 0) {
+            return 0;
+        }
+        int col = row;
+        int[] state = new int[col + 1];
+        for (int i = row - 1; i >= 0; --i) {
+            for (int j = 0; j <= i; ++j) {
+                state[j] = Math.min(state[j], state[j+1]) + triangle.get(i).get(j);
+            }
+        }
+        return state[0];
+    }
+//    public int minimumTotal(List<List<Integer>> triangle) {
+//        int row;
+//        if ((row = triangle.size()) == 0 || triangle.get(0).size() == 0) {
+//            return 0;
+//        }
+//        int col = row;
+//        int[] state = new int[col];
+//        state[0] = triangle.get(0).get(0);
+//        for (int i = 1; i < row; ++i) {
+//            int right = state[i-1] + triangle.get(i).get(i);
+//            for (int j = i-1; j > 0; --j) {
+//                state[j] = Math.min(state[j], state[j-1]) + triangle.get(i).get(j);
+//            }
+//            state[i] = right;
+//            state[0] += triangle.get(i).get(0);
+//        }
+//
+//        int min = state[0];
+//        for (int i = 1; i < col; ++i) {
+//            if (min > state[i]) {
+//                min = state[i];
+//            }
+//        }
+//        return min;
+//    }
 }
