@@ -134,4 +134,65 @@ public class DecisionMaking {
 
         return Math.max(s1, s3);
     }
+
+    /**
+     * 123. Best Time to Buy and Sell Stock III
+     * Hard
+     *
+     * 1713
+     *
+     * 69
+     *
+     * Add to List
+     *
+     * Share
+     * Say you have an array for which the ith element is the price of a given stock on day i.
+     *
+     * Design an algorithm to find the maximum profit. You may complete at most two transactions.
+     *
+     * Note: You may not engage in multiple transactions at the same time (i.e., you must sell the stock before you buy again).
+     *
+     * Example 1:
+     *
+     * Input: [3,3,5,0,0,3,1,4]
+     * Output: 6
+     * Explanation: Buy on day 4 (price = 0) and sell on day 6 (price = 3), profit = 3-0 = 3.
+     *              Then buy on day 7 (price = 1) and sell on day 8 (price = 4), profit = 4-1 = 3.
+     * Example 2:
+     *
+     * Input: [1,2,3,4,5]
+     * Output: 4
+     * Explanation: Buy on day 1 (price = 1) and sell on day 5 (price = 5), profit = 5-1 = 4.
+     *              Note that you cannot buy on day 1, buy on day 2 and sell them later, as you are
+     *              engaging multiple transactions at the same time. You must sell before buying again.
+     * Example 3:
+     *
+     * Input: [7,6,4,3,1]
+     * Output: 0
+     * Explanation: In this case, no transaction is done, i.e. max profit = 0.
+     */
+    public int maxProfit3(int[] prices) {
+        if (prices.length == 0) {
+            return 0;
+        }
+        //toBuy -> toSell -> toBuy -> toSell -> end
+        int s1 = 0;
+        int s2 = -prices[0];
+        int s3 = 0;
+        int s4 = Integer.MIN_VALUE;
+        int s5 = Integer.MIN_VALUE;
+
+        for (int i = 1; i < prices.length; ++i) {
+            int newS2 = Math.max(s2, s1 - prices[i]);
+            int newS3 = Math.max(s2 + prices[i], s3);
+            int newS4 = Math.max(s4, s3 - prices[i]);
+            int newS5 = Math.max(s5, s4 + prices[i]);
+            s2 = newS2;
+            s3 = newS3;
+            s4 = newS4;
+            s5 = newS5;
+        }
+
+        return Math.max(s3, s5);
+    }
 }
