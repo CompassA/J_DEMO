@@ -23,6 +23,7 @@
     <module>thread</module>
     <module>net</module>
     <module>datastructure</module>
+    <module>spring_demo</module>
   </modules>
 
   <dependencies>
