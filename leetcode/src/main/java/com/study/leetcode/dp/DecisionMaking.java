@@ -195,4 +195,60 @@ public class DecisionMaking {
 
         return Math.max(s3, s5);
     }
+
+
+    /**
+     * 152. Maximum Product Subarray
+     * Medium
+     *
+     * 3363
+     *
+     * 140
+     *
+     * Add to List
+     *
+     * Share
+     * Given an integer array nums, find the contiguous subarray within an array (containing at least one number) which has the largest product.
+     *
+     * Example 1:
+     *
+     * Input: [2,3,-2,4]
+     * Output: 6
+     * Explanation: [2,3] has the largest product 6.
+     * Example 2:
+     *
+     * Input: [-2,0,-1]
+     * Output: 0
+     * Explanation: The result cannot be 2, because [-2,-1] is not a subarray.
+     */
+    public int maxProduct(int[] nums) {
+        if (nums.length < 1) {
+            return 0;
+        }
+
+        int res = nums[0];
+        int curMin = res;
+        int curMax = res;
+
+        for (int i = 1; i < nums.length; ++i) {
+            int num = nums[i];
+            int maxNextState = curMax * num;
+            int minNextState = curMin * num;
+            if (num == 0) {
+                curMin = curMax = 0;
+            } else if (num > 0) {
+                curMin = Math.min(minNextState, num);
+                curMax = Math.max(maxNextState, num);
+            } else {
+                curMin = Math.min(maxNextState, num);
+                curMax = Math.max(minNextState, num);
+            }
+
+            if (curMax > res) {
+                res = curMax;
+            }
+        }
+
+        return res;
+    }
 }
