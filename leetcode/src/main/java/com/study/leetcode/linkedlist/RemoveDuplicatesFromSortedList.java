@@ -73,4 +73,23 @@ public class RemoveDuplicatesFromSortedList {
      * Input: 1->1->2->3->3
      * Output: 1->2->3
      */
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+
+        ListNode tail = head;
+        ListNode newHead = head;
+        head = head.next;
+
+        while (head != null) {
+            if (tail.val != head.val) {
+                tail.next = head;
+                tail = tail.next;
+            }
+            head = head.next;
+        }
+        tail.next = null;
+        return newHead;
+    }
 }
