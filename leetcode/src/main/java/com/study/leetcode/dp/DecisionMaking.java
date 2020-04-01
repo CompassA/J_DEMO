@@ -199,6 +199,28 @@ public class DecisionMaking {
         return Math.max(s3, s5);
     }
 
+    public int maxProfit3Other(int[] prices) {
+        if (prices.length == 0) {
+            return 0;
+        }
+        //toBuy -> toSell -> toBuy -> toSell -> end
+        int[][] state = new int[prices.length][5];
+        state[0][1] = -prices[0];
+
+        for (int i = 1; i < prices.length; ++i) {
+            int ratio = -1;
+            for (int j = 1; j < i + 1 && j < 5; ++j) {
+                state[i][j] = Math.max(state[i-1][j], state[i-1][j-1] + prices[i] * ratio);
+                ratio = -ratio;
+            }
+            if (i + 1 < 5) {
+                state[i][i+1] = state[i-1][i] + prices[i] * ratio;
+            }
+        }
+        int res = Math.max(state[prices.length-1][2], state[prices.length-1][4]);
+        return Math.max(res, 0);
+    }
+
     /**
      * 188. Best Time to Buy and Sell Stock IV
      * Hard
