@@ -287,6 +287,50 @@ public class MinimumMaximumPathToReachTheTarget {
     }
 
     /**
+     * 279. Perfect Squares
+     * Medium
+     *
+     * 2256
+     *
+     * 171
+     *
+     * Add to List
+     *
+     * Share
+     * Given a positive integer n, find the least number of perfect square numbers (for example, 1, 4, 9, 16, ...) which sum to n.
+     *
+     * Example 1:
+     *
+     * Input: n = 12
+     * Output: 3
+     * Explanation: 12 = 4 + 4 + 4.
+     * Example 2:
+     *
+     * Input: n = 13
+     * Output: 2
+     * Explanation: 13 = 4 + 9.
+     */
+    public int numSquares(int n) {
+        int[] nums = new int[n+1];
+        int index = 0;
+        while (index < nums.length && nums[index] < n) {
+            nums[index] = index * index;
+            ++index;
+        }
+
+        int[] dp = new int[n+1];
+        Arrays.fill(dp, Integer.MAX_VALUE - 1);
+        dp[0] = 0;
+        for (int i = 1; i < index; ++i) {
+            for (int j = nums[i]; j <= n; ++j) {
+                dp[j] = Math.min(dp[j], dp[j - nums[i]] + 1);
+            }
+        }
+
+        return dp[n];
+    }
+
+    /**
      * 931. Minimum Falling Path Sum
      * Medium
      *
@@ -374,29 +418,90 @@ public class MinimumMaximumPathToReachTheTarget {
         }
         return state[0];
     }
-//    public int minimumTotal(List<List<Integer>> triangle) {
-//        int row;
-//        if ((row = triangle.size()) == 0 || triangle.get(0).size() == 0) {
-//            return 0;
-//        }
-//        int col = row;
-//        int[] state = new int[col];
-//        state[0] = triangle.get(0).get(0);
-//        for (int i = 1; i < row; ++i) {
-//            int right = state[i-1] + triangle.get(i).get(i);
-//            for (int j = i-1; j > 0; --j) {
-//                state[j] = Math.min(state[j], state[j-1]) + triangle.get(i).get(j);
-//            }
-//            state[i] = right;
-//            state[0] += triangle.get(i).get(0);
-//        }
-//
-//        int min = state[0];
-//        for (int i = 1; i < col; ++i) {
-//            if (min > state[i]) {
-//                min = state[i];
-//            }
-//        }
-//        return min;
-//    }
+
+    public int minimumTotalOther(List<List<Integer>> triangle) {
+        int row;
+        if ((row = triangle.size()) == 0 || triangle.get(0).size() == 0) {
+            return 0;
+        }
+        int col = row;
+        int[] state = new int[col];
+        state[0] = triangle.get(0).get(0);
+        for (int i = 1; i < row; ++i) {
+            int right = state[i-1] + triangle.get(i).get(i);
+            for (int j = i-1; j > 0; --j) {
+                state[j] = Math.min(state[j], state[j-1]) + triangle.get(i).get(j);
+            }
+            state[i] = right;
+            state[0] += triangle.get(i).get(0);
+        }
+
+        int min = state[0];
+        for (int i = 1; i < col; ++i) {
+            if (min > state[i]) {
+                min = state[i];
+            }
+        }
+        return min;
+    }
+
+    /**
+     * 221. Maximal Square
+     * Medium
+     *
+     * 2294
+     *
+     * 58
+     *
+     * Add to List
+     *
+     * Share
+     * Given a 2D binary matrix filled with 0's and 1's, find the largest square containing only 1's and return its area.
+     *
+     * Example:
+     *
+     * Input:
+     *
+     * 1 0 1 0 0
+     * 1 0 1 1 1
+     * 1 1 1 1 1
+     * 1 0 0 1 0
+     *
+     * Output: 4
+     */
+    public int maximalSquare(char[][] matrix) {
+        if (matrix.length == 0 || matrix[0].length == 0) {
+            return 0;
+        }
+        int row = matrix.length;
+        int col = matrix[0].length;
+
+        int res = 0;
+        int[][] dp = new int[row][col];
+        for (int i = 0; i < row; ++i) {
+            if (matrix[i][0] == '1') {
+                dp[i][0] = 1;
+                res = 1;
+            }
+        }
+        for (int i = 0; i < col; ++i) {
+            if (matrix[0][i] == '1') {
+                dp[0][i] = 1;
+                res = 1;
+            }
+        }
+        for (int i = 1; i < row; ++i) {
+            for (int j = 1; j < col; ++j) {
+                if (matrix[i][j] == '0') {
+                    dp[i][j] = 0;
+                } else {
+                    dp[i][j] = Math.min(Math.min(dp[i-1][j], dp[i][j-1]), dp[i-1][j-1]) + 1;
+                    if (res < dp[i][j]) {
+                        res = dp[i][j];
+                    }
+                }
+            }
+        }
+        return res * res;
+    }
 }
