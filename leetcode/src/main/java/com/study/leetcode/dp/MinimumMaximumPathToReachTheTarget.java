@@ -504,4 +504,105 @@ public class MinimumMaximumPathToReachTheTarget {
         }
         return res * res;
     }
+
+    /**
+     * 300. Longest Increasing Subsequence
+     * Medium
+     *
+     * 3884
+     *
+     * 89
+     *
+     * Add to List
+     *
+     * Share
+     * Given an unsorted array of integers, find the length of longest increasing subsequence.
+     *
+     * Example:
+     *
+     * Input: [10,9,2,5,3,7,101,18]
+     * Output: 4
+     * Explanation: The longest increasing subsequence is [2,3,7,101], therefore the length is 4.
+     * Note:
+     *
+     * There may be more than one LIS combination, it is only necessary for you to return the length.
+     * Your algorithm should run in O(n2) complexity.
+     * Follow up: Could you improve it to O(n log n) time complexity?
+     */
+    public int lengthOfLIS(int[] nums) {
+        if (nums.length == 0) {
+            return 0;
+        }
+        int[] dp = new int[nums.length];
+        dp[0] = 1;
+        int res = 1;
+        for (int i = 1; i < nums.length; ++i) {
+            int max = 1;
+            for (int j = i - 1; j >= 0; --j) {
+                if (nums[j] < nums[i] && max < (dp[j] + 1)) {
+                    max = dp[j] + 1;
+                }
+            }
+            dp[i] = max;
+            if (res < max) {
+                res = max;
+            }
+        }
+        return res;
+    }
+
+    /**
+     * 416. Partition Equal Subset Sum
+     * Medium
+     *
+     * 2045
+     *
+     * 59
+     *
+     * Add to List
+     *
+     * Share
+     * Given a non-empty array containing only positive integers, find if the array can be partitioned into two subsets such that the sum of elements in both subsets is equal.
+     *
+     * Note:
+     *
+     * Each of the array element will not exceed 100.
+     * The array size will not exceed 200.
+     *
+     *
+     * Example 1:
+     *
+     * Input: [1, 5, 11, 5]
+     *
+     * Output: true
+     *
+     * Explanation: The array can be partitioned as [1, 5, 5] and [11].
+     *
+     *
+     * Example 2:
+     *
+     * Input: [1, 2, 3, 5]
+     *
+     * Output: false
+     *
+     * Explanation: The array cannot be partitioned into equal sum subsets.
+     */
+    public boolean canPartition(int[] nums) {
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+        }
+        if (sum % 2 == 1) {
+            return false;
+        }
+        int target = sum / 2;
+        boolean[] dp = new boolean[target+1];
+        dp[0] = true;
+        for (int num : nums) {
+            for (int j = target; j >= num; --j) {
+                dp[j] = dp[j] || dp[j-num];
+            }
+        }
+        return dp[target];
+    }
 }
