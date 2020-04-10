@@ -8,6 +8,7 @@ import java.util.concurrent.CountDownLatch;
  */
 public class Connection2 {
 
+    /** 使用volatile, 保证对象初始化操作先于分配地址操作*/
     private volatile static Connection2 INSTANCE = null;
 
     public static Connection2 getInstance() {

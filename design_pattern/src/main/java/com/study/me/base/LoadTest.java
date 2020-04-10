@@ -1,6 +1,9 @@
 package com.study.me.base;
 
 /**
+ * -verbose: class
+ * -XX: +TraceClassLoading
+ * -XX: +TraceClassUnloading
  * 类初始化时机测试
  * @author fanqie
  * @date 2020/4/6
