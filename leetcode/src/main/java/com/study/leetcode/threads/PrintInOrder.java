@@ -1,5 +1,7 @@
 package com.study.leetcode.threads;
 
+import java.util.concurrent.Semaphore;
+
 /**
  * Suppose we have a class:
  *
@@ -65,6 +67,37 @@ public class PrintInOrder {
             printThird.run();
             state = 1;
             notifyAll();
+        }
+    }
+
+    class Solution2 {
+
+        private final Semaphore print2;
+        private final Semaphore print3;
+
+        public Solution2() {
+            print2 = new Semaphore(0);
+            print3 = new Semaphore(0);
+        }
+
+        public void first(Runnable printFirst) throws InterruptedException {
+
+            // printFirst.run() outputs "first". Do not change or remove this line.
+            printFirst.run();
+            print2.release();
+        }
+
+        public void second(Runnable printSecond) throws InterruptedException {
+            print2.acquire();
+            // printSecond.run() outputs "second". Do not change or remove this line.
+            printSecond.run();
+            print3.release();
+        }
+
+        public void third(Runnable printThird) throws InterruptedException {
+            print3.acquire();
+            // printThird.run() outputs "third". Do not change or remove this line.
+            printThird.run();
         }
     }
 }
