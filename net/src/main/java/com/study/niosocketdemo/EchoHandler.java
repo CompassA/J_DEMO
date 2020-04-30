@@ -17,7 +17,7 @@ public class EchoHandler implements Runnable {
     private final SocketChannel socketChannel;
     private final SelectionKey key;
     private State state;
-    final ByteBuffer buffer;
+    private final ByteBuffer buffer;
 
     public EchoHandler(final Selector selector, final SocketChannel socketChannel)
             throws IOException {
@@ -32,14 +32,13 @@ public class EchoHandler implements Runnable {
     @Override
     public void run() {
         switch (state) {
-            case WAIT_READ:
-                handleRead();
-                break;
-            case WAIT_WRITE:
-                handleWrite();
-                break;
-            default:
-
+        case WAIT_READ:
+            handleRead();
+            break;
+        case WAIT_WRITE:
+            handleWrite();
+            break;
+        default:
         }
     }
 
