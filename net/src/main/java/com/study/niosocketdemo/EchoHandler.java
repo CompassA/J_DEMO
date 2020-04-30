@@ -16,8 +16,8 @@ public class EchoHandler implements Runnable {
 
     private final SocketChannel socketChannel;
     private final SelectionKey key;
-    private State state;
     private final ByteBuffer buffer;
+    private State state;
 
     public EchoHandler(final Selector selector, final SocketChannel socketChannel)
             throws IOException {
