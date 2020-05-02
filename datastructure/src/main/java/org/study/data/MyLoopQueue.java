@@ -6,7 +6,7 @@ package org.study.data;
  */
 public class MyLoopQueue<E> {
 
-    private static int MIN_SIZE = 10;
+    private static final int MIN_SIZE = 10;
     private E[] elements;
     private int front;
     private int tail;
@@ -16,7 +16,7 @@ public class MyLoopQueue<E> {
         this(MIN_SIZE);
     }
 
-    public MyLoopQueue(int capacity) {
+    public MyLoopQueue(final int capacity) {
         this.elements = (E[]) new Object[capacity + 1];
         size = front = tail = 0;
     }
@@ -37,7 +37,7 @@ public class MyLoopQueue<E> {
         return size;
     }
 
-    public void offer(E element) {
+    public void offer(final E element) {
         //ensure capacity
         if (isFull()) {
             resize(getCapacity() * 2);
@@ -54,7 +54,7 @@ public class MyLoopQueue<E> {
             return null;
         }
         //dequeue
-        E polledOne = elements[front];
+        final E polledOne = elements[front];
         elements[front] = null;
         front = (front + 1) % elements.length;
         --size;
@@ -67,8 +67,8 @@ public class MyLoopQueue<E> {
         return polledOne;
     }
 
-    private void resize(int newCapacity) {
-        E[] newArray = (E[]) new Object[newCapacity + 1];
+    private void resize(final int newCapacity) {
+        final E[] newArray = (E[]) new Object[newCapacity + 1];
         for (int i = 0; i < size; ++i) {
             newArray[i] = elements[(front + i) % elements.length];
         }
@@ -79,7 +79,7 @@ public class MyLoopQueue<E> {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder(
+        final StringBuilder builder = new StringBuilder(
                 String.format("capacity:%d front [", elements.length - 1));
         for (int i = front; i != tail; i = (i + 1) % elements.length) {
             builder.append(String.format("%s%s",
