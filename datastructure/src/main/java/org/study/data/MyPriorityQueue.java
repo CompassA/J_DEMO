@@ -9,7 +9,15 @@ import java.util.List;
  */
 public class MyPriorityQueue<E extends Comparable<E>> {
 
-    private final MaxHeap<E> innerMaxHeap = new MaxHeap<>();
+    private final MaxHeap<E> innerMaxHeap;
+
+    public MyPriorityQueue() {
+        innerMaxHeap = new MaxHeap<>();
+    }
+
+    public MyPriorityQueue(final List<E> list) {
+        innerMaxHeap = new MaxHeap<>(list);
+    }
 
     public void offer(final E elem) {
         innerMaxHeap.add(elem);
@@ -25,7 +33,16 @@ public class MyPriorityQueue<E extends Comparable<E>> {
 
     private static class MaxHeap<E extends Comparable<E>> {
 
-        private final List<E> list = new ArrayList<>();
+        private final List<E> list;
+
+        public MaxHeap() {
+            list = new ArrayList<>();
+        }
+
+        public MaxHeap(final List<E> list) {
+            this.list = new ArrayList<>(list);
+            this.heapfy(this.list);
+        }
 
         public void add(final E elem) {
             list.add(elem);
@@ -68,6 +85,12 @@ public class MyPriorityQueue<E extends Comparable<E>> {
             }
         }
 
+        private void heapfy(final List<E> list) {
+            for (int i = getParentIndex(list.size() - 1); i >= 0; --i) {
+                siftDown(i);
+            }
+        }
+
         private int getMaxIndex(final int index) {
             int maxIndex = index;
             E maxElem = list.get(index);
@@ -86,7 +109,6 @@ public class MyPriorityQueue<E extends Comparable<E>> {
             }
             if (list.get(rightIndex).compareTo(maxElem) > 0) {
                 maxIndex = rightIndex;
-                maxElem = list.get(rightIndex);
             }
             return maxIndex;
         }

@@ -2,6 +2,8 @@ package org.study.data;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -31,6 +33,20 @@ public class MyPriorityQueueTest {
             queue.offer(new Person(UUID.randomUUID().toString(), random.nextInt(100)));
         }
 
+        while (!queue.isEmpty()) {
+            System.out.println(queue.poll());
+        }
+    }
+
+    @Test
+    public void heapfyTest() {
+        final List<Person> list = new ArrayList<>();
+        final Random random = new Random();
+        for (int i = 0; i < 100; ++i) {
+            list.add(new Person(UUID.randomUUID().toString(), random.nextInt(100)));
+        }
+
+        final MyPriorityQueue<Person> queue = new MyPriorityQueue<>(list);
         while (!queue.isEmpty()) {
             System.out.println(queue.poll());
         }
