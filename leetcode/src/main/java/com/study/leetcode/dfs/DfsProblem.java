@@ -77,4 +77,85 @@ public class DfsProblem {
             dfs(index+1, weight, path);
         }
     }
+
+    /**
+     * 79. Word Search
+     * Medium
+     *
+     * 3239
+     *
+     * 160
+     *
+     * Add to List
+     *
+     * Share
+     * Given a 2D board and a word, find if the word exists in the grid.
+     *
+     * The word can be constructed from letters of sequentially adjacent cell, where "adjacent" cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once.
+     *
+     * Example:
+     *
+     * board =
+     * [
+     *   ['A','B','C','E'],
+     *   ['S','F','C','S'],
+     *   ['A','D','E','E']
+     * ]
+     *
+     * Given word = "ABCCED", return true.
+     * Given word = "SEE", return true.
+     * Given word = "ABCB", return false.
+     *
+     *
+     * Constraints:
+     *
+     * board and word consists only of lowercase and uppercase English letters.
+     * 1 <= board.length <= 200
+     * 1 <= board[i].length <= 200
+     * 1 <= word.length <= 10^3
+     */
+    private static class Solution79 {
+        private char[][] g;
+        private char[] chars;
+        private boolean[][] visited;
+
+        public boolean exist(char[][] board, String word) {
+            g = board;
+            chars = word.toCharArray();
+            visited = new boolean[board.length][board[0].length];
+            for (int i = 0; i < board.length; ++i) {
+                for (int j = 0; j < board[0].length; ++j) {
+                    if (exist(i, j, 0)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private boolean exist(int row, int col, int index) {
+            visited[row][col] = true;
+            if (chars[index] != g[row][col]) {
+                visited[row][col] = false;
+                return false;
+            }
+            if (index + 1 == chars.length) {
+                return true;
+            }
+            if (row+1 < g.length && !visited[row+1][col] && exist(row+1, col, index+1)) {
+                return true;
+            }
+            if (row - 1 >= 0 && !visited[row-1][col] && exist(row-1, col, index+1)) {
+                return true;
+            }
+            if (col + 1 < g[0].length && !visited[row][col+1] && exist(row, col + 1, index+1)) {
+                return true;
+            }
+            if (col - 1 >= 0 && !visited[row][col-1] && exist(row, col - 1, index+1)) {
+                return true;
+            }
+            visited[row][col] = false;
+            return false;
+        }
+    }
 }
