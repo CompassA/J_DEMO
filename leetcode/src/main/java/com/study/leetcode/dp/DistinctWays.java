@@ -275,4 +275,57 @@ public class DistinctWays {
         }
         return dp[nums.length][S + offset];
     }
+
+    /**
+     * 1444 切披萨
+     */
+    private static class Solution1444 {
+        int row;
+        int col;
+        int[][] preSum;
+        Integer[][][] dp;
+        public int ways(String[] pizza, int k) {
+            if (pizza.length == 0) {
+                return 0;
+            }
+            row = pizza.length;
+            col = pizza[0].length();
+            preSum = new int[row+1][col+1];
+            for (int i = row - 1; i >=0 ; --i) {
+                for (int j = col - 1; j >= 0; --j) {
+                    preSum[i][j] = preSum[i+1][j] + preSum[i][j+1] - preSum[i+1][j+1];
+                    if (pizza[i].charAt(j) == 'A') {
+                        preSum[i][j] += 1;
+                    }
+                }
+            }
+            dp = new Integer[k][pizza.length][pizza[0].length()];
+            return dfs(k-1, 0, 0);
+        }
+
+        private int dfs(int k, int x, int y) {
+            if (preSum[x][y] == 0) {
+                return 0;
+            }
+            if (k == 0) {
+                return 1;
+            }
+            if (dp[k][x][y] != null) {
+                return dp[k][x][y];
+            }
+            int res = 0;
+            for (int i = x + 1; i < row; ++i) {
+                if (preSum[x][y] - preSum[i][y] > 0) {
+                    res = (res + dfs(k-1, i, y)) % 1000000007;
+                }
+            }
+            for (int i = y + 1; i < col; ++i) {
+                if (preSum[x][y] - preSum[x][i] > 0) {
+                    res = (res + dfs(k-1, x, i)) % 1000000007;
+                }
+            }
+            dp[k][x][y] = res;
+            return res;
+        }
+    }
 }
