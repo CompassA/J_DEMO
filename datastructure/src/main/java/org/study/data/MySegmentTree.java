@@ -1,7 +1,5 @@
 package org.study.data;
 
-import javax.management.RuntimeErrorException;
-
 /**
  * @author fanqie
  * @date 2020/5/18
@@ -24,6 +22,27 @@ public class MySegmentTree<E> {
             throw new RuntimeException("[left, right] illegal");
         }
         return query(0, 0, elements.length - 1, left, right);
+    }
+
+    public void set(final int index, final E element) {
+        elements[index] = element;
+        set(0, 0, elements.length - 1, index, element);
+    }
+
+    private void set(final int treeIndex, final int l, final int r, final int index, final E elem) {
+        if (l == r) {
+            tree[treeIndex] = elem;
+            return;
+        }
+        final int mid = l + (r - l) / 2;
+        final int leftChildIndex = getLeftChildIndex(treeIndex);
+        final int rightChildIndex = getRightChildIndex(treeIndex);
+        if (mid + 1 <= index) {
+            set(rightChildIndex, mid + 1, r, index, elem);
+        } else {
+            set(leftChildIndex, l, mid, index, elem);
+        }
+        tree[treeIndex] = merger.merge(tree[leftChildIndex], tree[rightChildIndex]);
     }
 
     private E query(final int index, final int l, final int r, final int queryL, final int queryR) {

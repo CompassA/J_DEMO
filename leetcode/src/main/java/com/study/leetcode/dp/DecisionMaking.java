@@ -1,5 +1,8 @@
 package com.study.leetcode.dp;
 
+import java.util.PriorityQueue;
+import java.util.Queue;
+
 /**
  * @author fanqie
  * @date 2020/3/28
@@ -486,5 +489,65 @@ public class DecisionMaking {
             }
         }
         return res[n-1];
+    }
+
+    /**
+     * 313. Super Ugly Number
+     * Medium
+     *
+     * 549
+     *
+     * 134
+     *
+     * Add to List
+     *
+     * Share
+     * Write a program to find the nth super ugly number.
+     *
+     * Super ugly numbers are positive numbers whose all prime factors are in the given prime list primes of size k.
+     *
+     * Example:
+     *
+     * Input: n = 12, primes = [2,7,13,19]
+     * Output: 32
+     * Explanation: [1,2,4,7,8,13,14,16,19,26,28,32] is the sequence of the first 12
+     *              super ugly numbers given primes = [2,7,13,19] of size 4.
+     * Note:
+     *
+     * 1 is a super ugly number for any given primes.
+     * The given numbers in primes are in ascending order.
+     * 0 < k ≤ 100, 0 < n ≤ 106, 0 < primes[i] < 1000.
+     * The nth super ugly number is guaranteed to fit in a 32-bit signed integer.
+     */
+    public int nthSuperUglyNumber(int n, int[] primes) {
+        Queue<NextVal> minHeap = new PriorityQueue<>();
+        for (int num : primes) {
+            minHeap.offer(new NextVal(num, num, 1));
+        }
+
+        int[] uglyNum = new int[n];
+        uglyNum[0] = 1;
+        for (int i = 1; i < n; ++i) {
+            uglyNum[i] = minHeap.peek().curVal;
+            while (minHeap.peek().curVal == uglyNum[i]) {
+                NextVal v = minHeap.poll();
+                minHeap.offer(new NextVal(v.prime * uglyNum[v.index], v.prime, v.index+1));
+            }
+        }
+        return uglyNum[n-1];
+    }
+
+    private static class NextVal implements Comparable<NextVal> {
+        int curVal;
+        int prime;
+        int index;
+        public NextVal(int _curVal, int _prime, int _index) {
+            curVal = _curVal;
+            prime = _prime;
+            index = _index;
+        }
+        public int compareTo(NextVal other) {
+            return this.curVal - other.curVal;
+        }
     }
 }
