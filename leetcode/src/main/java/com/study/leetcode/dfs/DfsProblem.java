@@ -158,4 +158,58 @@ public class DfsProblem {
             return false;
         }
     }
+
+    /**
+     * 46. Permutations
+     * Medium
+     *
+     * 3506
+     *
+     * 101
+     *
+     * Add to List
+     *
+     * Share
+     * Given a collection of distinct integers, return all possible permutations.
+     *
+     * Example:
+     *
+     * Input: [1,2,3]
+     * Output:
+     * [
+     *   [1,2,3],
+     *   [1,3,2],
+     *   [2,1,3],
+     *   [2,3,1],
+     *   [3,1,2],
+     *   [3,2,1]
+     * ]
+     */
+    class Solution46 {
+        private int[] nums;
+        private List<List<Integer>> res = new ArrayList<>();
+        public List<List<Integer>> permute(int[] nums) {
+            this.nums = nums;
+            dfs(0, new ArrayList<>());
+            return res;
+        }
+
+        private void dfs(int index, List<Integer> path) {
+            if (index == nums.length) {
+                res.add(new ArrayList<>(path));
+                return;
+            }
+            for (int i = index; i < nums.length; ++i) {
+                int tmp = nums[index];
+                nums[index] = nums[i];
+                nums[i] = tmp;
+                path.add(nums[index]);
+                dfs(index+1, path);
+                path.remove(path.size()-1);
+                tmp = nums[index];
+                nums[index] = nums[i];
+                nums[i] = tmp;
+            }
+        }
+    }
 }
