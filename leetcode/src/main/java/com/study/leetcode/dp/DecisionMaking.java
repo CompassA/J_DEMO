@@ -8,10 +8,6 @@ import java.util.Queue;
  * @date 2020/3/28
  */
 public class DecisionMaking {
-
-    public static void main(String[] args) {
-        new DecisionMaking().maxProfit4(2, new int[] {1,2,4,7,11});
-    }
     /**
      * 53. Maximum Subarray
      * Easy
@@ -255,42 +251,49 @@ public class DecisionMaking {
      *              Then buy on day 5 (price = 0) and sell on day 6 (price = 3), profit = 3-0 = 3.
      */
     public int maxProfit4(int k, int[] prices) {
-        if (prices.length == 0 || k == 0) {
-            return 0;
-        }
-        if (prices.length <= k * 2) {
-            return simpleSolve(prices);
-        }
-        int[][] state = new int[prices.length][2 * k + 1];
-        state[0][0] = 0;
-        state[0][1] = -prices[0];
-
-        for (int i = 1; i < prices.length; ++i) {
-            int ratio = -1;
-            for (int j = 1; j < i + 1 && j < state[i].length; ++j) {
-                state[i][j] = Math.max(state[i-1][j], state[i-1][j-1] + prices[i] * ratio);
-                ratio = -ratio;
+        if (prices.length / 2 <= k) {
+            int profit = 0;
+            for (int i = 1; i < prices.length; ++i) {
+                int diff = prices[i] - prices[i-1];
+                if (diff > 0) {
+                    profit += diff;
+                }
             }
-            if (i + 1 < state[i].length) {
-                state[i][i+1] = state[i-1][i] + prices[i] * ratio;
-            }
+            return profit;
         }
-
-        int max = 0;
-        for (int i = 2; i < state[prices.length-1].length; i+= 2) {
-            if (max < state[prices.length-1][i]) {
-                max = state[prices.length-1][i];
+        int[][] maxProfit = new int[k+1][prices.length];
+        for (int i = 1; i <= k; ++i) {
+            for (int j = 1; j < prices.length; ++j) {
+                int max = prices[j] - prices[0];
+                for (int t = 1; t < j; ++t) {
+                    max = Math.max(max, maxProfit[i-1][t-1] + prices[j] - prices[t]);
+                }
+                maxProfit[i][j] = Math.max(max, maxProfit[i][j-1]);
             }
         }
-        return max;
+        return maxProfit[k][prices.length-1];
     }
 
-    private int simpleSolve(int[] prices) {
-        int res = 0;
-        for (int i = 1; i < prices.length; ++i) {
-            res += Math.max(0, prices[i] - prices[i-1]);
+    public int maxProfit4Other(int k, int[] prices) {
+        if (prices.length / 2 <= k) {
+            int profit = 0;
+            for (int i = 1; i < prices.length; ++i) {
+                int diff = prices[i] - prices[i-1];
+                if (diff > 0) {
+                    profit += diff;
+                }
+            }
+            return profit;
         }
-        return res;
+        int[][] maxProfit = new int[k+1][prices.length];
+        for (int i = 1; i <= k; ++i) {
+            int max = -prices[0];
+            for (int j = 1; j < prices.length; ++j) {
+                maxProfit[i][j] = Math.max(maxProfit[i][j-1], max + prices[j]);
+                max = Math.max(max, maxProfit[i-1][j-1] - prices[j]);
+            }
+        }
+        return maxProfit[k][prices.length-1];
     }
 
     /**
@@ -549,5 +552,73 @@ public class DecisionMaking {
         public int compareTo(NextVal other) {
             return this.curVal - other.curVal;
         }
+    }
+
+    /**
+     * 1458. Max Dot Product of Two Subsequences
+     * Hard
+     *
+     * 150
+     *
+     * 3
+     *
+     * Add to List
+     *
+     * Share
+     * Given two arrays nums1 and nums2.
+     *
+     * Return the maximum dot product between non-empty subsequences of nums1 and nums2 with the same length.
+     *
+     * A subsequence of a array is a new array which is formed from the original array by deleting some (can be none) of the characters without disturbing the relative positions of the remaining characters. (ie, [2,3,5] is a subsequence of [1,2,3,4,5] while [1,5,3] is not).
+     *
+     *
+     *
+     * Example 1:
+     *
+     * Input: nums1 = [2,1,-2,5], nums2 = [3,0,-6]
+     * Output: 18
+     * Explanation: Take subsequence [2,-2] from nums1 and subsequence [3,-6] from nums2.
+     * Their dot product is (2*3 + (-2)*(-6)) = 18.
+     * Example 2:
+     *
+     * Input: nums1 = [3,-2], nums2 = [2,-6,7]
+     * Output: 21
+     * Explanation: Take subsequence [3] from nums1 and subsequence [7] from nums2.
+     * Their dot product is (3*7) = 21.
+     * Example 3:
+     *
+     * Input: nums1 = [-1,-1], nums2 = [1,1]
+     * Output: -1
+     * Explanation: Take subsequence [-1] from nums1 and subsequence [1] from nums2.
+     * Their dot product is -1.
+     *
+     *
+     * Constraints:
+     *
+     * 1 <= nums1.length, nums2.length <= 500
+     * -1000 <= nums1[i], nums2[i] <= 1000
+     */
+    public int maxDotProduct(int[] nums1, int[] nums2) {
+        int[][] dp = new int[nums1.length][nums2.length];
+        dp[0][0] = nums1[0] * nums2[0];
+        for (int i = 1; i < nums1.length; ++i) {
+            dp[i][0] = Math.max(dp[i-1][0], nums1[i] * nums2[0]);
+        }
+        for (int i = 1; i < nums2.length; ++i) {
+            dp[0][i] = Math.max(dp[0][i-1], nums1[0] * nums2[i]);
+        }
+        for (int i = 1; i < nums1.length; ++i) {
+            for (int j = 1; j < nums2.length; ++j) {
+                int mul = nums1[i] * nums2[j];
+                dp[i][j] = Math.max(dp[i-1][j-1] + mul, mul);
+                dp[i][j] = Math.max(dp[i][j], dp[i-1][j]);
+                dp[i][j] = Math.max(dp[i][j], dp[i][j-1]);
+            }
+        }
+        return dp[nums1.length-1][nums2.length-1];
+    }
+
+    public static void main(String[] args) {
+        new DecisionMaking().maxDotProduct(new int[]{5,-4,-3}, new int[]{-4,-3,0,-4,2});
     }
 }
