@@ -840,4 +840,114 @@ public class TreeProblem {
             path.remove(path.size()-1);
         }
     }
+
+    /**
+     * 199. Binary Tree Right Side View
+     * Medium
+     *
+     * 2005
+     *
+     * 120
+     *
+     * Add to List
+     *
+     * Share
+     * Given a binary tree, imagine yourself standing on the right side of it, return the values of the nodes you can see ordered from top to bottom.
+     *
+     * Example:
+     *
+     * Input: [1,2,3,null,5,null,4]
+     * Output: [1, 3, 4]
+     * Explanation:
+     *
+     *    1            <---
+     *  /   \
+     * 2     3         <---
+     *  \     \
+     *   5     4       <---
+     */
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int levelNum = queue.size();
+            res.add(queue.peek().val);
+            for (int i = 0; i < levelNum; ++i) {
+                TreeNode popNode = queue.poll();
+                if (popNode.right != null) {
+                    queue.offer(popNode.right);
+                }
+                if (popNode.left != null) {
+                    queue.offer(popNode.left);
+                }
+            }
+        }
+        return res;
+    }
+
+    public List<Integer> rightSideViewSolution2(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        dfs(root, 1, res);
+        return res;
+    }
+
+    private void dfs(TreeNode root, int level, List<Integer> res) {
+        if (root == null) {
+            return;
+        }
+        if (level > res.size()) {
+            res.add(root.val);
+        }
+        dfs(root.right, level+1, res);
+        dfs(root.left, level+1, res);
+    }
+
+    /**
+     * 222. Count Complete Tree Nodes
+     * Medium
+     *
+     * 1792
+     *
+     * 189
+     *
+     * Add to List
+     *
+     * Share
+     * Given a complete binary tree, count the number of nodes.
+     *
+     * Note:
+     *
+     * Definition of a complete binary tree from Wikipedia:
+     * In a complete binary tree every level, except possibly the last, is completely filled, and all nodes in the last level are as far left as possible. It can have between 1 and 2h nodes inclusive at the last level h.
+     *
+     * Example:
+     *
+     * Input:
+     *     1
+     *    / \
+     *   2   3
+     *  / \  /
+     * 4  5 6
+     */
+    public int countNodes(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        TreeNode left = root;
+        TreeNode right = root;
+        int height = 0;
+        while (right != null) {
+            left = left.left;
+            right = right.right;
+            ++height;
+        }
+        if (left == null) {
+            return (1 << height) - 1;
+        }
+        return 1 + countNodes(root.left) + countNodes(root.right);
+    }
 }

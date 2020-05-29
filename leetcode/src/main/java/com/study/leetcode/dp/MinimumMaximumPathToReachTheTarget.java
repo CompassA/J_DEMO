@@ -470,39 +470,27 @@ public class MinimumMaximumPathToReachTheTarget {
      * Output: 4
      */
     public int maximalSquare(char[][] matrix) {
-        if (matrix.length == 0 || matrix[0].length == 0) {
+        if (matrix.length == 0) {
             return 0;
         }
-        int row = matrix.length;
-        int col = matrix[0].length;
-
         int res = 0;
-        int[][] dp = new int[row][col];
-        for (int i = 0; i < row; ++i) {
-            if (matrix[i][0] == '1') {
-                dp[i][0] = 1;
-                res = 1;
-            }
-        }
-        for (int i = 0; i < col; ++i) {
-            if (matrix[0][i] == '1') {
-                dp[0][i] = 1;
-                res = 1;
-            }
-        }
-        for (int i = 1; i < row; ++i) {
-            for (int j = 1; j < col; ++j) {
+        int[][] dp = new int[matrix.length+1][matrix[0].length+1];
+        for (int i = matrix.length-1; i >= 0; --i) {
+            for (int j = matrix[i].length-1; j >= 0; --j) {
                 if (matrix[i][j] == '0') {
                     dp[i][j] = 0;
                 } else {
-                    dp[i][j] = Math.min(Math.min(dp[i-1][j], dp[i][j-1]), dp[i-1][j-1]) + 1;
+                    int possibleLenA = dp[i][j+1];
+                    int possibleLenB = dp[i+1][j];
+                    int possibleLenC = dp[i+1][j+1];
+                    dp[i][j] = Math.min(possibleLenA, Math.min(possibleLenB, possibleLenC))+1;
                     if (res < dp[i][j]) {
                         res = dp[i][j];
                     }
                 }
             }
         }
-        return res * res;
+        return res*res;
     }
 
     /**
