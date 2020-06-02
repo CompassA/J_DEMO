@@ -410,4 +410,211 @@ public class GraphProblem {
         public Node(int _val) { val = _val; neighbors = new ArrayList<Node>(); }
         public Node(int _val, ArrayList<Node> _neighbors) { val = _val; neighbors = _neighbors; }
     }
+
+    /**
+     * 207. Course Schedule
+     * Medium
+     *
+     * 3569
+     *
+     * 168
+     *
+     * Add to List
+     *
+     * Share
+     * There are a total of numCourses courses you have to take, labeled from 0 to numCourses-1.
+     *
+     * Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is expressed as a pair: [0,1]
+     *
+     * Given the total number of courses and a list of prerequisite pairs, is it possible for you to finish all courses?
+     *
+     *
+     *
+     * Example 1:
+     *
+     * Input: numCourses = 2, prerequisites = [[1,0]]
+     * Output: true
+     * Explanation: There are a total of 2 courses to take.
+     *              To take course 1 you should have finished course 0. So it is possible.
+     * Example 2:
+     *
+     * Input: numCourses = 2, prerequisites = [[1,0],[0,1]]
+     * Output: false
+     * Explanation: There are a total of 2 courses to take.
+     *              To take course 1 you should have finished course 0, and to take course 0 you should
+     *              also have finished course 1. So it is impossible.
+     *
+     *
+     * Constraints:
+     *
+     * The input prerequisites is a graph represented by a list of edges, not adjacency matrices. Read more about how a graph is represented.
+     * You may assume that there are no duplicate edges in the input prerequisites.
+     * 1 <= numCourses <= 10^5
+     */
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        int[] inDegree = new int[numCourses];
+        Set<Integer>[] g = new Set[numCourses];
+        for (int[] pre : prerequisites) {
+            int v = pre[0];
+            int u = pre[1];
+            ++inDegree[v];
+            if (g[u] == null) {
+                g[u] = new HashSet<>();
+            }
+            g[u].add(v);
+        }
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < numCourses; ++i) {
+            if (inDegree[i] == 0) {
+                queue.offer(i);
+            }
+        }
+
+        int cnt = 0;
+        while (!queue.isEmpty()) {
+            int cur = queue.poll();
+            ++cnt;
+            if (g[cur] == null) {
+                continue;
+            }
+            for (int v : g[cur]) {
+                --inDegree[v];
+                if (inDegree[v] == 0) {
+                    queue.offer(v);
+                }
+            }
+        }
+        return cnt == numCourses;
+    }
+
+    /**
+     * 210. Course Schedule II
+     */
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        int[] inDegree = new int[numCourses];
+        Set<Integer>[] g = new Set[numCourses];
+        for (int[] pre : prerequisites) {
+            int u = pre[1];
+            int v = pre[0];
+            ++inDegree[v];
+            if (g[u] == null) {
+                g[u] = new HashSet<>();
+            }
+            g[u].add(v);
+        }
+
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < numCourses; ++i) {
+            if (inDegree[i] == 0) {
+                queue.offer(i);
+            }
+        }
+
+        int[] res = new int[numCourses];
+        int index = 0;
+        while (!queue.isEmpty()) {
+            int cur = queue.poll();
+            res[index++] = cur;
+            if (g[cur] != null) {
+                for (int v : g[cur]) {
+                    --inDegree[v];
+                    if (inDegree[v] == 0) {
+                        queue.offer(v);
+                    }
+                }
+            }
+        }
+        return index == numCourses ? res : new int[0];
+    }
+
+    /**
+     * 310. Minimum Height Trees
+     * Medium
+     *
+     * 1728
+     *
+     * 96
+     *
+     * Add to List
+     *
+     * Share
+     * For an undirected graph with tree characteristics, we can choose any node as the root. The result graph is then a rooted tree. Among all possible rooted trees, those with minimum height are called minimum height trees (MHTs). Given such a graph, write a function to find all the MHTs and return a list of their root labels.
+     *
+     * Format
+     * The graph contains n nodes which are labeled from 0 to n - 1. You will be given the number n and a list of undirected edges (each edge is a pair of labels).
+     *
+     * You can assume that no duplicate edges will appear in edges. Since all edges are undirected, [0, 1] is the same as [1, 0] and thus will not appear together in edges.
+     *
+     * Example 1 :
+     *
+     * Input: n = 4, edges = [[1, 0], [1, 2], [1, 3]]
+     *
+     *         0
+     *         |
+     *         1
+     *        / \
+     *       2   3
+     *
+     * Output: [1]
+     * Example 2 :
+     *
+     * Input: n = 6, edges = [[0, 3], [1, 3], [2, 3], [4, 3], [5, 4]]
+     *
+     *      0  1  2
+     *       \ | /
+     *         3
+     *         |
+     *         4
+     *         |
+     *         5
+     *
+     * Output: [3, 4]
+     * Note:
+     *
+     * According to the definition of tree on Wikipedia: “a tree is an undirected graph in which any two vertices are connected by exactly one path. In other words, any connected graph without simple cycles is a tree.”
+     * The height of a rooted tree is the number of edges on the longest downward path between the root and a leaf.
+     */
+    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+        if (n == 1) {
+            List<Integer> res = new ArrayList<>();
+            res.add(0);
+            return res;
+        }
+        Set<Integer>[] g = new Set[n];
+        for (int i = 0; i < n; ++i) {
+            g[i] = new HashSet<>();
+        }
+        for (int[] edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+            g[v].add(u);
+            g[u].add(v);
+        }
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < n; ++i) {
+            if (g[i].size() == 1) {
+                queue.offer(i);
+            }
+        }
+        int leftNum = n;
+        while (leftNum > 2) {
+            int levelNum = queue.size();
+            leftNum -= levelNum;
+            for (int i = 0; i < levelNum; ++i) {
+                int leaf = queue.poll();
+                for (int v : g[leaf]) {
+                    g[v].remove(leaf);
+                    if (g[v].size() == 1) {
+                        queue.offer(v);
+                    }
+                }
+                g[leaf].clear();
+            }
+        }
+        List<Integer> res = new ArrayList<>();
+        while (!queue.isEmpty()) {
+            res.add(queue.poll());
+        }
+        return res;
+    }
 }

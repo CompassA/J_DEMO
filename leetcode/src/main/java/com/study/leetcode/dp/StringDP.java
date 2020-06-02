@@ -328,4 +328,74 @@ public class StringDP {
         }
         return dp[s.length()][p.length()];
     }
+
+    /**
+     * 97. Interleaving String
+     * Hard
+     *
+     * 1313
+     *
+     * 78
+     *
+     * Add to List
+     *
+     * Share
+     * Given s1, s2, s3, find whether s3 is formed by the interleaving of s1 and s2.
+     *
+     * Example 1:
+     *
+     * Input: s1 = "aabcc", s2 = "dbbca", s3 = "aadbbcbcac"
+     * Output: true
+     * Example 2:
+     *
+     * Input: s1 = "aabcc", s2 = "dbbca", s3 = "aadbbbaccc"
+     * Output: false
+     */
+    public boolean isInterleave(String s1, String s2, String s3) {
+        boolean[][][] dp = new boolean[s3.length()+1][s1.length()+1][s2.length()+1];
+        dp[0][0][0] = true;
+        for (int i = 1; i <= s3.length(); ++i) {
+            for (int j = 0; j <= s1.length() && j <= i; ++j) {
+                int k = i - j;
+                if (k > s2.length()) {
+                    continue;
+                }
+                if (j == 0) {
+                    dp[i][j][k] = dp[i-1][j][k-1] && s2.charAt(k-1) == s3.charAt(i-1);
+                } else if (k == 0) {
+                    dp[i][j][k] = dp[i-1][j-1][k] && s1.charAt(j-1) == s3.charAt(i-1);
+                } else {
+                    dp[i][j][k] =
+                            (dp[i-1][j-1][k] && s1.charAt(j-1) == s3.charAt(i-1)) ||
+                                    (dp[i-1][j][k-1] && s2.charAt(k-1) == s3.charAt(i-1));
+                }
+            }
+        }
+        return dp[s3.length()][s1.length()][s2.length()];
+    }
+
+    public boolean isInterleaveII(String s1, String s2, String s3) {
+        boolean[][] dp = new boolean[s1.length()+1][s2.length()+1];
+        dp[0][0] = true;
+        for (int i = 1; i <= s3.length(); ++i) {
+            boolean[][] tmpDp = new boolean[s1.length()+1][s2.length()+1];
+            for (int j = 0; j <= s1.length() && j <= i; ++j) {
+                int k = i - j;
+                if (k > s2.length()) {
+                    continue;
+                }
+                if (j == 0) {
+                    tmpDp[j][k] = dp[j][k-1] && s2.charAt(k-1) == s3.charAt(i-1);
+                } else if (k == 0) {
+                    tmpDp[j][k] = dp[j-1][k] && s1.charAt(j-1) == s3.charAt(i-1);
+                } else {
+                    tmpDp[j][k] =
+                            (dp[j-1][k] && s1.charAt(j-1) == s3.charAt(i-1)) ||
+                                    (dp[j][k-1] && s2.charAt(k-1) == s3.charAt(i-1));
+                }
+            }
+            dp = tmpDp;
+        }
+        return dp[s1.length()][s2.length()];
+    }
 }
