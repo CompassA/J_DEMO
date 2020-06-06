@@ -1,5 +1,6 @@
 package com.study.leetcode.dp;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -7,21 +8,9 @@ import java.util.List;
  * @date 2020/3/31
  */
 public class StringDP {
-
-    public static void main(String[] args) {
-        new StringDP().isMatch("a", ".*");
-    }
     /**
      * 139. Word Break
      * Medium
-     *
-     * 3588
-     *
-     * 193
-     *
-     * Add to List
-     *
-     * Share
      * Given a non-empty string s and a dictionary wordDict containing a list of non-empty words, determine if s can be segmented into a space-separated sequence of one or more dictionary words.
      *
      * Note:
@@ -64,14 +53,6 @@ public class StringDP {
     /**
      * 5. Longest Palindromic Substring
      * Medium
-     *
-     * 5862
-     *
-     * 486
-     *
-     * Add to List
-     *
-     * Share
      * Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
      *
      * Example 1:
@@ -118,14 +99,6 @@ public class StringDP {
     /**
      * 10. Regular Expression Matching
      * Hard
-     *
-     * 3749
-     *
-     * 647
-     *
-     * Add to List
-     *
-     * Share
      * Given an input string (s) and a pattern (p), implement regular expression matching with support for '.' and '*'.
      *
      * '.' Matches any single character.
@@ -197,14 +170,6 @@ public class StringDP {
     /**
      * 72. Edit Distance
      * Hard
-     *
-     * 3431
-     *
-     * 52
-     *
-     * Add to List
-     *
-     * Share
      * Given two words word1 and word2, find the minimum number of operations required to convert word1 to word2.
      *
      * You have the following 3 operations permitted on a word:
@@ -253,14 +218,6 @@ public class StringDP {
     /**
      * 44. Wildcard Matching
      * Hard
-     *
-     * 1819
-     *
-     * 101
-     *
-     * Add to List
-     *
-     * Share
      * Given an input string (s) and a pattern (p), implement wildcard pattern matching with support for '?' and '*'.
      *
      * '?' Matches any single character.
@@ -332,14 +289,6 @@ public class StringDP {
     /**
      * 97. Interleaving String
      * Hard
-     *
-     * 1313
-     *
-     * 78
-     *
-     * Add to List
-     *
-     * Share
      * Given s1, s2, s3, find whether s3 is formed by the interleaving of s1 and s2.
      *
      * Example 1:
@@ -397,5 +346,62 @@ public class StringDP {
             dp = tmpDp;
         }
         return dp[s1.length()][s2.length()];
+    }
+
+    /**
+     * 115. Distinct Subsequences
+     * Hard
+     * Given a string S and a string T, count the number of distinct subsequences of S which equals T.
+     *
+     * A subsequence of a string is a new string which is formed from the original string by deleting some (can be none) of the characters without disturbing the relative positions of the remaining characters. (ie, "ACE" is a subsequence of "ABCDE" while "AEC" is not).
+     *
+     * It's guaranteed the answer fits on a 32-bit signed integer.
+     *
+     * Example 1:
+     *
+     * Input: S = "rabbbit", T = "rabbit"
+     * Output: 3
+     * Explanation:
+     * As shown below, there are 3 ways you can generate "rabbit" from S.
+     * (The caret symbol ^ means the chosen letters)
+     *
+     * rabbbit
+     * ^^^^ ^^
+     * rabbbit
+     * ^^ ^^^^
+     * rabbbit
+     * ^^^ ^^^
+     * Example 2:
+     *
+     * Input: S = "babgbag", T = "bag"
+     * Output: 5
+     * Explanation:
+     * As shown below, there are 5 ways you can generate "bag" from S.
+     * (The caret symbol ^ means the chosen letters)
+     *
+     * babgbag
+     * ^^ ^
+     * babgbag
+     * ^^    ^
+     * babgbag
+     * ^    ^^
+     * babgbag
+     *   ^  ^^
+     * babgbag
+     *     ^^^
+     */
+    public int numDistinct(String s, String t) {
+        int[][] dp = new int[t.length()+1][s.length()+1];
+        Arrays.fill(dp[0], 1);
+        for (int i = 1; i <= t.length(); ++i) {
+            for (int j = i; j <= s.length(); ++j) {
+                if (t.charAt(i-1) == s.charAt(j-1)) {
+                    dp[i][j] = dp[i-1][j-1] + dp[i][j-1];
+                } else {
+                    dp[i][j] = dp[i][j-1];
+                }
+            }
+        }
+        return dp[t.length()][s.length()];
     }
 }
