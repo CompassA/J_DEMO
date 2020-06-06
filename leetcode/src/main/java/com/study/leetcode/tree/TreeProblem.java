@@ -2,10 +2,15 @@ package com.study.leetcode.tree;
 
 import com.study.leetcode.linkedlist.ListNode;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Deque;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
@@ -16,15 +21,6 @@ import java.util.Set;
 public class TreeProblem {
     /**
      * 1367. Linked List in Binary Tree
-     * Medium
-     *
-     * 246
-     *
-     * 11
-     *
-     * Add to List
-     *
-     * Share
      * Given a binary tree root and a linked list with head as the first node.
      *
      * Return True if all the elements in the linked list starting from the head correspond to some downward path connected in the binary tree otherwise return False.
@@ -81,15 +77,6 @@ public class TreeProblem {
 
     /**
      * 98. Validate Binary Search Tree
-     * Medium
-     *
-     * 3437
-     *
-     * 489
-     *
-     * Add to List
-     *
-     * Share
      * Given a binary tree, determine if it is a valid binary search tree (BST).
      *
      * Assume a BST is defined as follows:
@@ -137,51 +124,6 @@ public class TreeProblem {
 
     /**
      * 450. Delete Node in a BST
-     * Medium
-     *
-     * 1524
-     *
-     * 79
-     *
-     * Add to List
-     *
-     * Share
-     * Given a root node reference of a BST and a key, delete the node with the given key in the BST. Return the root node reference (possibly updated) of the BST.
-     *
-     * Basically, the deletion can be divided into two stages:
-     *
-     * Search for a node to remove.
-     * If the node is found, delete the node.
-     * Note: Time complexity should be O(height of tree).
-     *
-     * Example:
-     *
-     * root = [5,3,6,2,4,null,7]
-     * key = 3
-     *
-     *     5
-     *    / \
-     *   3   6
-     *  / \   \
-     * 2   4   7
-     *
-     * Given key to delete is 3. So we find the node with value 3 and delete it.
-     *
-     * One valid answer is [5,4,6,2,null,null,7], shown in the following BST.
-     *
-     *     5
-     *    / \
-     *   4   6
-     *  /     \
-     * 2       7
-     *
-     * Another valid answer is [5,2,6,null,4,null,7].
-     *
-     *     5
-     *    / \
-     *   2   6
-     *    \   \
-     *     4   7
      */
     public TreeNode deleteNode(TreeNode root, int key) {
         if (root == null) {
@@ -220,46 +162,6 @@ public class TreeProblem {
 
     /**
      * 100. Same Tree
-     * Easy
-     *
-     * 1851
-     *
-     * 55
-     *
-     * Add to List
-     *
-     * Share
-     * Given two binary trees, write a function to check if they are the same or not.
-     *
-     * Two binary trees are considered the same if they are structurally identical and the nodes have the same value.
-     *
-     * Example 1:
-     *
-     * Input:     1         1
-     *           / \       / \
-     *          2   3     2   3
-     *
-     *         [1,2,3],   [1,2,3]
-     *
-     * Output: true
-     * Example 2:
-     *
-     * Input:     1         1
-     *           /           \
-     *          2             2
-     *
-     *         [1,2],     [1,null,2]
-     *
-     * Output: false
-     * Example 3:
-     *
-     * Input:     1         1
-     *           / \       / \
-     *          2   1     1   2
-     *
-     *         [1,2,1],   [1,1,2]
-     *
-     * Output: false
      */
     public boolean isSameTree(TreeNode p, TreeNode q) {
         if (p == null && q == null) {
@@ -273,15 +175,6 @@ public class TreeProblem {
 
     /**
      * 101. Symmetric Tree
-     * Easy
-     *
-     * 3645
-     *
-     * 86
-     *
-     * Add to List
-     *
-     * Share
      * Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).
      *
      * For example, this binary tree [1,2,2,3,4,4,3] is symmetric:
@@ -325,17 +218,6 @@ public class TreeProblem {
 
     /**
      * 102. Binary Tree Level Order Traversal
-     * Medium
-     *
-     * 2611
-     *
-     * 65
-     *
-     * Add to List
-     *
-     * Share
-     * Given a binary tree, return the level order traversal of its nodes' values. (ie, from left to right, level by level).
-     *
      * For example:
      * Given binary tree [3,9,20,null,null,15,7],
      *     3
@@ -377,17 +259,6 @@ public class TreeProblem {
 
     /**
      * 103. Binary Tree Zigzag Level Order Traversal
-     * Medium
-     *
-     * 1748
-     *
-     * 89
-     *
-     * Add to List
-     *
-     * Share
-     * Given a binary tree, return the zigzag level order traversal of its nodes' values. (ie, from left to right, then right to left for the next level and alternate between).
-     *
      * For example:
      * Given binary tree [3,9,20,null,null,15,7],
      *     3
@@ -446,31 +317,6 @@ public class TreeProblem {
 
     /**
      * 104. Maximum Depth of Binary Tree
-     * Easy
-     *
-     * 2218
-     *
-     * 66
-     *
-     * Add to List
-     *
-     * Share
-     * Given a binary tree, find its maximum depth.
-     *
-     * The maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
-     *
-     * Note: A leaf is a node with no children.
-     *
-     * Example:
-     *
-     * Given binary tree [3,9,20,null,null,15,7],
-     *
-     *     3
-     *    / \
-     *   9  20
-     *     /  \
-     *    15   7
-     * return its depth = 3.
      */
     public int maxDepth(TreeNode root) {
         if (root == null) {
@@ -481,31 +327,6 @@ public class TreeProblem {
 
     /**
      * 105. Construct Binary Tree from Preorder and Inorder Traversal
-     * Medium
-     *
-     * 2910
-     *
-     * 85
-     *
-     * Add to List
-     *
-     * Share
-     * Given preorder and inorder traversal of a tree, construct the binary tree.
-     *
-     * Note:
-     * You may assume that duplicates do not exist in the tree.
-     *
-     * For example, given
-     *
-     * preorder = [3,9,20,15,7]
-     * inorder = [9,3,15,20,7]
-     * Return the following binary tree:
-     *
-     *     3
-     *    / \
-     *   9  20
-     *     /  \
-     *    15   7
      */
     public TreeNode buildTree(int[] preorder, int[] inorder) {
         return buildTree(preorder, inorder, 0, preorder.length-1, 0, inorder.length-1);
@@ -529,31 +350,6 @@ public class TreeProblem {
 
     /**
      * 106. Construct Binary Tree from Inorder and Postorder Traversal
-     * Medium
-     *
-     * 1413
-     *
-     * 29
-     *
-     * Add to List
-     *
-     * Share
-     * Given inorder and postorder traversal of a tree, construct the binary tree.
-     *
-     * Note:
-     * You may assume that duplicates do not exist in the tree.
-     *
-     * For example, given
-     *
-     * inorder = [9,3,15,20,7]
-     * postorder = [9,15,7,20,3]
-     * Return the following binary tree:
-     *
-     *     3
-     *    / \
-     *   9  20
-     *     /  \
-     *    15   7
      */
     public TreeNode buildTreeII(int[] inorder, int[] postorder) {
         return buildTree(inorder, postorder, 0, inorder.length-1, 0, postorder.length-1);
@@ -577,15 +373,6 @@ public class TreeProblem {
 
     /**
      * 107. Binary Tree Level Order Traversal II
-     * Easy
-     *
-     * 1154
-     *
-     * 203
-     *
-     * Add to List
-     *
-     * Share
      * Given a binary tree, return the bottom-up level order traversal of its nodes' values. (ie, from left to right, level by level from leaf to root).
      *
      * For example:
@@ -630,29 +417,6 @@ public class TreeProblem {
     /**
      * 108. Convert Sorted Array to Binary Search Tree
      * Easy
-     *
-     * 2072
-     *
-     * 196
-     *
-     * Add to List
-     *
-     * Share
-     * Given an array where elements are sorted in ascending order, convert it to a height balanced BST.
-     *
-     * For this problem, a height-balanced binary tree is defined as a binary tree in which the depth of the two subtrees of every node never differ by more than 1.
-     *
-     * Example:
-     *
-     * Given the sorted array: [-10,-3,0,5,9],
-     *
-     * One possible answer is: [0,-3,9,-10,null,5], which represents the following height balanced BST:
-     *
-     *       0
-     *      / \
-     *    -3   9
-     *    /   /
-     *  -10  5
      */
     public TreeNode sortedArrayToBST(int[] nums) {
         return create(nums, 0, nums.length-1);
@@ -671,31 +435,6 @@ public class TreeProblem {
 
     /**
      * 111. Minimum Depth of Binary Tree
-     * Easy
-     *
-     * 1205
-     *
-     * 642
-     *
-     * Add to List
-     *
-     * Share
-     * Given a binary tree, find its minimum depth.
-     *
-     * The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.
-     *
-     * Note: A leaf is a node with no children.
-     *
-     * Example:
-     *
-     * Given binary tree [3,9,20,null,null,15,7],
-     *
-     *     3
-     *    / \
-     *   9  20
-     *     /  \
-     *    15   7
-     * return its minimum depth = 2.
      */
     public int minDepth(TreeNode root) {
         if (root == null) {
@@ -740,31 +479,6 @@ public class TreeProblem {
 
     /**
      * 112. Path Sum
-     * Easy
-     *
-     * 1639
-     *
-     * 460
-     *
-     * Add to List
-     *
-     * Share
-     * Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.
-     *
-     * Note: A leaf is a node with no children.
-     *
-     * Example:
-     *
-     * Given the below binary tree and sum = 22,
-     *
-     *       5
-     *      / \
-     *     4   8
-     *    /   / \
-     *   11  13  4
-     *  /  \      \
-     * 7    2      1
-     * return true, as there exist a root-to-leaf path 5->4->11->2 which sum is 22.
      */
     public boolean hasPathSum(TreeNode root, int sum) {
         if (root == null) {
@@ -779,19 +493,7 @@ public class TreeProblem {
 
     /**
      * 113. Path Sum II
-     * Medium
-     *
-     * 1541
-     *
-     * 56
-     *
-     * Add to List
-     *
-     * Share
      * Given a binary tree and a sum, find all root-to-leaf paths where each path's sum equals the given sum.
-     *
-     * Note: A leaf is a node with no children.
-     *
      * Example:
      *
      * Given the below binary tree and sum = 22,
@@ -843,15 +545,6 @@ public class TreeProblem {
 
     /**
      * 199. Binary Tree Right Side View
-     * Medium
-     *
-     * 2005
-     *
-     * 120
-     *
-     * Add to List
-     *
-     * Share
      * Given a binary tree, imagine yourself standing on the right side of it, return the values of the nodes you can see ordered from top to bottom.
      *
      * Example:
@@ -908,15 +601,6 @@ public class TreeProblem {
 
     /**
      * 222. Count Complete Tree Nodes
-     * Medium
-     *
-     * 1792
-     *
-     * 189
-     *
-     * Add to List
-     *
-     * Share
      * Given a complete binary tree, count the number of nodes.
      *
      * Note:
@@ -949,5 +633,165 @@ public class TreeProblem {
             return (1 << height) - 1;
         }
         return 1 + countNodes(root.left) + countNodes(root.right);
+    }
+
+    /**
+     * 226. Invert Binary Tree
+     */
+    public TreeNode invertTree(TreeNode root) {
+        if (root == null || (root.left == null && root.right == null)) {
+            return root;
+        }
+        TreeNode leftSubRoot = invertTree(root.left);
+        TreeNode rightSubRoot = invertTree(root.right);
+        root.left = rightSubRoot;
+        root.right = leftSubRoot;
+        return root;
+    }
+
+    /**
+     * 230. Kth Smallest Element in a BST
+     * Given a binary search tree, write a function kthSmallest to find the kth smallest element in it.
+     */
+    public int kthSmallest(TreeNode root, int k) {
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        int cnt = 0;
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) {
+                stack.offerLast(root);
+                root = root.left;
+            }
+            TreeNode cur = stack.pollLast();
+            ++cnt;
+            if (cnt == k) {
+                return cur.val;
+            }
+            root = cur.right;
+        }
+        return -1;
+    }
+
+    /**
+     * 235. Lowest Common Ancestor of a Binary Search Tree
+     * Given a binary search tree (BST), find the lowest common ancestor (LCA) of two given nodes in the BST.
+     *
+     * According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).”
+     *
+     * Given binary search tree:  root = [6,2,8,0,4,7,9,null,null,3,5]
+     */
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root.val < p.val && root.val < q.val) {
+            return lowestCommonAncestor(root.right, p, q);
+        }
+        if (root.val > p.val && root.val > q.val) {
+            return lowestCommonAncestor(root.left, p, q);
+        }
+        return root;
+    }
+
+    /**
+     * 236. Lowest Common Ancestor of a Binary Tree
+     */
+    public TreeNode lowestCommonAncestorII(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null || root.val == p.val || root.val == q.val) {
+            return root;
+        }
+        TreeNode leftRes = lowestCommonAncestor(root.left, p, q);
+        TreeNode rightRes = lowestCommonAncestor(root.right, p, q);
+        if (leftRes != null && rightRes != null) {
+            return root;
+        }
+        if (leftRes != null) {
+            return leftRes;
+        }
+        return rightRes;
+    }
+
+    /**
+     * 257. Binary Tree Paths
+     * Given a binary tree, return all root-to-leaf paths.
+     * Input:
+     *
+     *    1
+     *  /   \
+     * 2     3
+     *  \
+     *   5
+     *
+     * Output: ["1->2->5", "1->3"]
+     */
+    public List<String> binaryTreePaths(TreeNode root) {
+        List<String> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+        dfs(res, new ArrayDeque<>(), root);
+        return res;
+    }
+
+    private void dfs(List<String> res, Deque<Integer> path, TreeNode root) {
+        path.offerLast(root.val);
+        if (root.left == null && root.right == null) {
+            StringBuilder builder = new StringBuilder();
+            int cnt = 0;
+            for (int pathElem : path) {
+                builder.append(pathElem);
+                ++cnt;
+                if (cnt != path.size()) {
+                    builder.append("->");
+                }
+            }
+            res.add(builder.toString());
+            path.pollLast();
+            return;
+        }
+        if (root.left != null) {
+            dfs(res, path, root.left);
+        }
+        if (root.right != null) {
+            dfs(res, path, root.right);
+        }
+        path.pollLast();
+    }
+
+    /**
+     * 297. Serialize and Deserialize Binary Tree
+     */
+    public class Codec {
+        private static final String NULL_NODE = "N";
+        private static final String DELIMITER = ";";
+
+        // Encodes a tree to a single string.
+        public String serialize(TreeNode root) {
+            StringBuilder builder = new StringBuilder();
+            serializeHelper(root, builder);
+            return builder.toString();
+        }
+
+        private void serializeHelper(TreeNode root, StringBuilder builder) {
+            if (root == null) {
+                builder.append(String.format("%s%s", NULL_NODE, DELIMITER));
+                return;
+            }
+            builder.append(String.format("%d%s", root.val, DELIMITER));
+            serializeHelper(root.left, builder);
+            serializeHelper(root.right, builder);
+        }
+
+        // Decodes your encoded data to tree.
+        public TreeNode deserialize(String data) {
+            return deserialize(new LinkedList<>(Arrays.asList(data.split(DELIMITER))));
+        }
+
+        private TreeNode deserialize(Queue<String> tokens) {
+            String curToken = tokens.poll();
+            if (NULL_NODE.equals(curToken)) {
+                return null;
+            }
+            TreeNode node = new TreeNode(Integer.parseInt(curToken));
+            node.left = deserialize(tokens);
+            node.right = deserialize(tokens);
+            return node;
+        }
     }
 }
