@@ -8,14 +8,6 @@ public class BitProblem {
     /**
      * 136. Single Number
      * Easy
-     *
-     * 4157
-     *
-     * 154
-     *
-     * Add to List
-     *
-     * Share
      * Given a non-empty array of integers, every element appears twice except for one. Find that single one.
      *
      * Note:
@@ -42,14 +34,6 @@ public class BitProblem {
     /**
      * 1461. Check If a String Contains All Binary Codes of Size K
      * Medium
-     *
-     * 28
-     *
-     * 18
-     *
-     * Add to List
-     *
-     * Share
      * Given a binary string s and an integer k.
      *
      * Return True if any binary code of length k is a substring of s. Otherwise, return False.

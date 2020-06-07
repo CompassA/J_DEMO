@@ -162,14 +162,6 @@ public class DfsProblem {
     /**
      * 46. Permutations
      * Medium
-     *
-     * 3506
-     *
-     * 101
-     *
-     * Add to List
-     *
-     * Share
      * Given a collection of distinct integers, return all possible permutations.
      *
      * Example:

@@ -9,14 +9,6 @@ public class MathProblem {
     /**
      * 8. String to Integer (atoi)
      * Medium
-     *
-     * 1375
-     *
-     * 8321
-     *
-     * Add to List
-     *
-     * Share
      * Implement atoi which converts a string to an integer.
      *
      * The function first discards as many whitespace characters as necessary until the first non-whitespace character is found. Then, starting from this character, takes an optional initial plus or minus sign followed by as many numerical digits as possible, and interprets them as a numerical value.
@@ -90,14 +82,6 @@ public class MathProblem {
     /**
      * 7. Reverse Integer
      * Easy
-     *
-     * 3020
-     *
-     * 4762
-     *
-     * Add to List
-     *
-     * Share
      * Given a 32-bit signed integer, reverse digits of an integer.
      *
      * Example 1:
@@ -132,14 +116,6 @@ public class MathProblem {
     /**
      * 9. Palindrome Number
      * Easy
-     *
-     * 2048
-     *
-     * 1496
-     *
-     * Add to List
-     *
-     * Share
      * Determine whether an integer is a palindrome. An integer is a palindrome when it reads the same backward as forward.
      *
      * Example 1:
@@ -172,14 +148,6 @@ public class MathProblem {
     /**
      * 41. First Missing Positive
      * Hard
-     *
-     * 2869
-     *
-     * 737
-     *
-     * Add to List
-     *
-     * Share
      * Given an unsorted integer array, find the smallest missing positive integer.
      *
      * Example 1:
@@ -218,14 +186,6 @@ public class MathProblem {
     /**
      * 268. Missing Number
      * Easy
-     *
-     * 1589
-     *
-     * 1946
-     *
-     * Add to List
-     *
-     * Share
      * Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, find the one that is missing from the array.
      *
      * Example 1:
@@ -250,14 +210,6 @@ public class MathProblem {
     /**
      * 263. Ugly Number
      * Easy
-     *
-     * 380
-     *
-     * 567
-     *
-     * Add to List
-     *
-     * Share
      * Write a program to check whether a given number is an ugly number.
      *
      * Ugly numbers are positive numbers whose prime factors only include 2, 3, 5.
@@ -304,14 +256,6 @@ public class MathProblem {
     /**
      * 233. Number of Digit One
      * Hard
-     *
-     * 260
-     *
-     * 583
-     *
-     * Add to List
-     *
-     * Share
      * Given an integer n, count the total number of digit 1 appearing in all non-negative integers less than or equal to n.
      *
      * Example:
