@@ -15,6 +15,8 @@ public class Permutation {
      * 46. Permutations
      * Medium
      * Given a collection of distinct integers, return all possible permutations.
+     *
+     * for each pos, fill unused numbers
      */
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
@@ -22,19 +24,18 @@ public class Permutation {
         return res;
     }
 
-    private void dfs46(int depth, Set<Integer> used, int[] nums, List<Integer> path,
-                      List<List<Integer>> res) {
+    private void dfs46(int depth, Set<Integer> preUsedIndex, int[] nums, List<Integer> path, List<List<Integer>> res) {
         if (depth == nums.length) {
             res.add(new ArrayList<>(path));
             return;
         }
-        for (int num : nums) {
-            if (!used.contains(num)) {
-                path.add(num);
-                used.add(num);
-                dfs46(depth+1, used, nums, path, res);
-                path.remove(path.size()-1);
-                used.remove(num);
+        for (int i = 0; i < nums.length; ++i) {
+            if (!preUsedIndex.contains(i)) {
+                preUsedIndex.add(i);
+                path.add(nums[i]);
+                dfs46(depth + 1, preUsedIndex, nums, path, res);
+                preUsedIndex.remove(i);
+                path.remove(path.size() - 1);
             }
         }
     }
@@ -98,8 +99,8 @@ public class Permutation {
                 if (i > 0 && ballList.get(i-1).equals(ballList.get(i)) && !used.contains(i-1)) { continue; }
                 int color = ballList.get(i);
                 used.add(i);
-                if (depth < ballList.size() / 2) { dfs(depth+1, used, (left | (1 << color)), right, ballList);
-                } else { dfs(depth+1, used, left, (right | (1 << color)), ballList); }
+                if (depth < ballList.size() / 2) { dfs(depth+1, used, (left | (1 << color)), right, ballList); }
+                else { dfs(depth+1, used, left, (right | (1 << color)), ballList); }
                 used.remove(i);
             }
         }
@@ -125,9 +126,7 @@ public class Permutation {
             }
             halfLen /= 2;
             fact[0] = 1;
-            for (int i = 1; i <= 24; ++i) {
-                fact[i] = fact[i-1] * i;
-            }
+            for (int i = 1; i <= 24; ++i) { fact[i] = fact[i-1] * i; }
             dfs(0, 0, 0, 0, 0, 1.0, 1.0);
             return valid / total;
         }
