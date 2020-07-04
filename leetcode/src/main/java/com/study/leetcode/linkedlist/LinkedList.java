@@ -222,4 +222,33 @@ public class LinkedList {
         originTail.next = null;
         return guard.next;
     }
+
+    /**
+     * 141. Linked List Cycle
+     * Easy
+     *
+     * 2842
+     *
+     * 473
+     *
+     * Add to List
+     *
+     * Share
+     * Given a linked list, determine if it has a cycle in it.
+     */
+    public boolean hasCycle(ListNode head) {
+        if (head == null) {
+            return false;
+        }
+        ListNode slow = head;
+        ListNode fast = head.next;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
