@@ -61,26 +61,48 @@ public class DpHard {
         return Math.max(s3, s5);
     }
 
-    public int maxProfit3Other(int[] prices) {
-        if (prices.length == 0) {
-            return 0;
+    public int maxProfit3II(int[] prices) {
+        if (prices.length < 4) {
+            int res = 0;
+            for (int i = 1; i < prices.length; ++i) {
+                if (prices[i] > prices[i-1]) {
+                    res += prices[i] - prices[i-1];
+                }
+            }
+            return res;
         }
-        //toBuy -> toSell -> toBuy -> toSell -> end
-        int[][] state = new int[prices.length][5];
-        state[0][1] = -prices[0];
+        int[][] dp = new int[3][prices.length];
+        for (int i = 1; i <= 2; ++i) {
+            for (int j = 1; j < prices.length; ++j) {
+                int max = prices[j] - prices[0];
+                for (int k = 1; k < j; ++k) {
+                    max = Math.max(max, dp[i-1][k-1] + prices[j] - prices[k]);
+                }
+                dp[i][j] = Math.max(max, dp[i][j-1]);
+            }
+        }
+        return dp[2][prices.length-1];
+    }
 
-        for (int i = 1; i < prices.length; ++i) {
-            int ratio = -1;
-            for (int j = 1; j < i + 1 && j < 5; ++j) {
-                state[i][j] = Math.max(state[i-1][j], state[i-1][j-1] + prices[i] * ratio);
-                ratio = -ratio;
+    public int maxProfit(int[] prices) {
+        if (prices.length < 4) {
+            int res = 0;
+            for (int i = 1; i < prices.length; ++i) {
+                if (prices[i] > prices[i-1]) {
+                    res += prices[i] - prices[i-1];
+                }
             }
-            if (i + 1 < 5) {
-                state[i][i+1] = state[i-1][i] + prices[i] * ratio;
+            return res;
+        }
+        int[][] dp = new int[3][prices.length];
+        for (int i = 1; i <= 2; ++i) {
+            int max = -prices[0];
+            for (int j = 1; j < prices.length; ++j) {
+                dp[i][j] = Math.max(max + prices[j], dp[i][j-1]);
+                max = Math.max(max, dp[i-1][j-1] - prices[j]);
             }
         }
-        int res = Math.max(state[prices.length-1][2], state[prices.length-1][4]);
-        return Math.max(res, 0);
+        return dp[2][prices.length-1];
     }
 
     /**
