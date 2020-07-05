@@ -251,4 +251,79 @@ public class LinkedList {
         }
         return false;
     }
+
+    /**
+     * 142. Linked List Cycle II
+     * L1: the length from head to entry
+     * L2: the length from entry to meeting
+     * C: the length of cycle
+     * n: fast tra rounds
+     *
+     * 2 * (L1 + L2) = L1 + L2 + C * n
+     * L1 = C * n - L2
+     * L1 = C * (n - 1) + (C - L2)
+     */
+    public ListNode detectCycle(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) {
+                while (head != slow) {
+                    slow = slow.next;
+                    head = head.next;
+                }
+                return head;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 143. Reorder List
+     * Medium
+     *
+     * Given a singly linked list L: L0→L1→…→Ln-1→Ln,
+     * reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→…
+     */
+    public void reorderList(ListNode head) {
+        ListNode guard = new ListNode(-1);
+        guard.next = head;
+        ListNode slow = guard;
+        ListNode fast = guard;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        ListNode halfHead = new ListNode(-1);
+        ListNode cur = slow.next;
+        slow.next = null;
+        while (cur != null) {
+            ListNode next = cur.next;
+            cur.next = halfHead.next;
+            halfHead.next = cur;
+            cur = next;
+        }
+
+        ListNode newHead = new ListNode(-1);
+        ListNode tail = newHead;
+        ListNode curA = guard.next;
+        ListNode curB = halfHead.next;
+        while (curA != null && curB != null) {
+            ListNode nextCurA = curA.next;
+            curA.next = curB;
+            tail.next = curA;
+            tail = curB;
+            curA = nextCurA;
+            curB = curB.next;
+        }
+        if (curA != null) {
+            tail.next = curA;
+        }
+    }
 }
