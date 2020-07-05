@@ -1,5 +1,7 @@
 package com.study.leetcode.math;
 
+import java.util.Arrays;
+
 /**
  * @author fanqie
  * @date 2020/4/5
@@ -287,5 +289,18 @@ public class MathProblem {
         return res;
     }
 
-
+    /**
+     * 1503. Last Moment Before All Ants Fall Out of a Plank
+     */
+    public int getLastMoment(int n, int[] left, int[] right) {
+        Arrays.sort(left);
+        Arrays.sort(right);
+        if (right.length == 0) {
+            return left[left.length - 1];
+        }
+        if (left.length == 0) {
+            return n - right[0];
+        }
+        return Math.max(left[left.length-1], n - right[0]);
+    }
 }

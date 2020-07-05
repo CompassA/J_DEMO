@@ -76,4 +76,42 @@ public class DoubleArrayProblem {
             }
         }
     }
+
+    /**
+     * 1504. Count Submatrices With All Ones
+     * Medium
+     *
+     * Given a rows * columns matrix mat of ones and zeros, return how many submatrices have all ones.
+     */
+    public int numSubmat(int[][] mat) {
+        int[][] dp = new int[mat.length+1][mat[0].length+1];
+        for (int i = mat.length-1; i >= 0; --i) {
+            for (int j = mat[0].length-1; j >= 0; --j) {
+                dp[i][j] = dp[i+1][j] + dp[i][j+1] - dp[i+1][j+1] + (mat[i][j] == 1 ? 1 : 0);
+            }
+        }
+        int res = 0;
+        for (int i = mat.length-1; i >= 0; --i) {
+            for (int j = mat[0].length-1; j >= 0; --j) {
+                if (mat[i][j] == 0) {
+                    continue;
+                }
+                int xMax = mat.length - i;
+                int yMax = mat[0].length - j;
+                for (int x = 1; x <= xMax; ++x) {
+                    for (int y = 1; y <= yMax; ++y) {
+                        int xEnd = i + x - 1;
+                        int yEnd = j + y - 1;
+                        int oneNums = dp[i][j] - dp[xEnd+1][j] - dp[i][yEnd+1] + dp[xEnd+1][yEnd+1];
+                        if (oneNums == x * y) {
+                            ++res;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return res;
+    }
 }
