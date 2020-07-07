@@ -326,4 +326,75 @@ public class LinkedList {
             tail.next = curA;
         }
     }
+
+    /**
+     * 147. Insertion Sort List
+     * Medium
+     *
+     * Sort a linked list using insertion sort.
+     */
+    public ListNode insertionSortList(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        ListNode guard = new ListNode(-1, head);
+        head = head.next;
+        guard.next.next = null;
+        while (head != null) {
+            ListNode node = guard;
+            while (node.next != null) {
+                if (node.next.val >= head.val) {
+                    break;
+                }
+                node = node.next;
+            }
+            ListNode next = head.next;
+            head.next = node.next;
+            node.next = head;
+            head = next;
+        }
+        return guard.next;
+    }
+
+    /**
+     * 148. Sort List
+     * Medium
+     *
+     * Sort a linked list in O(n log n) time using constant space complexity.
+     */
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode slow = head;
+        ListNode fast = head.next;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        ListNode halfHead = slow.next;
+        slow.next = null;
+
+        return merge(sortList(head), sortList(halfHead));
+    }
+
+    private ListNode merge(ListNode sortedA, ListNode sortedB) {
+        ListNode head = new ListNode(-1);
+        ListNode tail = head;
+        ListNode curA = sortedA;
+        ListNode curB = sortedB;
+        while (curA != null && curB != null) {
+            if (curA.val < curB.val) {
+                tail.next = curA;
+                curA = curA.next;
+            } else {
+                tail.next = curB;
+                curB = curB.next;
+            }
+            tail = tail.next;
+        }
+        if (curA != null) { tail.next = curA; }
+        if (curB != null) { tail.next = curB; }
+        return head.next;
+    }
 }
