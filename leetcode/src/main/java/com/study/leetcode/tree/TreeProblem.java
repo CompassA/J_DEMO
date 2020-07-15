@@ -755,43 +755,28 @@ public class TreeProblem {
     }
 
     /**
-     * 297. Serialize and Deserialize Binary Tree
+     * 160. Intersection of Two Linked Lists
+     * Easy
+     *
+     * Write a program to find the node at which the intersection of two singly linked lists begins.
      */
-    public class Codec {
-        private static final String NULL_NODE = "N";
-        private static final String DELIMITER = ";";
-
-        // Encodes a tree to a single string.
-        public String serialize(TreeNode root) {
-            StringBuilder builder = new StringBuilder();
-            serializeHelper(root, builder);
-            return builder.toString();
-        }
-
-        private void serializeHelper(TreeNode root, StringBuilder builder) {
-            if (root == null) {
-                builder.append(String.format("%s%s", NULL_NODE, DELIMITER));
-                return;
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        ListNode curA = headA;
+        ListNode curB = headB;
+        while (curA != null && curB != null) {
+            if (curA == curB) {
+                return curA;
             }
-            builder.append(String.format("%d%s", root.val, DELIMITER));
-            serializeHelper(root.left, builder);
-            serializeHelper(root.right, builder);
-        }
-
-        // Decodes your encoded data to tree.
-        public TreeNode deserialize(String data) {
-            return deserialize(new LinkedList<>(Arrays.asList(data.split(DELIMITER))));
-        }
-
-        private TreeNode deserialize(Queue<String> tokens) {
-            String curToken = tokens.poll();
-            if (NULL_NODE.equals(curToken)) {
+            curA = curA.next;
+            curB = curB.next;
+            if (curA == null && curB == null) {
                 return null;
+            } else if (curA == null) {
+                curA = headB;
+            } else if (curB == null) {
+                curB = headA;
             }
-            TreeNode node = new TreeNode(Integer.parseInt(curToken));
-            node.left = deserialize(tokens);
-            node.right = deserialize(tokens);
-            return node;
         }
+        return null;
     }
 }
