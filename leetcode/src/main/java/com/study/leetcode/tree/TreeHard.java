@@ -122,4 +122,61 @@ public class TreeHard {
             }
         }
     }
+
+    /**
+     * 99. Recover Binary Search Tree
+     * Hard
+     *
+     * Two elements of a binary search tree (BST) are swapped by mistake.
+     *
+     * Recover the tree without changing its structure.
+     */
+    public void recoverTree(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        TreeNode pre = null;
+        TreeNode cur = root;
+        TreeNode targetA = null;
+        TreeNode targetB = null;
+        while (cur != null) {
+            if (cur.left == null) {
+                if (pre != null && pre.val > cur.val) {
+                    if (targetA == null) {
+                        targetA = pre;
+                    }
+                    targetB = cur;
+                }
+                pre = cur;
+                cur = cur.right;
+                continue;
+            }
+            TreeNode tmpNode = cur.left;
+            while (tmpNode.right != null && tmpNode.right != cur) {
+                tmpNode = tmpNode.right;
+            }
+            if (tmpNode.right == cur) {
+                pre = tmpNode;
+                if (pre.val > cur.val) {
+                    if (targetA == null) {
+                        targetA = pre;
+                    }
+                    targetB = cur;
+                }
+                pre.right = null;
+                pre = cur;
+                cur = cur.right;
+            } else {
+                tmpNode.right = cur;
+                cur = cur.left;
+            }
+        }
+
+        if (targetA != null) {
+            int tmp = targetA.val;
+            targetA.val = targetB.val;
+            targetB.val = tmp;
+        }
+    }
 }
