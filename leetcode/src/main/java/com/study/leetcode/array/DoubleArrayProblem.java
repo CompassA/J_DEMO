@@ -1,5 +1,8 @@
 package com.study.leetcode.array;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author fanqie
  * @date 2020/5/15
@@ -111,6 +114,46 @@ public class DoubleArrayProblem {
                     }
                 }
             }
+        }
+        return res;
+    }
+
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> res = new ArrayList<>();
+        if (matrix.length == 0 || matrix[0].length == 0) {
+            return res;
+        }
+        int row = matrix.length;
+        int col = matrix[0].length;
+
+        int keyNum = 0;
+        int height = row;
+        while (height > 0) {
+            int colBegin = keyNum;
+            int colEnd = col - keyNum - 1;
+            if (colBegin > colEnd) {
+                break;
+            }
+            int rowBegin = colBegin;
+            int rowEnd = colBegin + height - 1;
+            for (int y = colBegin; y <= colEnd; ++y) {
+                res.add(matrix[rowBegin][y]);
+            }
+            for (int x = rowBegin + 1; x < rowEnd; ++x) {
+                res.add(matrix[x][colEnd]);
+            }
+            if (height > 1) {
+                for (int y = colEnd; y >= colBegin; --y) {
+                    res.add(matrix[rowEnd][y]);
+                }
+                if (colBegin != colEnd) {
+                    for (int x = rowEnd - 1; x > rowBegin; --x) {
+                        res.add(matrix[x][colBegin]);
+                    }
+                }
+            }
+            keyNum++;
+            height -= 2;
         }
         return res;
     }
