@@ -3,6 +3,7 @@ package com.study.leetcode.tree;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -31,6 +32,37 @@ public class TreeTra {
                     stack.offerLast(new Call(false, curNode.left));
                 }
                 stack.offerLast(new Call(true, curNode));
+            }
+        }
+        return res;
+    }
+
+    public List<Integer> preorderTraversalMorris(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+        TreeNode cur = root;
+        while (cur != null) {
+            if (cur.left != null) {
+                TreeNode curPre = cur.left;
+                while (curPre.right != null && curPre.right != cur) {
+                    curPre = curPre.right;
+                }
+                //第一次遍历到此节点
+                if (curPre.right == null) {
+                    res.add(cur.val);
+                    curPre.right = cur;
+                    cur = cur.left;
+                }
+                //第二次遍历到此节点
+                else {
+                    curPre.right = null;
+                    cur = cur.right;
+                }
+            } else {
+                res.add(cur.val);
+                cur = cur.right;
             }
         }
         return res;
@@ -86,6 +118,49 @@ public class TreeTra {
         return res;
     }
 
+    public List<Integer> postorderTraversalMorris(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+        TreeNode dummy = new TreeNode(-1);
+        dummy.left = root;
+        TreeNode cur = dummy;
+
+        while (cur != null) {
+            if (cur.left != null) {
+                TreeNode curPre = cur.left;
+                while (curPre.right != null && curPre.right != cur) {
+                    curPre = curPre.right;
+                }
+                if (curPre.right == null) {
+                    curPre.right = cur;
+                    cur = cur.left;
+                } else {
+                    res.addAll(reverseTraversal(cur.left, curPre));
+                    curPre.right = null;
+                    cur = cur.right;
+                }
+            } else {
+                cur = cur.right;
+            }
+        }
+        return res;
+    }
+
+    private List<Integer> reverseTraversal(TreeNode begin, TreeNode end) {
+        LinkedList<Integer> res = new LinkedList<>();
+        TreeNode cur = begin;
+        while (true) {
+            res.addFirst(cur.val);
+            if (cur == end) {
+                break;
+            }
+            cur = cur.right;
+        }
+        return res;
+    }
+
     private static class Call {
         boolean needPrint;
         TreeNode node;
@@ -102,24 +177,23 @@ public class TreeTra {
         }
         TreeNode cur = root;
         while (cur != null) {
-            if (cur.left == null) {
-                res.add(cur.val);
-                cur = cur.right;
-                continue;
-            }
-            TreeNode pre = cur.left;
-            while (pre.right != null && pre.right != cur) {
-                pre = pre.right;
-            }
-            if (pre.right == null) {
-                pre.right = cur;
-                cur = cur.left;
+            if (cur.left != null) {
+                TreeNode curPre = cur.left;
+                while (curPre.right != null && curPre.right != cur) {
+                    curPre = curPre.right;
+                }
+                if (curPre.right == null) {
+                    curPre.right = cur;
+                    cur = cur.left;
+                } else {
+                    curPre.right = null;
+                    res.add(cur.val);
+                    cur = cur.right;
+                }
             } else {
-                pre.right = null;
                 res.add(cur.val);
                 cur = cur.right;
             }
-
         }
         return res;
     }
