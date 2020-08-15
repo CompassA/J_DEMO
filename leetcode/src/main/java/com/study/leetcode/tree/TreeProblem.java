@@ -779,4 +779,52 @@ public class TreeProblem {
         }
         return null;
     }
+
+    /**
+     * 449. Serialize and Deserialize BST
+     */
+    public class Codec {
+
+        // Encodes a tree to a single string.
+        public String serialize(TreeNode root) {
+            StringBuilder builder = new StringBuilder();
+            serialize(root, builder);
+            return builder.toString();
+        }
+
+        private void serialize(TreeNode root, StringBuilder builder) {
+            if (root == null) {
+                builder.append("N&");
+                return;
+            }
+            builder.append(root.val).append("&");
+            serialize(root.left, builder);
+            serialize(root.right, builder);
+        }
+
+        // Decodes your encoded data to tree.
+        public TreeNode deserialize(String data) {
+            Queue<String> queue = new LinkedList<>();
+            String[] tokens = data.split("&");
+            for (String str : tokens) {
+                queue.offer(str);
+            }
+            return deserialize(queue);
+        }
+
+        private TreeNode deserialize(Queue<String> tokens) {
+            if (tokens.isEmpty()) {
+                return null;
+            }
+            String peek = tokens.poll();
+            if (peek.equals("N")) {
+                return null;
+            }
+
+            TreeNode node = new TreeNode(Integer.parseInt(peek));
+            node.left = deserialize(tokens);
+            node.right = deserialize(tokens);
+            return node;
+        }
+    }
 }
