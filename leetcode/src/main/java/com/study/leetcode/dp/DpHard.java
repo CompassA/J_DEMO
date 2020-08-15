@@ -298,4 +298,54 @@ public class DpHard {
         }
         return dp[nums.length-1][m];
     }
+
+    /**
+     * 329. Longest Increasing Path in a Matrix
+     */
+    private static class Solution {
+        private static int[] deltaX = {0, 0, 1, -1};
+        private static int[] deltaY = {1, -1, 0, 0};
+        private static int DERECTION_NUM = 4;
+
+        public int longestIncreasingPath(int[][] matrix) {
+            if (matrix.length == 0 || matrix[0].length == 0) {
+                return 0;
+            }
+            int maxPath = 1;
+            Integer[][] dp = new Integer[matrix.length][matrix[0].length];
+            for (int i = 0; i < matrix.length; ++i) {
+                for (int j = 0; j < matrix[0].length; ++j) {
+                    int path = dfs(i, j, dp, matrix);
+                    if (path > maxPath) {
+                        maxPath = path;
+                    }
+                }
+            }
+            return maxPath;
+        }
+
+        private int dfs(int x, int y, Integer[][] dp, int[][] matrix) {
+            if (dp[x][y] != null) {
+                return dp[x][y];
+            }
+            int res = 1;
+            for (int i = 0; i < 4; ++i) {
+                int newX = x + deltaX[i];
+                int newY = y + deltaY[i];
+                if (needContinue(matrix[x][y], newX, newY, matrix)) {
+                    int path = dfs(newX, newY, dp, matrix);
+                    if (res < path + 1) {
+                        res = path + 1;
+                    }
+                }
+            }
+            dp[x][y] = res;
+            return res;
+        }
+
+        private boolean needContinue(int preNum, int x, int y, int[][] matrix) {
+            return x >= 0 && x < matrix.length && y >= 0 && y < matrix[0].length
+                    && preNum < matrix[x][y];
+        }
+    }
 }
