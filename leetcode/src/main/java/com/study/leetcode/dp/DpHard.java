@@ -10,31 +10,11 @@ public class DpHard {
      * 123. Best Time to Buy and Sell Stock III
      * Hard
      *
-     * Share
      * Say you have an array for which the ith element is the price of a given stock on day i.
      *
      * Design an algorithm to find the maximum profit. You may complete at most two transactions.
      *
      * Note: You may not engage in multiple transactions at the same time (i.e., you must sell the stock before you buy again).
-     *
-     * Example 1:
-     *
-     * Input: [3,3,5,0,0,3,1,4]
-     * Output: 6
-     * Explanation: Buy on day 4 (price = 0) and sell on day 6 (price = 3), profit = 3-0 = 3.
-     *              Then buy on day 7 (price = 1) and sell on day 8 (price = 4), profit = 4-1 = 3.
-     * Example 2:
-     *
-     * Input: [1,2,3,4,5]
-     * Output: 4
-     * Explanation: Buy on day 1 (price = 1) and sell on day 5 (price = 5), profit = 5-1 = 4.
-     *              Note that you cannot buy on day 1, buy on day 2 and sell them later, as you are
-     *              engaging multiple transactions at the same time. You must sell before buying again.
-     * Example 3:
-     *
-     * Input: [7,6,4,3,1]
-     * Output: 0
-     * Explanation: In this case, no transaction is done, i.e. max profit = 0.
      */
     public int maxProfit3(int[] prices) {
         if (prices.length == 0) {
@@ -109,25 +89,12 @@ public class DpHard {
      * 188. Best Time to Buy and Sell Stock IV
      * Hard
      *
-     * Share
      * Say you have an array for which the i-th element is the price of a given stock on day i.
      *
      * Design an algorithm to find the maximum profit. You may complete at most k transactions.
      *
      * Note:
      * You may not engage in multiple transactions at the same time (ie, you must sell the stock before you buy again).
-     *
-     * Example 1:
-     *
-     * Input: [2,4,1], k = 2
-     * Output: 2
-     * Explanation: Buy on day 1 (price = 2) and sell on day 2 (price = 4), profit = 4-2 = 2.
-     * Example 2:
-     *
-     * Input: [3,2,6,5,0,3], k = 2
-     * Output: 7
-     * Explanation: Buy on day 2 (price = 2) and sell on day 3 (price = 6), profit = 6-2 = 4.
-     *              Then buy on day 5 (price = 0) and sell on day 6 (price = 3), profit = 3-0 = 3.
      */
     public int maxProfit4(int k, int[] prices) {
         if (prices.length / 2 <= k) {
@@ -238,28 +205,6 @@ public class DpHard {
      *
      * A subsequence of a array is a new array which is formed from the original array by deleting some (can be none) of the characters without disturbing the relative positions of the remaining characters. (ie, [2,3,5] is a subsequence of [1,2,3,4,5] while [1,5,3] is not).
      *
-     *
-     *
-     * Example 1:
-     *
-     * Input: nums1 = [2,1,-2,5], nums2 = [3,0,-6]
-     * Output: 18
-     * Explanation: Take subsequence [2,-2] from nums1 and subsequence [3,-6] from nums2.
-     * Their dot product is (2*3 + (-2)*(-6)) = 18.
-     * Example 2:
-     *
-     * Input: nums1 = [3,-2], nums2 = [2,-6,7]
-     * Output: 21
-     * Explanation: Take subsequence [3] from nums1 and subsequence [7] from nums2.
-     * Their dot product is (3*7) = 21.
-     * Example 3:
-     *
-     * Input: nums1 = [-1,-1], nums2 = [1,1]
-     * Output: -1
-     * Explanation: Take subsequence [-1] from nums1 and subsequence [1] from nums2.
-     * Their dot product is -1.
-     *
-     *
      * Constraints:
      *
      * 1 <= nums1.length, nums2.length <= 500
@@ -283,5 +228,74 @@ public class DpHard {
             }
         }
         return dp[nums1.length-1][nums2.length-1];
+    }
+
+    /**
+     * 410. Split Array Largest Sum
+     */
+    public int splitArray(int[] nums, int m) {
+        if (nums.length == 0 || nums.length < m) {
+            return 0;
+        }
+        int[] prefixSum = new int[nums.length];
+        prefixSum[0] = nums[0];
+        for (int i = 1; i < nums.length; ++i) {
+            prefixSum[i] = prefixSum[i-1] + nums[i];
+        }
+        return dfs(new Integer[nums.length][m+1], nums.length - 1, m, prefixSum);
+    }
+
+    private int dfs(Integer[][] dp, int lastIndex, int m, int[] sum) {
+        if (lastIndex == 0) {
+            return sum[0];
+        }
+        if (m == 1) {
+            return sum[lastIndex];
+        }
+        if (dp[lastIndex][m] != null) {
+            return dp[lastIndex][m];
+        }
+        int ans = Integer.MAX_VALUE;
+        int nextM = m - 1;
+        for (int splitPoint = lastIndex - 1; splitPoint+1 >= nextM; --splitPoint) {
+            int maxSubSum = Math.max(
+                    dfs(dp, splitPoint, nextM, sum),
+                    sum[lastIndex] - sum[splitPoint]);
+            if (maxSubSum < ans) {
+                ans = maxSubSum;
+            }
+        }
+        dp[lastIndex][m] = ans;
+        return ans;
+    }
+
+    public int splitArrayWay2(int[] nums, int m) {
+        if (nums.length == 0 || nums.length < m) {
+            return 0;
+        }
+
+        int[] prefixSum = new int[nums.length];
+        int[][] dp = new int[nums.length][m+1];
+        prefixSum[0] = nums[0];
+        dp[0][1] = nums[0];
+        for (int i = 1; i < nums.length; ++i) {
+            prefixSum[i] = prefixSum[i-1] + nums[i];
+            dp[i][1] = prefixSum[i];
+        }
+        for (int subNum = 2; subNum <= m; ++subNum) {
+            for (int lastIndex = 0; lastIndex < nums.length; ++lastIndex) {
+                int res = Integer.MAX_VALUE;
+                for (int splitPoint = lastIndex - 1; splitPoint+1 >= subNum-1; --splitPoint) {
+                    int blockMax = Math.max(
+                            dp[splitPoint][subNum-1],
+                            prefixSum[lastIndex] - prefixSum[splitPoint]);
+                    if (res > blockMax) {
+                        res = blockMax;
+                    }
+                }
+                dp[lastIndex][subNum] = res;
+            }
+        }
+        return dp[nums.length-1][m];
     }
 }
