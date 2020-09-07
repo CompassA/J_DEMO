@@ -367,15 +367,6 @@ public class DpHard {
             dp[0][0] = true;
             return true;
         }
-        if (len == 1) {
-            if (s1[0] == s3[0]) {
-                dp[1][0] = true;
-            }
-            if (s2[0] == s3[0]) {
-                dp[0][1] = true;
-            }
-            return dp[1][0] || dp[0][1];
-        }
         if (dfs(s1, s2, s3, len-1, dp)) {
             return false;
         }
