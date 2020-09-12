@@ -303,4 +303,22 @@ public class MathProblem {
         }
         return Math.max(left[left.length-1], n - right[0]);
     }
+
+    /** 357. Count Numbers with Unique Digits */
+    private static class Solution {
+        private static int[] dp;
+        static {
+            dp = new int[9];
+            dp[0] = 1; dp[1] = 10; dp[2] = 9 * 9;
+            for (int i = 3; i < 9; ++i) {
+                dp[i] = dp[i-1] * (10 - i + 1);
+            }
+        }
+        public int countNumbersWithUniqueDigits(int n) {
+            if (n == 0) { return 1; }
+            int res = 0;
+            for (int i = 1; i <= n; ++i) { res += dp[i]; }
+            return res;
+        }
+    }
 }

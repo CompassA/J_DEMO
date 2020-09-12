@@ -8,20 +8,12 @@ public class BitProblem {
     /**
      * 136. Single Number
      * Easy
-     * Given a non-empty array of integers, every element appears twice except for one. Find that single one.
+     * Given a non-empty array of integers, every element appears twice except for one.
+     * Find that single one.
      *
      * Note:
-     *
-     * Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
-     *
-     * Example 1:
-     *
-     * Input: [2,2,1]
-     * Output: 1
-     * Example 2:
-     *
-     * Input: [4,1,2,1,2]
-     * Output: 4
+     * Your algorithm should have a linear runtime complexity.
+     * Could you implement it without using extra memory?
      */
     public int singleNumber(int[] nums) {
         int res = nums[0];
@@ -96,5 +88,21 @@ public class BitProblem {
             }
         }
         return true;
+    }
+
+    /**
+     * 338. Counting Bits
+     * Medium
+     *
+     * Given a non negative integer number num.
+     * For every numbers i in the range 0 ≤ i ≤ num calculate the number of 1's in their binary
+     * representation and return them as an array.
+     */
+    public int[] countBits(int num) {
+        int[] res = new int[num+1];
+        for (int i = 1; i <= num; ++i) {
+            res[i] = res[i >> 1] + (i & 1);
+        }
+        return res;
     }
 }
