@@ -12,15 +12,8 @@ public class DfsProblem {
     /**
      * 39. Combination Sum
      * Medium
-     *
-     * 3189
-     *
-     * 101
-     *
-     * Add to List
-     *
-     * Share
-     * Given a set of candidate numbers (candidates) (without duplicates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target.
+     * Given a set of candidate numbers (candidates) (without duplicates) and a target number (target),
+     * find all unique combinations in candidates where the candidate numbers sums to target.
      *
      * The same repeated number may be chosen from candidates unlimited number of times.
      *
@@ -82,13 +75,6 @@ public class DfsProblem {
      * 79. Word Search
      * Medium
      *
-     * 3239
-     *
-     * 160
-     *
-     * Add to List
-     *
-     * Share
      * Given a 2D board and a word, find if the word exists in the grid.
      *
      * The word can be constructed from letters of sequentially adjacent cell, where "adjacent" cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once.
@@ -163,19 +149,6 @@ public class DfsProblem {
      * 46. Permutations
      * Medium
      * Given a collection of distinct integers, return all possible permutations.
-     *
-     * Example:
-     *
-     * Input: [1,2,3]
-     * Output:
-     * [
-     *   [1,2,3],
-     *   [1,3,2],
-     *   [2,1,3],
-     *   [2,3,1],
-     *   [3,1,2],
-     *   [3,2,1]
-     * ]
      */
     class Solution46 {
         private int[] nums;
@@ -209,13 +182,6 @@ public class DfsProblem {
      * 87. Scramble String
      * Hard
      *
-     * 461
-     *
-     * 669
-     *
-     * Add to List
-     *
-     * Share
      * Given a string s1, we may represent it as a binary tree by partitioning it to two non-empty substrings recursively.
      *
      * Below is one possible representation of s1 = "great":

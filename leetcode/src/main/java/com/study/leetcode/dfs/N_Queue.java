@@ -13,14 +13,6 @@ public class N_Queue {
     /**
      * 51. N-Queens
      * Hard
-     *
-     * 1706
-     *
-     * 69
-     *
-     * Add to List
-     *
-     * Share
      * The n-queens puzzle is the problem of placing n queens on an n×n chessboard such that no two queens attack each other.
      *
      *
@@ -28,21 +20,6 @@ public class N_Queue {
      * Given an integer n, return all distinct solutions to the n-queens puzzle.
      *
      * Each solution contains a distinct board configuration of the n-queens' placement, where 'Q' and '.' both indicate a queen and an empty space respectively.
-     *
-     * Example:
-     *
-     * Input: 4
-     * Output: [
-     *  [".Q..",  // Solution 1
-     *   "...Q",
-     *   "Q...",
-     *   "..Q."],
-     *
-     *  ["..Q.",  // Solution 2
-     *   "Q...",
-     *   "...Q",
-     *   ".Q.."]
-     * ]
      * Explanation: There exist two distinct solutions to the 4-queens puzzle as shown above.
      */
     private static class Solution {
@@ -113,17 +90,6 @@ public class N_Queue {
      * Input: 4
      * Output: 2
      * Explanation: There are two distinct solutions to the 4-queens puzzle as shown below.
-     * [
-     *  [".Q..",  // Solution 1
-     *   "...Q",
-     *   "Q...",
-     *   "..Q."],
-     *
-     *  ["..Q.",  // Solution 2
-     *   "Q...",
-     *   "...Q",
-     *   ".Q.."]
-     * ]
      */
     public int totalNQueens(int n) {
         return dfs(new int[n+1], new boolean[n+1], n, 1);
