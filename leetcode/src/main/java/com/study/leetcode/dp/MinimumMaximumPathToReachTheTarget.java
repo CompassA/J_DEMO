@@ -1,6 +1,8 @@
 package com.study.leetcode.dp;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -11,14 +13,6 @@ public class MinimumMaximumPathToReachTheTarget {
     /**
      * 746. Min Cost Climbing Stairs
      * Easy
-     *
-     * 1570
-     *
-     * 360
-     *
-     * Add to List
-     *
-     * Share
      * On a staircase, the i-th step has some non-negative cost cost[i] assigned (0 indexed).
      *
      * Once you pay the cost, you can either climb one or two steps. You need to find minimum cost to reach the top of the floor, and you can either start from the step with index 0, or the step with index 1.
@@ -66,14 +60,6 @@ public class MinimumMaximumPathToReachTheTarget {
     /**
      * 64. Minimum Path Sum
      * Medium
-     *
-     * 2141
-     *
-     * 48
-     *
-     * Add to List
-     *
-     * Share
      * Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right which minimizes the sum of all numbers along its path.
      *
      * Note: You can only move either down or right at any point in time.
@@ -115,14 +101,6 @@ public class MinimumMaximumPathToReachTheTarget {
     /**
      * 1314. Matrix Block Sum
      * Medium
-     *
-     * 114
-     *
-     * 20
-     *
-     * Add to List
-     *
-     * Share
      * Given a m * n matrix mat and an integer K, return a matrix answer where each answer[i][j] is the sum of all elements mat[r][c] for i - K <= r <= i + K, j - K <= c <= j + K, and (r, c) is a valid position in the matrix.
      *
      *
@@ -188,159 +166,8 @@ public class MinimumMaximumPathToReachTheTarget {
     }
 
     /**
-     * 322. Coin Change
-     * Medium
-     *
-     * 3168
-     *
-     * 105
-     *
-     * Add to List
-     *
-     * Share
-     * You are given coins of different denominations and a total amount of money amount. Write a function to compute the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
-     *
-     * Example 1:
-     *
-     * Input: coins = [1, 2, 5], amount = 11
-     * Output: 3
-     * Explanation: 11 = 5 + 5 + 1
-     * Example 2:
-     *
-     * Input: coins = [2], amount = 3
-     * Output: -1
-     * Note:
-     * You may assume that you have an infinite number of each kind of coin.
-     */
-    public int coinChange(int[] coins, int amount) {
-        final int impossible = Integer.MAX_VALUE;
-        int[] pack = new int[amount+1];
-        Arrays.fill(pack, impossible);
-        pack[0] = 0;
-
-        for (final int coin : coins) {
-            for (int i = coin; i <= amount; ++i) {
-                if (pack[i - coin] != impossible) {
-                    pack[i] = Math.min(pack[i - coin] + 1, pack[i]);
-                }
-            }
-        }
-        return pack[amount] == impossible ? -1 : pack[amount];
-    }
-
-    /**
-     * 518. Coin Change 2
-     * Medium
-     *
-     * 1291
-     *
-     * 50
-     *
-     * Add to List
-     *
-     * Share
-     * You are given coins of different denominations and a total amount of money. Write a function to compute the number of combinations that make up that amount. You may assume that you have infinite number of each kind of coin.
-     *
-     *
-     *
-     * Example 1:
-     *
-     * Input: amount = 5, coins = [1, 2, 5]
-     * Output: 4
-     * Explanation: there are four ways to make up the amount:
-     * 5=5
-     * 5=2+2+1
-     * 5=2+1+1+1
-     * 5=1+1+1+1+1
-     * Example 2:
-     *
-     * Input: amount = 3, coins = [2]
-     * Output: 0
-     * Explanation: the amount of 3 cannot be made up just with coins of 2.
-     * Example 3:
-     *
-     * Input: amount = 10, coins = [10]
-     * Output: 1
-     *
-     *
-     * Note:
-     *
-     * You can assume that
-     *
-     * 0 <= amount <= 5000
-     * 1 <= coin <= 5000
-     * the number of coins is less than 500
-     * the answer is guaranteed to fit into signed 32-bit integer
-     */
-    public int change(int amount, int[] coins) {
-        int[] pack = new int[amount+1];
-        Arrays.fill(pack, 0);
-        pack[0] = 1;
-
-        for (final int coin : coins) {
-            for (int i = coin; i <= amount; ++i) {
-                pack[i] += pack[i - coin];
-            }
-        }
-
-        return pack[amount];
-    }
-
-    /**
-     * 279. Perfect Squares
-     * Medium
-     *
-     * 2256
-     *
-     * 171
-     *
-     * Add to List
-     *
-     * Share
-     * Given a positive integer n, find the least number of perfect square numbers (for example, 1, 4, 9, 16, ...) which sum to n.
-     *
-     * Example 1:
-     *
-     * Input: n = 12
-     * Output: 3
-     * Explanation: 12 = 4 + 4 + 4.
-     * Example 2:
-     *
-     * Input: n = 13
-     * Output: 2
-     * Explanation: 13 = 4 + 9.
-     */
-    public int numSquares(int n) {
-        int[] nums = new int[n+1];
-        int index = 0;
-        while (index < nums.length && nums[index] < n) {
-            nums[index] = index * index;
-            ++index;
-        }
-
-        int[] dp = new int[n+1];
-        Arrays.fill(dp, Integer.MAX_VALUE - 1);
-        dp[0] = 0;
-        for (int i = 1; i < index; ++i) {
-            for (int j = nums[i]; j <= n; ++j) {
-                dp[j] = Math.min(dp[j], dp[j - nums[i]] + 1);
-            }
-        }
-
-        return dp[n];
-    }
-
-    /**
      * 931. Minimum Falling Path Sum
      * Medium
-     *
-     * 491
-     *
-     * 49
-     *
-     * Add to List
-     *
-     * Share
      * Given a square array of integers A, we want the minimum sum of a falling path through A.
      *
      * A falling path starts at any element in the first row, and chooses one element from each row.  The next row's choice must be in a column that is different from the previous row's column by at most one.
@@ -381,13 +208,6 @@ public class MinimumMaximumPathToReachTheTarget {
      * 120. Triangle
      * Medium
      *
-     * 1637
-     *
-     * 197
-     *
-     * Add to List
-     *
-     * Share
      * Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numbers on the row below.
      *
      * For example, given the following triangle
@@ -448,14 +268,6 @@ public class MinimumMaximumPathToReachTheTarget {
     /**
      * 300. Longest Increasing Subsequence
      * Medium
-     *
-     * 3884
-     *
-     * 89
-     *
-     * Add to List
-     *
-     * Share
      * Given an unsorted array of integers, find the length of longest increasing subsequence.
      *
      * Example:
@@ -470,23 +282,57 @@ public class MinimumMaximumPathToReachTheTarget {
      * Follow up: Could you improve it to O(n log n) time complexity?
      */
     public int lengthOfLIS(int[] nums) {
-        if (nums.length == 0) {
-            return 0;
-        }
+        if (nums.length == 0) { return 0; }
         int[] dp = new int[nums.length];
         dp[0] = 1;
         int res = 1;
         for (int i = 1; i < nums.length; ++i) {
             int max = 1;
             for (int j = i - 1; j >= 0; --j) {
-                if (nums[j] < nums[i] && max < (dp[j] + 1)) {
-                    max = dp[j] + 1;
-                }
+                if (nums[j] < nums[i] && max < (dp[j] + 1)) { max = dp[j] + 1; }
             }
             dp[i] = max;
-            if (res < max) {
-                res = max;
+            if (res < max) { res = max; }
+        }
+        return res;
+    }
+
+    /**
+     * 368. Largest Divisible Subset
+     * Medium
+     *
+     * Given a set of distinct positive integers, find the largest subset such that every pair (Si, Sj) of elements in this subset satisfies:
+     *
+     * Si % Sj = 0 or Sj % Si = 0.
+     *
+     * If there are multiple solutions, return any subset is fine.
+     */
+    public List<Integer> largestDivisibleSubset(int[] nums) {
+        if (nums.length == 0) { return Collections.emptyList(); }
+        Arrays.sort(nums);
+        int[] dp = new int[nums.length];
+        int[] pre = new int[nums.length];
+
+        int maxIndex = 0;
+        int max = 0;
+        for (int i = 0; i < nums.length; ++i) {
+            dp[i] = 1;
+            pre[i] = -1;
+            for (int j = i - 1; j >= 0; --j) {
+                if (nums[i] % nums[j] == 0) {
+                    if (dp[i] < dp[j] + 1) {
+                        dp[i] = dp[j] + 1;
+                        pre[i] = j;
+                    }
+                }
             }
+            if (dp[i] > max) { max = dp[i]; maxIndex = i; }
+        }
+        List<Integer> res = new ArrayList<>();
+        int index = maxIndex;
+        while (index != -1) {
+            res.add(nums[index]);
+            index = pre[index];
         }
         return res;
     }
@@ -494,14 +340,6 @@ public class MinimumMaximumPathToReachTheTarget {
     /**
      * 416. Partition Equal Subset Sum
      * Medium
-     *
-     * 2045
-     *
-     * 59
-     *
-     * Add to List
-     *
-     * Share
      * Given a non-empty array containing only positive integers, find if the array can be partitioned into two subsets such that the sum of elements in both subsets is equal.
      *
      * Note:
@@ -549,14 +387,6 @@ public class MinimumMaximumPathToReachTheTarget {
     /**
      * 303. Range Sum Query - Immutable
      * Easy
-     *
-     * 744
-     *
-     * 962
-     *
-     * Add to List
-     *
-     * Share
      * Given an integer array nums, find the sum of the elements between indices i and j (i ≤ j), inclusive.
      *
      * Example:
@@ -593,14 +423,6 @@ public class MinimumMaximumPathToReachTheTarget {
     /**
      * 304. Range Sum Query 2D - Immutable
      * Medium
-     *
-     * 791
-     *
-     * 164
-     *
-     * Add to List
-     *
-     * Share
      * Given a 2D matrix matrix, find the sum of the elements inside the rectangle defined by its upper left corner (row1, col1) and lower right corner (row2, col2).
      *
      * Range Sum Query 2D
