@@ -1,2 +1,10 @@
 server:
   port: 1234
+
+org:
+  study:
+    spring:
+      enabled: true
+      arg-val-1: 1
+      arg-val-2: 2
+      arg-val-3: "str"
