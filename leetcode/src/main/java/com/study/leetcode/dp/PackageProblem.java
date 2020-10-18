@@ -169,4 +169,36 @@ public class PackageProblem {
         }
         return dp[target];
     }
+
+    /**
+     * 494. Target Sum
+     * Medium
+     * You are given a list of non-negative integers, a1, a2, ..., an, and a target, S. Now you have 2 symbols + and -. For each integer, you should choose one from + and - as its new symbol.
+     *
+     * Find out how many ways to assign symbols to make sum of integers equal to target S.
+     * Note:
+     * The length of the given array is positive and will not exceed 20.
+     * The sum of elements in the given array will not exceed 1000.
+     * Your output answer is guaranteed to be fitted in a 32-bit integer.
+     */
+    public int findTargetSumWays(int[] nums, int S) {
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+        }
+        if (S > sum || S < -sum) {
+            return 0;
+        }
+        int offset = sum;
+        int max = sum + offset;
+        int[][] dp = new int[nums.length+1][offset+sum+1];
+        dp[0][0 + offset] = 1;
+        for (int i = 1; i <= nums.length; ++i) {
+            int curNum = nums[i-1];
+            for (int j = 0; j <= max; ++j) {
+                dp[i][j] = (j - curNum < 0 ? 0 : dp[i-1][j-curNum]) + (j + curNum > max ? 0 : dp[i-1][j+curNum]);
+            }
+        }
+        return dp[nums.length][S + offset];
+    }
 }
