@@ -20,13 +20,6 @@ public class GraphProblem {
      * 743. Network Delay Time
      * Medium
      *
-     * 1345
-     *
-     * 213
-     *
-     * Add to List
-     *
-     * Share
      * There are N network nodes, labelled 1 to N.
      *
      * Given times, a list of travel times as directed edges times[i] = (u, v, w), where u is the source node, v is the target node, and w is the time it takes for a signal to travel from source to target.
@@ -111,13 +104,6 @@ public class GraphProblem {
      * 1466. Reorder Routes to Make All Paths Lead to the City Zero
      * Medium
      *
-     * 62
-     *
-     * 3
-     *
-     * Add to List
-     *
-     * Share
      * There are n cities numbered from 0 to n-1 and n-1 roads such that there is only one way to travel between two different cities (this network form a tree). Last year, The ministry of transport decided to orient the roads in one direction because they are too narrow.
      *
      * Roads are represented by connections where connections[i] = [a, b] represents a road from city a to b.
@@ -237,13 +223,6 @@ public class GraphProblem {
      * 1462. Course Schedule IV
      * Medium
      *
-     * 82
-     *
-     * 7
-     *
-     * Add to List
-     *
-     * Share
      * There are a total of n courses you have to take, labeled from 0 to n-1.
      *
      * Some courses may have direct prerequisites, for example, to take course 0 you have first to take course 1, which is expressed as a pair: [1,0]
@@ -320,13 +299,6 @@ public class GraphProblem {
      * 133. Clone Graph
      * Medium
      *
-     * 1594
-     *
-     * 1316
-     *
-     * Add to List
-     *
-     * Share
      * Given a reference of a node in a connected undirected graph.
      *
      * Return a deep copy (clone) of the graph.
@@ -415,13 +387,6 @@ public class GraphProblem {
      * 207. Course Schedule
      * Medium
      *
-     * 3569
-     *
-     * 168
-     *
-     * Add to List
-     *
-     * Share
      * There are a total of numCourses courses you have to take, labeled from 0 to numCourses-1.
      *
      * Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is expressed as a pair: [0,1]
@@ -531,13 +496,6 @@ public class GraphProblem {
      * 310. Minimum Height Trees
      * Medium
      *
-     * 1728
-     *
-     * 96
-     *
-     * Add to List
-     *
-     * Share
      * For an undirected graph with tree characteristics, we can choose any node as the root. The result graph is then a rooted tree. Among all possible rooted trees, those with minimum height are called minimum height trees (MHTs). Given such a graph, write a function to find all the MHTs and return a list of their root labels.
      *
      * Format
@@ -616,5 +574,65 @@ public class GraphProblem {
             res.add(queue.poll());
         }
         return res;
+    }
+
+    /**
+     * 1631. Path With Minimum Effort
+     * Medium
+     *
+     * You are a hiker preparing for an upcoming hike. You are given heights, a 2D array of size rows x columns, where heights[row][col] represents the height of cell (row, col). You are situated in the top-left cell, (0, 0), and you hope to travel to the bottom-right cell, (rows-1, columns-1) (i.e., 0-indexed). You can move up, down, left, or right, and you wish to find a route that requires the minimum effort.
+     *
+     * A route's effort is the maximum absolute difference in heights between two consecutive cells of the route.
+     *
+     * Return the minimum effort required to travel from the top-left cell to the bottom-right cell.
+     */
+    static class Solution1631 {
+        public int minimumEffortPath(int[][] heights) {
+            int row = heights.length;
+            int col = heights[0].length;
+            boolean[] visited = new boolean[row * col];
+            int[] dis = new int[row * col];
+            Arrays.fill(dis, Integer.MAX_VALUE);
+            Queue<Node> minHeap = new PriorityQueue<>();
+            minHeap.offer(new Node(0, 0, 0));
+            int[] offset = {0, 1, 0, -1, 0};
+            while (!minHeap.isEmpty()) {
+                Node minNode = minHeap.poll();
+                if (minNode.x == row - 1 && minNode.y == col - 1) {
+                    return minNode.minEffort;
+                }
+                int curPos = minNode.x * col + minNode.y;
+                dis[curPos] = minNode.minEffort;
+                visited[curPos] = true;
+                for (int i = 0; i < 4; ++i) {
+                    int newX = minNode.x + offset[i];
+                    int newY = minNode.y + offset[i+1];
+                    int newPos = newX * col + newY;
+                    if (newX >= 0 && newX < row && newY >= 0 && newY < col && !visited[newPos]) {
+                        int effort = Math.max(
+                                minNode.minEffort,
+                                Math.abs(heights[minNode.x][minNode.y] - heights[newX][newY])
+                        );
+                        if (effort < dis[newPos]) {
+                            minHeap.offer(new Node(effort, newX, newY));
+                        }
+                    }
+                }
+            }
+            return 0;
+        }
+
+        private static class Node implements Comparable<Node> {
+            private int minEffort;
+            private int x;
+            private int y;
+            public Node(int minEffort, int x, int y) {
+                this.minEffort = minEffort; this.x = x; this.y = y;
+            }
+            @Override
+            public int compareTo(Node node) {
+                return this.minEffort - node.minEffort;
+            }
+        }
     }
 }
