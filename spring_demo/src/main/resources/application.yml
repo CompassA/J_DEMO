@@ -1,6 +1,18 @@
 server:
   port: 1234
 
+spring:
+  #mysql mybatis config
+  datasource:
+    url: "jdbc:mysql://192.168.3.17:3306/study?characterEncoding=utf-8"
+    username: "root"
+    password: "root"
+    driver-class-name: "com.mysql.jdbc.Driver"
+    type: "com.alibaba.druid.pool.DruidDataSource"
+  mybatis:
+    mapper-locations: "classpath:mapper/*.xml"
+    configuration:
+      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 org:
   study:
     spring:

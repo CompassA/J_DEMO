@@ -696,8 +696,8 @@ public class TreeProblem {
         if (root == null || root.val == p.val || root.val == q.val) {
             return root;
         }
-        TreeNode leftRes = lowestCommonAncestor(root.left, p, q);
-        TreeNode rightRes = lowestCommonAncestor(root.right, p, q);
+        TreeNode leftRes = lowestCommonAncestorII(root.left, p, q);
+        TreeNode rightRes = lowestCommonAncestorII(root.right, p, q);
         if (leftRes != null && rightRes != null) {
             return root;
         }
