@@ -11,6 +11,45 @@ import java.util.List;
  */
 public class SlideWindowProblem {
 
+    //------------------------------Hard-----------------------------
+    /**
+     * 76. Minimum Window Substring
+     * https://leetcode.com/problems/minimum-window-substring/
+     */
+    public String minWindow(String s, String t) {
+        if (s.length() < t.length()) {
+            return "";
+        }
+        char[] str = s.toCharArray();
+        char[] word = t.toCharArray();
+        int[] cnt = new int[256];
+        for (char c : word) {
+            ++cnt[c];
+        }
+        int left = 0;
+        int resLeft = 0;
+        int minLen = Integer.MAX_VALUE;
+        int charInWord = 0;
+        for (int right = 0; right < str.length; ++right) {
+            --cnt[str[right]];
+            if (cnt[str[right]] >= 0) {
+                ++charInWord;
+            }
+            while (charInWord == word.length) {
+                if (minLen > right - left + 1) {
+                    minLen = right - left + 1;
+                    resLeft = left;
+                }
+                ++cnt[str[left]];
+                if (cnt[str[left]] > 0) {
+                    --charInWord;
+                }
+                ++left;
+            }
+        }
+        return minLen == Integer.MAX_VALUE ? "" : s.substring(resLeft, resLeft + minLen);
+    }
+
     /**
      * 239. Sliding Window Maximum
      * Hard
