@@ -161,7 +161,7 @@ public class GreedyProblem {
             return people;
         }
         // 高的人排在矮的人前面
-        // 身高相同的 按p[1]的值从小到达排列
+        // 身高相同的 按p[1]的值从小到大排列
         Arrays.sort(people, (pA, pB) -> {
             if (pA[0] != pB[0]) {
                 return pB[0] - pA[0];

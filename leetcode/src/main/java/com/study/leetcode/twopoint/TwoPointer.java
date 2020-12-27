@@ -8,6 +8,27 @@ import java.util.Arrays;
  */
 public class TwoPointer {
 
+    //==============================Easy=======================
+
+    /**
+     * 88. Merge Sorted Array
+     * https://leetcode.com/problems/merge-sorted-array/
+     */
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int cur = m + n - 1;
+        int index1 = m - 1;
+        int index2 = n - 1;
+        while (index1 >= 0 && index2 >= 0) {
+            if (nums1[index1] > nums2[index2]) {
+                nums1[cur--] = nums1[index1--];
+            } else {
+                nums1[cur--] = nums2[index2--];
+            }
+        }
+        while (index2 >= 0) {
+            nums1[cur--] = nums2[index2--];
+        }
+    }
     /**
      * 1471. The k Strongest Values in an Array
      * Given an array of integers arr and an integer k.
