@@ -77,7 +77,7 @@ public class TrieProblem {
         Arrays.sort(queryInfo, (query1, query2) -> query1[1] - query2[1]);
 
         int[] res = new int[queries.length];
-        Trie root = new Trie();
+        TrieII root = new TrieII();
         int numIndex = 0;
         for (int[] query : queryInfo) {
             while (numIndex < nums.length && nums[numIndex] <= query[1]) {

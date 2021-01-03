@@ -1,6 +1,11 @@
 package com.study.leetcode.twopoint;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * @author fanqie
@@ -29,30 +34,61 @@ public class TwoPointer {
             nums1[cur--] = nums2[index2--];
         }
     }
+
+    /**
+     * 680. Valid Palindrome II
+     * https://leetcode.com/problems/valid-palindrome-ii/
+     */
+    public boolean validPalindrome(String s) {
+        if (s.length() < 2) {
+            return true;
+        }
+        return valid(s.toCharArray(), 0, s.length() - 1, 1);
+    }
+
+    private boolean valid(char[] str, int left, int right, int chance) {
+        while (left < right) {
+            if (str[left] != str[right]) {
+                return chance > 0 && (valid(str, left, right - 1, 0) || valid(str, left + 1, right, 0));
+            } else {
+                ++left;
+                --right;
+            }
+        }
+        return true;
+    }
+
+    //=======================================Medium==================================
+    /**
+     * 633. Sum of Square Numbers
+     * https://leetcode.com/problems/sum-of-square-numbers/
+     */
+    public boolean judgeSquareSum(int c) {
+        int left = 0, right = (int) Math.sqrt(c);
+        while (left <= right) {
+            int sum = left * left + right * right;
+            if (sum == c) {
+                return true;
+            } else if (sum > c) {
+                --right;
+            } else {
+                ++left;
+            }
+        }
+        return false;
+    }
+
     /**
      * 1471. The k Strongest Values in an Array
-     * Given an array of integers arr and an integer k.
-     *
-     * A value arr[i] is said to be stronger than a value arr[j] if |arr[i] - m| > |arr[j] - m| where m is the median of the array.
-     * If |arr[i] - m| == |arr[j] - m|, then arr[i] is said to be stronger than arr[j] if arr[i] > arr[j].
-     *
-     * Return a list of the strongest k values in the array. return the answer in any arbitrary order.
-     *
-     * Median is the middle value in an ordered integer list. More formally, if the length of the list is n, the median is the element in position ((n - 1) / 2) in the sorted list (0-indexed).
-     *
-     * For arr = [6, -3, 7, 2, 11], n = 5 and the median is obtained by sorting the array arr = [-3, 2, 6, 7, 11] and the median is arr[m] where m = ((5 - 1) / 2) = 2. The median is 6.
-     * For arr = [-7, 22, 17, 3], n = 4 and the median is obtained by sorting the array arr = [-7, 3, 17, 22] and the median is arr[m] where m = ((4 - 1) / 2) = 1. The median is 3.
+     * https://leetcode.com/problems/the-k-strongest-values-in-an-array/
      */
     public int[] getStrongest(int[] arr, int k) {
         Arrays.sort(arr);
         int[] res = new int[k];
-        int m = arr[(arr.length-1)/2];
-        int left = 0;
-        int right = arr.length - 1;
-        int absLeft = Math.abs(arr[left] - m);
+        int m = arr[(arr.length - 1) / 2];
+        int left = 0, right = arr.length - 1;
         for (int i = 0; i < k; ++i) {
-            int absRight = Math.abs(arr[right] - m);
-            if (absLeft > absRight) {
+            if (Math.abs(arr[left] - m) > Math.abs(arr[right] - m)) {
                 res[i] = arr[left];
                 ++left;
             } else {
@@ -61,5 +97,53 @@ public class TwoPointer {
             }
         }
         return res;
+    }
+
+    /**
+     * 524. Longest Word in Dictionary through Deleting
+     * https://leetcode.com/problems/longest-word-in-dictionary-through-deleting/
+     */
+    public String findLongestWord(String s, List<String> d) {
+        if (d.isEmpty()) {
+            return "";
+        }
+        Map<Integer, List<String>> dictionary = new TreeMap<>((a, b) -> b - a);
+        for (String str : d) {
+            if (s.length() < str.length()) {
+                continue;
+            }
+            dictionary.putIfAbsent(str.length(), new ArrayList<>());
+            dictionary.get(str.length()).add(str);
+        }
+        for (int length : dictionary.keySet()) {
+            List<String> strings = dictionary.get(length);
+            Collections.sort(strings);
+            for (String str : strings) {
+                if (isSub(str, s)) {
+                    return str;
+                }
+            }
+        }
+        return "";
+    }
+
+    private boolean isSub(String str, String target) {
+        int curIndex = 0;
+        for (int i = 0; i < str.length(); ++i) {
+            boolean found = false;
+            while (curIndex < target.length()) {
+                if (str.charAt(i) == target.charAt(curIndex)) {
+                    found = true;
+                    ++curIndex;
+                    break;
+                } else {
+                    ++curIndex;
+                }
+            }
+            if (!found) {
+                return false;
+            }
+        }
+        return true;
     }
 }
