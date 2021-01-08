@@ -6,6 +6,29 @@ package com.study.leetcode.binarysearch;
  */
 public class BinarySearchProblem {
 
+    //---------------------------------Hard--------------------------------------------
+    /**
+     * 154. Find Minimum in Rotated Sorted Array II
+     * https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/
+     */
+    public int findMinII(int[] nums) {
+        if (nums.length == 0) {
+            return 0;
+        }
+        int left = 0, right = nums.length - 1;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (nums[left] == nums[right]) {
+                ++left;
+            } else if (nums[mid] <= nums[right]) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return nums[left];
+    }
+
     //---------------------------------Medium------------------------------------------
     /**
      * 34. Find First and Last Position of Element in Sorted Array
@@ -48,32 +71,59 @@ public class BinarySearchProblem {
     }
 
     /**
+     * 81. Search in Rotated Sorted Array II
+     * https://leetcode.com/problems/search-in-rotated-sorted-array-ii/
+     */
+    public boolean search(int[] nums, int target) {
+        int left = 0, right = nums.length - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == target) {
+                return true;
+            }
+            if (nums[left] == nums[right]) {
+                ++left;
+            } else if (nums[mid] <= nums[right]) {
+                if (target > nums[mid] && target <= nums[right]) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            } else {
+                if (target < nums[mid] && target >= nums[left]) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 540. Single Element in a Sorted Array
+     * https://leetcode.com/problems/single-element-in-a-sorted-array/
+     */
+    public int singleNonDuplicate(int[] nums) {
+        int left = 0, right = nums.length - 1;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (mid % 2 == 1) {
+                --mid;
+            }
+            if (nums[mid] != nums[mid+1]) {
+                right = mid;
+            } else {
+                left = mid + 2;
+            }
+        }
+        return nums[right];
+    }
+
+    //========================================Easy==============================================
+    /**
      * 69. Sqrt(x)
-     * Easy
-     *
-     * 1125
-     *
-     * 1749
-     *
-     * Add to List
-     *
-     * Share
-     * Implement int sqrt(int x).
-     *
-     * Compute and return the square root of x, where x is guaranteed to be a non-negative integer.
-     *
-     * Since the return type is an integer, the decimal digits are truncated and only the integer part of the result is returned.
-     *
-     * Example 1:
-     *
-     * Input: 4
-     * Output: 2
-     * Example 2:
-     *
-     * Input: 8
-     * Output: 2
-     * Explanation: The square root of 8 is 2.82842..., and since
-     *              the decimal part is truncated, 2 is returned.
+     * https://leetcode.com/problems/sqrtx/
      */
     public int mySqrt(int x) {
         if (x < 2) {
@@ -167,46 +217,18 @@ public class BinarySearchProblem {
 
     /**
      * 153. Find Minimum in Rotated Sorted Array
-     * Medium
-     *
-     * 1768
-     *
-     * 217
-     *
-     * Add to List
-     *
-     * Share
-     * Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
-     *
-     * (i.e.,  [0,1,2,4,5,6,7] might become  [4,5,6,7,0,1,2]).
-     *
-     * Find the minimum element.
-     *
-     * You may assume no duplicate exists in the array.
-     *
-     * Example 1:
-     *
-     * Input: [3,4,5,1,2]
-     * Output: 1
-     * Example 2:
-     *
-     * Input: [4,5,6,7,0,1,2]
-     * Output: 0
+     * https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
      */
     public int findMin(int[] nums) {
         int left = 0, right = nums.length - 1;
         while (left < right) {
-            if (nums[left] < nums[right]) {
-                return nums[left];
-            }
-
             int mid = left + (right - left) / 2;
-            if (nums[mid] >= nums[left]) {
-                left = mid + 1;
-            } else {
+            if (nums[mid] < nums[right]) {
                 right = mid;
+            } else {
+                left = mid + 1;
             }
         }
-        return nums[right];
+        return nums[left];
     }
 }
