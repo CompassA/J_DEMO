@@ -554,4 +554,22 @@ public class DpMedium {
             this.age = age;
         }
     }
+
+    /**
+     * 714. Best Time to Buy and Sell Stock with Transaction Fee
+     * https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/
+     */
+    public int maxProfit(int[] prices, int fee) {
+        // to buy
+        int state1 = 0;
+        // to sell
+        int state2 = -prices[0];
+        for (int i = 1; i < prices.length; ++i) {
+            int newState1 = Math.max(state1, state2 + prices[i] - fee);
+            int newState2 = Math.max(state2, state1 - prices[i]);
+            state1 = newState1;
+            state2 = newState2;
+        }
+        return Math.max(state1, state2);
+    }
 }

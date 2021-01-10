@@ -348,41 +348,4 @@ public class DpHard {
                     && preNum < matrix[x][y];
         }
     }
-
-    /** 97*/
-    public boolean isInterleaveIII(String s1, String s2, String s3) {
-        if (s1.length() + s2.length() < s3.length()) {
-            return false;
-        }
-        return dfs(s1.toCharArray(),
-                s2.toCharArray(),
-                s3.toCharArray(),
-                s3.length(),
-                new boolean[s1.length()+1][s2.length()+1]);
-
-    }
-
-    private boolean dfs(char[] s1, char[] s2, char[] s3, int len, boolean[][] dp) {
-        if (len == 0) {
-            dp[0][0] = true;
-            return true;
-        }
-        if (dfs(s1, s2, s3, len-1, dp)) {
-            return false;
-        }
-        boolean res = false;
-        int limit = Math.min(s1.length, len);
-        for (int i = 0; i <= limit; ++i) {
-            int j = len - i;
-            if (j > s2.length) {
-                continue;
-            }
-            dp[i][j] = (i > 0 && dp[i-1][j] && s1[i-1] == s3[len-1]) ||
-                    (j > 0 && dp[i][j-1] && s2[j-1] == s3[len-1]);
-            if (dp[i][j]) {
-                res = true;
-            }
-        }
-        return res;
-    }
 }

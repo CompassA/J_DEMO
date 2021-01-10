@@ -1,6 +1,8 @@
 package com.study.leetcode.dp;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author fanqie
@@ -8,6 +10,7 @@ import java.util.Arrays;
  */
 public class PackageProblem {
 
+    //============================Medium=========================
     /**
      * 322. Coin Change
      * Medium
@@ -201,4 +204,85 @@ public class PackageProblem {
         }
         return dp[nums.length][S + offset];
     }
+
+    /**
+     * 698. Partition to K Equal Sum Subsets
+     * https://leetcode.com/problems/partition-to-k-equal-sum-subsets/
+     */
+    public boolean canPartitionKSubsets(int[] nums, int k) {
+        int sum = 0;
+        int max = Integer.MIN_VALUE;
+        for (int num : nums) {
+            sum += num;
+            max = Math.max(num, max);
+        }
+        if (sum % k != 0 || sum / k < max) {
+            return false;
+        }
+        Map<Integer, Boolean> dp = new HashMap<Integer, Boolean>();
+        dp.put((1 << nums.length) - 1, true);
+        return dfs(0, sum, sum / k, dp, nums);
+    }
+
+    private boolean dfs(int bitMap, int rest, int target, Map<Integer, Boolean> dp, int[] nums) {
+        Boolean cache = dp.get(bitMap);
+        if (cache != null) {
+            return cache;
+        }
+        dp.put(bitMap, false);
+        int curTarget = (rest - 1) % target + 1;
+        for (int i = 0; i < nums.length; ++i) {
+            if (((bitMap >> i) & 1) == 0 && nums[i] <= curTarget) {
+                if (dfs(bitMap | (1 << i), rest - nums[i], target, dp, nums)) {
+                    dp.put(bitMap, true);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 473. Matchsticks to Square
+     * https://leetcode.com/problems/matchsticks-to-square/
+     */
+    public boolean makesquare(int[] nums) {
+        int sum = 0;
+        int max = Integer.MIN_VALUE;
+        for (int num : nums) {
+            sum += num;
+            max = Math.max(max, num);
+        }
+        if (sum == 0 || sum % 4 != 0 || sum / 4 < max) {
+            return false;
+        }
+        Map<Integer, Boolean> dp = new HashMap<>();
+        dp.put((1 << nums.length) - 1, true);
+        return dfs(0, sum, sum / 4, nums, dp);
+    }
+
+    private boolean dfs(int visited, int left, int target, int[] nums, Map<Integer, Boolean> dp) {
+        Boolean cache = dp.get(visited);
+        if (cache != null) {
+            return cache;
+        }
+        int curTarget = (left - 1) % target + 1;
+        dp.put(visited, false);
+        for (int i = 0; i < nums.length; ++i) {
+            if ((visited >> i & 1) == 0 && nums[i] <= curTarget) {
+                if (dfs(visited | (1 << i), left - nums[i], target, nums, dp)) {
+                    dp.put(visited, true);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+    //======================Hard===========================
+    /**
+     * 1723. Find Minimum Time to Finish All Jobs
+     * https://leetcode.com/problems/find-minimum-time-to-finish-all-jobs/
+     */
 }
