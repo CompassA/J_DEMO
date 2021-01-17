@@ -547,4 +547,31 @@ public class DpMatrix {
             return dp[j] - dp[i-1];
         }
     }
+
+    /**
+     * 1727. Largest Submatrix With Rearrangements
+     * https://leetcode.com/problems/largest-submatrix-with-rearrangements/
+     */
+    public int largestSubmatrix(int[][] matrix) {
+        int row = matrix.length;
+        int col = matrix[0].length;
+        int[][] dp = new int[row][col];
+        for (int i = 0; i < col; ++i) {
+            int[] cnt = new int[row];
+            for (int j = 0; j < row; ++j) {
+                if (matrix[j][i] == 1) {
+                    cnt[j] = (j > 0 ? (cnt[j-1] +1) : 1);
+                    dp[j][i] = cnt[j];
+                }
+            }
+        }
+        int res = 0;
+        for (int i = 0; i < row; ++i) {
+            Arrays.sort(dp[i]);
+            for (int j = col - 1; j >= 0; --j) {
+                res = Math.max(dp[i][j] * (col - j), res);
+            }
+        }
+        return res;
+    }
 }

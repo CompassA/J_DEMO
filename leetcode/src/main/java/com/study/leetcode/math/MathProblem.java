@@ -1,6 +1,8 @@
 package com.study.leetcode.math;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author fanqie
@@ -320,5 +322,29 @@ public class MathProblem {
             for (int i = 1; i <= n; ++i) { res += dp[i]; }
             return res;
         }
+    }
+
+    //=========================Medium==============================
+
+    /**
+     * 1726. Tuple with Same Product
+     * https://leetcode.com/problems/tuple-with-same-product/
+     */
+    public int tupleSameProduct(int[] nums) {
+        Map<Integer, Integer> cnt = new HashMap<>();
+        for (int i = 0; i < nums.length; ++i) {
+            for (int j = i + 1; j < nums.length; ++j) {
+                int product = nums[i] * nums[j];
+                cnt.put(product, cnt.getOrDefault(product, 0) + 1);
+            }
+        }
+        int[] res = new int[1];
+        cnt.forEach((k, v) -> {
+            if (v < 2) {
+                return;
+            }
+            res[0] += (v) * (v - 1) * 2 * 2;
+        });
+        return res[0];
     }
 }

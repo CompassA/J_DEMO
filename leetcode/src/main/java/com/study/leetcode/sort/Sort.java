@@ -1,10 +1,46 @@
-package com.study.leetcode.quicksort;
+package com.study.leetcode.sort;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author fanqie
  * @date 2020/2/23
  */
-public class SortColors {
+public class Sort {
+
+    /**
+     * 347. Top K Frequent Elements
+     * https://leetcode.com/problems/top-k-frequent-elements/
+     */
+    public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> cntMap = new HashMap<>();
+        for (int num : nums) {
+            cntMap.put(num, cntMap.getOrDefault(num, 0) + 1);
+        }
+        List<Integer>[] bucket = new List[nums.length + 1];
+        cntMap.forEach((key, v) -> {
+            if (bucket[v] == null) {
+                bucket[v] = new ArrayList<>();
+            }
+            bucket[v].add(key);
+        });
+        int[] res = new int[k];
+        int index = 0;
+        for (int j = bucket.length-1; j >= 0; --j) {
+            if (bucket[j] != null) {
+                for (int num : bucket[j]) {
+                    res[index++] = num;
+                    if (index == res.length) {
+                        return res;
+                    }
+                }
+            }
+        }
+        return res;
+    }
     /**
      * 75. Sort Colors
      *

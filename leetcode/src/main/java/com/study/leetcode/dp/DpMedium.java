@@ -443,19 +443,7 @@ public class DpMedium {
 
     /**
      * 300. Longest Increasing Subsequence
-     * Medium
-     * Given an unsorted array of integers, find the length of longest increasing subsequence.
-     *
-     * Example:
-     *
-     * Input: [10,9,2,5,3,7,101,18]
-     * Output: 4
-     * Explanation: The longest increasing subsequence is [2,3,7,101], therefore the length is 4.
-     * Note:
-     *
-     * There may be more than one LIS combination, it is only necessary for you to return the length.
-     * Your algorithm should run in O(n2) complexity.
-     * Follow up: Could you improve it to O(n log n) time complexity?
+     * https://leetcode.com/problems/longest-increasing-subsequence/
      */
     public int lengthOfLIS(int[] nums) {
         if (nums.length == 0) { return 0; }
@@ -471,6 +459,49 @@ public class DpMedium {
             if (res < max) { res = max; }
         }
         return res;
+    }
+
+    public int lengthOfLIS2(int[] nums) {
+        List<Integer> sorted = new ArrayList<>();
+        for (int num : nums) {
+            replaceOrAppend(sorted, num);
+        }
+        return sorted.size();
+    }
+
+    private void replaceOrAppend(List<Integer> nums, int target) {
+        int left = 0, right = nums.size();
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            int midNum = nums.get(mid);
+            if (midNum < target) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+        if (left == nums.size()) {
+            nums.add(target);
+        } else {
+            nums.set(left, target);
+        }
+    }
+
+    /**
+     * 1143. Longest Common Subsequence
+     * https://leetcode.com/problems/longest-common-subsequence/
+     */
+    public int longestCommonSubsequence(String text1, String text2) {
+        int[][] dp = new int[text1.length()+1][text2.length()+1];
+        for (int i = 1; i <= text1.length(); ++i) {
+            for (int j = 1; j <= text2.length(); ++j) {
+                dp[i][j] = Math.max(
+                        dp[i-1][j-1] + (text1.charAt(i-1) == text2.charAt(j-1) ? 1 : 0),
+                        Math.max(dp[i-1][j], dp[i][j-1])
+                );
+            }
+        }
+        return dp[text1.length()][text2.length()];
     }
 
     /**

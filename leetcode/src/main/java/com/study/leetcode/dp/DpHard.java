@@ -1,5 +1,10 @@
 package com.study.leetcode.dp;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author fanqie
  * @date 2020/6/1
@@ -347,5 +352,44 @@ public class DpHard {
             return x >= 0 && x < matrix.length && y >= 0 && y < matrix[0].length
                     && preNum < matrix[x][y];
         }
+    }
+
+
+    /**
+     * 1713. Minimum Operations to Make a Subsequence
+     * https://leetcode.com/problems/minimum-operations-to-make-a-subsequence/
+     */
+    public int minOperations(int[] target, int[] arr) {
+        Map<Integer, Integer> indexMap = new HashMap<>();
+        for (int i = 0; i < target.length; ++i) {
+            indexMap.put(target[i], i);
+        }
+        List<Integer> arrList = new ArrayList<>();
+        for (int num : arr) {
+            Integer index = indexMap.get(num);
+            if (index != null) {
+                arrList.add(index);
+            }
+        }
+
+        List<Integer> lis = new ArrayList<>();
+        for (int num : arrList) {
+            int left = 0, right = lis.size();
+            while (left < right) {
+                int mid = left + (right - left) / 2;
+                int midNum = lis.get(mid);
+                if (midNum < num) {
+                    left = mid + 1;
+                } else {
+                    right = mid;
+                }
+            }
+            if (right == lis.size()) {
+                lis.add(num);
+            } else {
+                lis.set(right, num);
+            }
+        }
+        return target.length - lis.size();
     }
 }

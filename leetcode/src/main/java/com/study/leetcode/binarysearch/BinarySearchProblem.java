@@ -35,16 +35,7 @@ public class BinarySearchProblem {
      * https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
      */
     public int[] searchRange(int[] nums, int target) {
-        int first = findFirst(nums, target);
-        if (first == -1) {
-            return new int[] {-1, -1};
-        }
-        return new int[] { first, findLast(nums, target) };
-    }
-
-    private int findFirst(int[] nums, int target) {
-        int left = 0;
-        int right = nums.length;
+        int left = 0, right = nums.length;
         while (left < right) {
             int mid = left + (right - left) / 2;
             if (nums[mid] < target) {
@@ -53,12 +44,12 @@ public class BinarySearchProblem {
                 right = mid;
             }
         }
-        return (left == nums.length || nums[left] != target) ? -1 : left;
-    }
-
-    private int findLast(int[] nums, int target) {
-        int left = 0;
-        int right = nums.length;
+        if (left == nums.length || nums[left] != target) {
+            return new int[]{-1, -1};
+        }
+        int posLeft = left;
+        left = 0;
+        right = nums.length;
         while (left < right) {
             int mid = left + (right - left) / 2;
             if (nums[mid] <= target) {
@@ -67,7 +58,7 @@ public class BinarySearchProblem {
                 right = mid;
             }
         }
-        return (left == 0 || nums[left - 1] != target) ? -1 : left - 1;
+        return new int[]{posLeft, right - 1};
     }
 
     /**
@@ -118,6 +109,52 @@ public class BinarySearchProblem {
             }
         }
         return nums[right];
+    }
+
+    /**
+     * 215. Kth Largest Element in an Array
+     * https://leetcode.com/problems/kth-largest-element-in-an-array/
+     */
+    class Solution {
+        public int findKthLargest(int[] nums, int k) {
+            int left = 0, right = nums.length - 1;
+            int target = nums.length - k;
+            while (left <= right) {
+                int mid = partition(nums, left, right);
+                if (mid == target) {
+                    return nums[mid];
+                } else if (mid > target) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            }
+            return -1;
+        }
+
+        private int partition(int[] nums, int left, int right) {
+            int randomPos = (int) (Math.random() * (right - left)) + left;
+            swap(nums, right, randomPos);
+            int pivot = nums[right];
+
+            int lowIndex = left - 1;
+            while (left < right) {
+                if (nums[left] < pivot) {
+                    ++lowIndex;
+                    swap(nums, lowIndex, left);
+                }
+                ++left;
+            }
+            ++lowIndex;
+            swap(nums, lowIndex, right);
+            return lowIndex;
+        }
+
+        private void swap(int[] nums, int a, int b) {
+            int tmp = nums[a];
+            nums[a] = nums[b];
+            nums[b] = tmp;
+        }
     }
 
     //========================================Easy==============================================
