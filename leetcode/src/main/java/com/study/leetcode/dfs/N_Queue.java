@@ -3,6 +3,7 @@ package com.study.leetcode.dfs;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author fanqie
@@ -64,6 +65,40 @@ public class N_Queue {
                     dfs(board, used, n, curX + 1);
                     used[y] = false;
                 }
+            }
+        }
+    }
+
+    class Solution51 {
+        public List<List<String>> solveNQueens(int n) {
+            List<List<String>> res = new ArrayList<>();
+            char[][] g = new char[n][n];
+            for (char[] c : g) {
+                Arrays.fill(c, '.');
+            }
+            dfs(res, g, n, 0, new boolean[n], new boolean[2*n-1], new boolean[2*n-1]);
+            return res;
+        }
+
+        private void dfs(List<List<String>> res, char[][] g, int n, int x,
+                         boolean[] yUsed, boolean[] lUsed, boolean[] rUsed) {
+            if (x == n) {
+                res.add(Arrays.stream(g).map(String::new).collect(Collectors.toList()));
+                return;
+            }
+            for (int y = 0; y < n; ++y) {
+                //y = x + b, b = y - x
+                int l = n - 1 + y - x;
+                //y = - x + b, b = x + y
+                int r = x + y;
+                if (yUsed[y] || lUsed[l] || rUsed[r]) {
+                    continue;
+                }
+                yUsed[y] = lUsed[l] = rUsed[r] = true;
+                g[x][y] = 'Q';
+                dfs(res, g, n, x + 1, yUsed, lUsed, rUsed);
+                yUsed[y] = lUsed[l] = rUsed[r] = false;
+                g[x][y] = '.';
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.study.leetcode.dfs;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -297,5 +298,148 @@ public class DfsProblem {
             }
         }
         return false;
+    }
+
+    /**
+     * 695. Max Area of Island
+     * https://leetcode.com/problems/max-area-of-island/
+     */
+    private static class Solution695 {
+        private static final int[] DIRECTION = new int[]{-1, 0, 1, 0, -1};
+
+        public int maxAreaOfIsland(int[][] grid) {
+            if (grid.length < 1 || grid[0].length < 1) {
+                return 0;
+            }
+            int res = 0;
+            for (int i = 0; i < grid.length; ++i) {
+                for (int j = 0; j < grid[i].length; ++j) {
+                    res = Math.max(res, dfs(grid, i, j));
+                }
+            }
+            return res;
+        }
+
+        private int dfs(int[][] grid, int x, int y) {
+            if (grid[x][y] == 0) {
+                return 0;
+            }
+            grid[x][y] = 0;
+            int sum = 1;
+            for (int i = 0; i < 4; ++i) {
+                int newX = x + DIRECTION[i];
+                int newY = y + DIRECTION[i+1];
+                if (newX >= 0 && newX < grid.length && newY >= 0 && newY < grid[0].length
+                        && grid[newX][newY] != 0) {
+                    sum += dfs(grid, newX, newY);
+                }
+            }
+            return sum;
+        }
+    }
+
+    /**
+     * 547. Number of Provinces
+     * https://leetcode.com/problems/number-of-provinces/
+     */
+    class Solution547 {
+
+        public int findCircleNum(int[][] g) {
+            if (g.length < 1 || g[0].length < 1) {
+                return 0;
+            }
+            int cnt = 0;
+            boolean[] visited = new boolean[g.length];
+            for (int i = 0; i < g.length; ++i) {
+                if (!visited[i]) {
+                    ++cnt;
+                    dfs(g, visited, i);
+                }
+            }
+            return cnt;
+        }
+
+        private void dfs(int[][] g, boolean[] visited, int root) {
+            visited[root] = true;
+            for (int i = 0; i < g.length; ++i) {
+                if (!visited[i] && g[root][i] == 1) {
+                    dfs(g, visited, i);
+                }
+            }
+        }
+    }
+
+    /**
+     * 417. Pacific Atlantic Water Flow
+     * https://leetcode.com/problems/pacific-atlantic-water-flow/
+     */
+    private static class Solution417 {
+        private static final int[] D = {-1, 0, 1, 0, -1};
+
+        public List<List<Integer>> pacificAtlantic(int[][] matrix) {
+            List<List<Integer>> res = new ArrayList<>();
+            if (matrix.length == 0 || matrix[0].length == 0) {
+                return res;
+            }
+            int row = matrix.length;
+            int col = matrix[0].length;
+            boolean[][] reachA = new boolean[row][col];
+            boolean[][] reachP = new boolean[row][col];
+            for (int i = 0; i < row; ++i) {
+                dfs(matrix, reachP, i, 0);
+                dfs(matrix, reachA, i, col - 1);
+            }
+            for (int i = 0; i < col; ++i) {
+                dfs(matrix, reachP, 0, i);
+                dfs(matrix, reachA, row-1, i);
+            }
+            for (int i = 0; i < row; ++i) {
+                for (int j = 0; j < col; ++j) {
+                    if (reachA[i][j] && reachP[i][j]) {
+                        res.add(Arrays.asList(i, j));
+                    }
+                }
+            }
+            return res;
+        }
+
+        private void dfs(int[][] g, boolean[][] reach, int x, int y) {
+            if (reach[x][y]) {
+                return;
+            }
+            reach[x][y] = true;
+            for (int i = 0; i < 4; ++i) {
+                int newX = x + D[i];
+                int newY = y + D[i+1];
+                if (newX >= 0 && newX < g.length && newY >= 0 && newY < g[0].length
+                        && g[newX][newY] >= g[x][y]) {
+                    dfs(g, reach, newX, newY);
+                }
+            }
+        }
+    }
+
+    /**
+     * 77. Combinations
+     * https://leetcode.com/problems/combinations/
+     */
+    class Solution77 {
+        public List<List<Integer>> combine(int n, int k) {
+            List<List<Integer>> res = new ArrayList<>();
+            dfs(1, n, new ArrayList<>(), k, res);
+            return res;
+        }
+
+        private void dfs(int begin, int end, List<Integer> collected, int k, List<List<Integer>> res) {
+            if (k == 0) {
+                res.add(new ArrayList<>(collected));
+                return;
+            }
+            for (int i = begin; i <= end - k + 1; ++i) {
+                collected.add(i);
+                dfs(i + 1, end, collected, k - 1, res);
+                collected.remove(collected.size()-1);
+            }
+        }
     }
 }
