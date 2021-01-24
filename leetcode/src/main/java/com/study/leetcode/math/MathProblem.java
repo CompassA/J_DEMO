@@ -347,4 +347,59 @@ public class MathProblem {
         });
         return res[0];
     }
+
+    //===========================Hard==============================
+
+    /**
+     * 1739. Building Boxes
+     * https://leetcode.com/problems/building-boxes/
+     */
+    public int minimumBoxes(int n) {
+        int total = 0;
+        int curLevel = 0;
+        int i;
+        for (i = 0; total < n; ++i) {
+            curLevel += i;
+            total += curLevel;
+        }
+        if (total == n) {
+            return curLevel;
+        }
+        total -= curLevel;
+        curLevel -= i;
+        for (i = 1; total < n; ++i) {
+            total += i;
+        }
+        return curLevel + i;
+    }
+
+    /**
+     * 1737. Change Minimum Characters to Satisfy One of Three Conditions
+     * https://leetcode.com/problems/change-minimum-characters-to-satisfy-one-of-three-conditions/
+     */
+    public int minCharacters(String a, String b) {
+        char[] strA = a.toCharArray();
+        char[] strB = b.toCharArray();
+        int[] cntA = new int[26];
+        int[] cntB = new int[26];
+        for (int i = 0; i < strA.length; ++i) {
+            ++cntA[strA[i] - 'a'];
+        }
+        for (int i = 0; i < strB.length; ++i) {
+            ++cntB[strB[i] - 'a'];
+        }
+        int res = Integer.MAX_VALUE;
+        for (int i = 0; i < 26; ++i) {
+            res = Math.min(res, strA.length + strB.length - cntA[i] - cntB[i]);
+            if (i > 0) {
+                cntA[i] += cntA[i-1];
+                cntB[i] += cntB[i-1];
+            }
+            if (i < 25) {
+                res = Math.min(strA.length - cntA[i] + cntB[i], res);
+                res = Math.min(strB.length - cntB[i] + cntA[i], res);
+            }
+        }
+        return res;
+    }
 }
