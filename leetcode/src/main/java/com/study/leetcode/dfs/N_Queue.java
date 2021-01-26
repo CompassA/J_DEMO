@@ -156,4 +156,32 @@ public class N_Queue {
         }
         return res;
     }
+
+    class Solution52 {
+        int res = 0;
+        int n;
+
+        public int totalNQueens(int n) {
+            this.n = n;
+            dfs(0, new boolean[n], new boolean[2*n-1], new boolean[2*n-1]);
+            return res;
+        }
+
+        private void dfs(int x, boolean[] yUsed, boolean[] lUsed, boolean[] rUsed) {
+            if (x == n) {
+                res++;
+                return;
+            }
+            for (int y = 0; y < n; ++y) {
+                int r = x + y;
+                int l = y - x + n - 1;
+                if (yUsed[y] || lUsed[l] || rUsed[r]) {
+                    continue;
+                }
+                yUsed[y] = lUsed[l] = rUsed[r] = true;
+                dfs(x + 1, yUsed, lUsed, rUsed);
+                yUsed[y] = lUsed[l] = rUsed[r] = false;
+            }
+        }
+    }
 }
