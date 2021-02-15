@@ -49,4 +49,33 @@ public class SynchronizedDemo {
             e.printStackTrace();
         }
     }
+
+    public static class T extends Thread {
+        private boolean b = false;
+
+        public boolean b() {
+            return this.b;
+        }
+
+        @Override
+        public void run() {
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            b = true;
+        }
+    }
+
+    public static void main(String[] args) {
+        T t = new T();
+        t.start();
+        for (;;) {
+            if (t.b()) {
+                System.out.println("hello world");
+                break;
+            }
+        }
+    }
 }
