@@ -431,23 +431,50 @@ public class DpMatrix {
         if (grid.length == 0 || grid[0].length == 0) {
             return 0;
         }
-        final int[] state = initState(grid);
-        for (int i = 1; i < grid.length; ++i) {
-            state[0] += grid[i][0];
-            for (int j = 1; j < grid[i].length; ++j) {
-                state[j] = Math.min(state[j-1], state[j]) + grid[i][j];
+        Integer[] dp = new Integer[grid[0].length+1];
+        for (int i = 0; i < grid.length; ++i) {
+            for (int j = 0; j < grid[0].length; ++j) {
+                Integer leftPre = dp[j];
+                Integer upPre = dp[j+1];
+                boolean leftPreIsNull = leftPre == null;
+                boolean upPreIsNull = upPre == null;
+                if (!leftPreIsNull && !upPreIsNull) {
+                    dp[j+1] = Math.min(leftPre, upPre) + grid[i][j];
+                } else if (leftPreIsNull && upPreIsNull) {
+                    dp[j+1] = grid[i][j];
+                } else if (upPreIsNull) {
+                    dp[j+1] = dp[j] + grid[i][j];
+                } else {
+                    dp[j+1] = dp[j+1] + grid[i][j];
+                }
             }
         }
-        return state[grid[0].length - 1];
+        return dp[grid[0].length];
     }
 
-    private int[] initState(int[][] grid) {
-        final int[] state = new int[grid[0].length];
-        state[0] = grid[0][0];
-        for (int i = 1; i < grid[0].length; ++i) {
-            state[i] = state[i-1] + grid[0][i];
+    public int minPathSum_Solve2(int[][] grid) {
+        if (grid.length == 0 || grid[0].length == 0) {
+            return 0;
         }
-        return state;
+        int row = grid.length;
+        int col = grid[0].length;
+        Integer[][] dp = new Integer[row+1][col+1];
+        for (int i = 0; i < row; ++i) {
+            for (int j = 0; j < grid[i].length; ++j) {
+                Integer leftPre = dp[i][j+1];
+                Integer upPre = dp[i+1][j];
+                if (leftPre != null && upPre != null) {
+                    dp[i+1][j+1] = Math.min(leftPre, upPre) + grid[i][j];
+                } else if (leftPre == null && upPre == null) {
+                    dp[i+1][j+1] = grid[i][j];
+                } else if (leftPre == null) {
+                    dp[i+1][j+1] = upPre + grid[i][j];
+                } else {
+                    dp[i+1][j+1] = leftPre + grid[i][j];
+                }
+            }
+        }
+        return dp[row][col];
     }
 
     /**
