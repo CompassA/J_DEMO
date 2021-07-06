@@ -478,6 +478,61 @@ public class DpMatrix {
     }
 
     /**
+     * 542. 01 Matrix
+     * https://leetcode.com/problems/01-matrix/
+     */
+    public int[][] updateMatrix(int[][] mat) {
+        if (mat.length == 0 || mat[0].length == 0) {
+            return null;
+        }
+        int row = mat.length;
+        int col = mat[0].length;
+        Integer[][] dp = new Integer[row+2][col+2];
+        for (int i = 0; i < row; ++i) {
+            for (int j = 0; j < col; ++j) {
+                if (mat[i][j] == 0) {
+                    dp[i+1][j+1] = 0;
+                    continue;
+                }
+                Integer leftPre = dp[i+1][j];
+                Integer upPre = dp[i][j+1];
+                if (leftPre != null && upPre != null) {
+                    dp[i+1][j+1] = Math.min(leftPre, upPre) + 1;
+                } else if (leftPre != null) {
+                    dp[i+1][j+1] = leftPre + 1;
+                } else if (upPre != null) {
+                    dp[i+1][j+1] = upPre + 1;
+                }
+            }
+        }
+        for (int i = row-1; i >= 0; --i) {
+            for (int j = col-1; j >= 0; --j) {
+                if (mat[i][j] == 0) {
+                    continue;
+                }
+                Integer downPre = dp[i+2][j+1];
+                Integer rightPre = dp[i+1][j+2];
+                boolean isCurDpNull = dp[i+1][j+1] == null;
+                if (downPre != null && rightPre != null) {
+                    int min = Math.min(downPre, rightPre) + 1;
+                    dp[i+1][j+1] = isCurDpNull ? min : Math.min(min, dp[i+1][j+1]);
+                } else if (downPre != null) {
+                    dp[i+1][j+1] = isCurDpNull ? downPre + 1 : Math.min(dp[i+1][j+1], downPre+1);
+                } else if (rightPre != null) {
+                    dp[i+1][j+1] = isCurDpNull ? rightPre + 1 : Math.min(dp[i+1][j+1], rightPre+1);
+                }
+            }
+        }
+        int[][] res = new int[row][col];
+        for (int i = 0; i < row; ++i) {
+            for (int j = 0; j < col; ++j) {
+                res[i][j] = dp[i+1][j+1];
+            }
+        }
+        return res;
+    }
+
+    /**
      * 304. Range Sum Query 2D - Immutable
      * Medium
      * Given a 2D matrix matrix, find the sum of the elements inside the rectangle defined by its upper left corner (row1, col1) and lower right corner (row2, col2).
