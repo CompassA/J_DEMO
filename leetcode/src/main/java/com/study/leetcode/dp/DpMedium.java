@@ -409,42 +409,28 @@ public class DpMedium {
         return state[m-1][n-1];
     }
 
-    /**
-     * 91. Decode Ways
-     * Medium
-     * A message containing letters from A-Z is being encoded to numbers using the following mapping:
-     *
-     * 'A' -> 1
-     * 'B' -> 2
-     * ...
-     * 'Z' -> 26
-     * Given a non-empty string containing only digits, determine the total number of ways to decode it.
-     */
+    /** 91. Decode Ways Medium https://leetcode.com/problems/decode-ways/ */
     public int numDecodings(String s) {
         if (s.length() == 0 || s.charAt(0) == '0') {
             return 0;
         }
-        if (s.length() == 1) {
-            return 1;
-        }
-        int[] state = new int[s.length()+1];
-        state[1] = state[0] = 1;
-        for (int i = 2; i <= s.length(); ++i) {
-            if (s.charAt(i-1) != '0') {
-                state[i] += state[i-1];
+        int[] dp = new int[s.length()+1];
+        dp[0] = 1;
+        for (int i = 0; i < s.length(); ++i) {
+            if (s.charAt(i) != '0') {
+                dp[i+1] = dp[i];
             }
-            int num = (s.charAt(i-2) - '0') * 10 + s.charAt(i-1) - '0';
-            if (num > 9 && num < 27) {
-                state[i] += state[i-2];
+            if (i > 0) {
+                int num = (s.charAt(i - 1) - '0') * 10 + s.charAt(i) - '0';
+                if (num >= 10 && num <= 26) {
+                    dp[i + 1] += dp[i - 1];
+                }
             }
         }
-        return state[s.length()];
+        return dp[s.length()];
     }
 
-    /**
-     * 300. Longest Increasing Subsequence
-     * https://leetcode.com/problems/longest-increasing-subsequence/
-     */
+    /** 300. Longest Increasing Subsequence https://leetcode.com/problems/longest-increasing-subsequence/ */
     public int lengthOfLIS(int[] nums) {
         if (nums.length == 0) { return 0; }
         int[] dp = new int[nums.length];
@@ -487,10 +473,7 @@ public class DpMedium {
         }
     }
 
-    /**
-     * 1143. Longest Common Subsequence
-     * https://leetcode.com/problems/longest-common-subsequence/
-     */
+    /** 1143. Longest Common Subsequence https://leetcode.com/problems/longest-common-subsequence */
     public int longestCommonSubsequence(String text1, String text2) {
         int[][] dp = new int[text1.length()+1][text2.length()+1];
         for (int i = 1; i <= text1.length(); ++i) {
@@ -586,10 +569,7 @@ public class DpMedium {
         }
     }
 
-    /**
-     * 714. Best Time to Buy and Sell Stock with Transaction Fee
-     * https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/
-     */
+    /** 714. Best Time to Buy and Sell Stock with Transaction Fee https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/ */
     public int maxProfit(int[] prices, int fee) {
         // to buy
         int state1 = 0;
@@ -604,10 +584,7 @@ public class DpMedium {
         return Math.max(state1, state2);
     }
 
-    /**
-     * 413. Arithmetic Slices
-     * https://leetcode.com/problems/arithmetic-slices/
-     */
+    /** 413. Arithmetic Slices https://leetcode.com/problems/arithmetic-slices/ */
     public int numberOfArithmeticSlices(int[] nums) {
         if (nums.length < 3) {
             return 0;
