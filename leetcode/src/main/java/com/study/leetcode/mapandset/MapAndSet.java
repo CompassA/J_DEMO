@@ -165,47 +165,27 @@ public class MapAndSet {
     }
 
     /**
-     * 205. Isomorphic Strings
-     * Easy
-     *
-     * 985
-     *
-     * 286
-     *
-     * Favorite
-     *
-     * Share
-     * Given two strings s and t, determine if they are isomorphic.
-     *
-     * Two strings are isomorphic if the characters in s can be replaced to get t.
-     *
-     * All occurrences of a character must be replaced with another character while preserving the order of characters.
-     * No two characters may map to the same character but a character may map to itself.
+     * 205. Isomorphic Strings Easy https://leetcode.com/problems/isomorphic-strings/
      */
     public boolean isIsomorphic(String s, String t) {
-        if (s.length() != t.length()) {
-            return false;
-        }
-        final int[] sToT = new int[256];
-        final int[] tToS = new int[256];
-
-        final char[] sChars = s.toCharArray();
-        final char[] tChars = t.toCharArray();
-
+        Map<Character, Character> mapA = new HashMap<>();
+        Map<Character, Character> mapB = new HashMap<>();
         //s和t每个位置的字母都有唯一的映射关系
         //遍历每个位置
         //检测映射关系是否被破坏
-        for (int i = 0; i < sChars.length; ++i) {
-            final char sChar = sChars[i];
-            final char tChar = tChars[i];
-            if (sToT[sChar] == 0 && tToS[tChar] == 0) {
-                sToT[sChar] = tChar;
-                tToS[tChar] = sChar;
-            } else if (sToT[sChar] != 0 && tToS[tChar] != 0) {
-                if (sToT[sChar] != tChar || tToS[tChar] != sChar) {
+        for (int i = 0; i < s.length(); ++i) {
+            char a = s.charAt(i);
+            char b = t.charAt(i);
+            Character mappingA = mapA.get(a);
+            if (mappingA == null) {
+                if (mapB.get(b) != null) {
                     return false;
                 }
-            } else {
+                mapA.put(a, b);
+                mapB.put(b, a);
+                continue;
+            }
+            if (!mappingA.equals(b)) {
                 return false;
             }
         }
