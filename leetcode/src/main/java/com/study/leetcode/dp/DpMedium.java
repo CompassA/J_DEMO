@@ -430,6 +430,40 @@ public class DpMedium {
         return dp[s.length()];
     }
 
+    /**639. DecodeWays Hard https://leetcode.com/problems/decode-ways-ii/ */
+    public int numDecodingsII(String s) {
+        long mod = 1000_000_000 + 7;
+        long[] dp = new long[s.length() + 1];
+        dp[0] = 1;
+        for (int i = 0; i < s.length(); ++i) {
+            char cur = s.charAt(i);
+            if (cur == '*') {
+                dp[i + 1] = dp[i] * 9 % mod;
+            } else if (cur != '0') {
+                dp[i + 1] = dp[i] % mod;
+            }
+            if (i > 0 && s.charAt(i - 1) != '0') {
+                char pre = s.charAt(i - 1);
+                if (pre == '*' && cur == '*') {
+                    dp[i + 1] = (dp[i + 1] + (dp[i - 1] * 15)) % mod;
+                } else if (pre == '*') {
+                    dp[i + 1] = (dp[i + 1] + (dp[i - 1] * ((cur >= '0' && cur < '7') ? 2 : 1))) % mod;
+                } else if (cur == '*') {
+                    if (pre == '1') {
+                        dp[i + 1] = (dp[i + 1] + (dp[i - 1] * 9)) % mod;
+                    } else if (pre == '2') {
+                        dp[i + 1] = (dp[i + 1] + (dp[i - 1] * 6)) % mod;
+                    }
+                } else {
+                    if ((pre - '0') * 10 + (cur - '0') < 27) {
+                        dp[i + 1] = (dp[i + 1] + dp[i - 1]) % mod;
+                    }
+                }
+            }
+        }
+        return (int) (dp[s.length()] % mod);
+    }
+
     /** 300. Longest Increasing Subsequence https://leetcode.com/problems/longest-increasing-subsequence/ */
     public int lengthOfLIS(int[] nums) {
         if (nums.length == 0) { return 0; }
